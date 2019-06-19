@@ -35,6 +35,18 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+        
+        <dependency>
+		    <groupId>javax.interceptor</groupId>
+		    <artifactId>javax.interceptor-api</artifactId>
+		    <version>1.2</version>
+		</dependency>
+		
+        <!-- reids -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
         <!-- 数据库连接 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -82,6 +94,69 @@
             <artifactId>commons-codec</artifactId>
             <version>1.9</version>
         </dependency>
+        
+        <dependency>
+		    <groupId>org.jdom</groupId>
+		    <artifactId>jdom</artifactId>
+		    <version>1.1</version>
+		</dependency>
+		<!-- aliyun -->
+		<dependency>
+			<groupId>com.aliyun</groupId>
+			<artifactId>aliyun-java-sdk-core</artifactId>
+			<version>${aliyun.sdk.core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.aliyun</groupId>
+			<artifactId>aliyun-java-sdk-sms</artifactId>
+			<version>${aliyun.sdk.sms.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.aliyun</groupId>
+			<artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+			<version>${aliyun.sdk.dysmsapi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.aliyun.oss</groupId>
+			<artifactId>aliyun-sdk-oss</artifactId>
+			<version>${aliyun.sdk.oss.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>alipay-sdk</groupId>
+			<artifactId>alipay-sdk-java</artifactId>
+			<version>1.5</version>
+		</dependency>
+		<!-- jpush -->
+		<dependency>
+			<groupId>cn.jpush.api</groupId>
+			<artifactId>jpush-client</artifactId>
+			<version>${jpush.client.version}</version>
+		</dependency>
+		<!-- 建行龙支付 -->
+		<dependency>
+			<groupId>com.linkmoretech</groupId>
+  			<artifactId>netpay</artifactId>
+  			<version>1.0</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+        
+        
+        
         <dependency>
             <groupId>com.linkmoretech</groupId>
             <artifactId>sppf-service-common</artifactId>
@@ -90,6 +165,11 @@
         <dependency>
             <groupId>com.linkmoretech</groupId>
             <artifactId>sppf-service-user-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.linkmoretech</groupId>
+            <artifactId>sppf-service-order-common</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>

@@ -31,16 +31,16 @@ public class OrderDetailResponse {
     private String mobile;
 
     @ApiModelProperty(value = "车场名称")
-    private String parkingName;
+    private String parkName;
 
     @ApiModelProperty(value = "车位名称")
-    private String parkingLotName;
+    private String placeName;
 
     @ApiModelProperty(value = "车位状态")
-    private Integer parkingStatus;
+    private Integer placeStatus;
 
     @ApiModelProperty(value = "车牌号")
-    private String plateName;
+    private String plateNo;
 
     @ApiModelProperty(value = "预约时间")
     private Date createTime;
@@ -77,6 +77,5 @@ public class OrderDetailResponse {
 
     @ApiModelProperty(value = "支付类型")
     private Integer payType;
-
 
 }

@@ -31,10 +31,10 @@ public class OrderListResponse {
     private String mobile;
 
     @ApiModelProperty(value = "车场名称")
-    private String parkingName;
+    private String parkName;
 
     @ApiModelProperty(value = "车位名称")
-    private String parkingLotName;
+    private String placeName;
 
     @ApiModelProperty(value = "车牌号")
     private String plateNo;
@@ -49,7 +49,7 @@ public class OrderListResponse {
     private Integer lockStatus;
 
     @ApiModelProperty(value = "车位状态")
-    private Integer parkingStatus;
+    private Integer placeStatus;
 
     @ApiModelProperty(value = "停车时长")
     private Long duration;

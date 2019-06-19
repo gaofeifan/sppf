@@ -4,9 +4,12 @@ import com.linkmoretech.order.entity.OrderDetail;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+
+import javax.transaction.Transactional;
 
 /**
  * 订单明细持久层
@@ -14,6 +17,8 @@ import java.util.List;
  * @Description:
  * @date: 下午1:48 2019/4/12
  */
+@Repository
+@Transactional
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, String> {
 
     /**
@@ -36,7 +41,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, String
      * @param upLockTime 升锁时间
      * @param upLockStatus 升锁结果
      * */
-    @Query(value = "update t_orders_detail set up_lock_time=?2, up_lock_success=?3 where order_id=?1", nativeQuery = true)
+    @Query(value = "update o_orders_detail set up_lock_time=?2, up_lock_success=?3 where order_id=?1", nativeQuery = true)
     @Modifying
     void updateOrderDetailUpLock(String orderId, Date upLockTime, Integer upLockStatus);
 
@@ -46,25 +51,25 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, String
      * @param downLockTime 升锁时间
      * @param downLockStatus 升锁结果
      * */
-    @Query(value = "update t_orders_detail set down_lock_time=?2, down_lock_success=?3 where order_id=?1", nativeQuery = true)
+    @Query(value = "update o_orders_detail set down_lock_time=?2, down_lock_success=?3 where order_id=?1", nativeQuery = true)
     @Modifying
     void updateOrderDetailDownLock(String orderId, Date downLockTime, Integer downLockStatus);
 
     /**
      * 更新订单明细的车位状态
      * @param orderId 订单ID
-     * @param parkingStatus 车位状态
+     * @param placeStatus 车位状态
      * */
-    @Query(value = "update t_orders_detail set parking_status=?2 where order_id=?1", nativeQuery = true)
+    @Query(value = "update o_orders_detail set place_status=?2 where order_id=?1", nativeQuery = true)
     @Modifying
-    void updateOrderDetailParking(String orderId, Integer parkingStatus);
+    void updateOrderDetailParking(String orderId, Integer placeStatus);
 
     /**
      * 更新订单明细的车位锁状态
      * @param orderId 订单ID
      * @param lockStatus 车位状态
      * */
-    @Query(value = "update t_orders_detail set lock_status=?2 where order_id=?1", nativeQuery = true)
+    @Query(value = "update o_orders_detail set lock_status=?2 where order_id=?1", nativeQuery = true)
     @Modifying
     void updateOrderDetailLock(String orderId, Integer lockStatus);
 
@@ -73,7 +78,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, String
      * @param orderId 订单ID
      * @param sailInTime 驶入停车场时间
      * */
-    @Query(value = "update t_orders_detail set sail_in_time=?2 where order_id=?1", nativeQuery = true)
+    @Query(value = "update o_orders_detail set sail_in_time=?2 where order_id=?1", nativeQuery = true)
     @Modifying
     void updateOrderDetailSailIn(String orderId, Date sailInTime);
 
@@ -82,7 +87,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, String
      * @param orderId 订单ID
      * @param sailOutTime 驶出停车场时间
      * */
-    @Query(value = "update t_orders_detail set sail_out_time=?2 where order_id=?1", nativeQuery = true)
+    @Query(value = "update o_orders_detail set sail_out_time=?2 where order_id=?1", nativeQuery = true)
     @Modifying
     void updateOrderDetailSailOut(String orderId, Date sailOutTime);
 }

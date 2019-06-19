@@ -39,21 +39,38 @@ public interface OrdersService {
      * @param orderOptionRequest 操作订单参数
      * @return 订单状态
      * */
-    OrderEditResponse cancelOrder(OrderOptionRequest orderOptionRequest);
+    OrderEditResponse cancelOrder(OrderOptionRequest orderOptionRequest) throws CommonException;
 
     /**
      * 挂起订单
      * @param orderOptionRequest 操作订单参数
      * @return 订单状态
      * */
-    OrderOptionRequest suspendOrder(OrderOptionRequest orderOptionRequest);
+    OrderEditResponse suspendOrder(OrderOptionRequest orderOptionRequest) throws CommonException;
 
     /**
      * 关闭订单
      * @param orderOptionRequest 操作订单参数
      * @return 订单状态
      * */
-    OrderEditResponse closeOrder(OrderOptionRequest orderOptionRequest);
+    OrderEditResponse closeOrder(OrderOptionRequest orderOptionRequest) throws CommonException;
+
+    /**
+     * 当前订单页面控制降锁
+     * @param downLockRequest
+     * @return
+     * @throws CommonException
+     */
+    Boolean downLock(OrderDownLockRequest downLockRequest) throws CommonException;
+
+    /**
+     * 当前订单页面控制升锁，适用于国贸服务
+     * @param downLockRequest
+     * @return
+     * @throws CommonException
+     */
+    Boolean upLock(OrderDownLockRequest downLockRequest) throws CommonException;
+
 
 
     /**

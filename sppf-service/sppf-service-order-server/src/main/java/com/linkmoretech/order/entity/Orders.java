@@ -17,13 +17,13 @@ import java.util.Date;
  * @date: 下午7:36 2019/4/11
  */
 @Entity
-@Table(name = "t_orders")
+@Table(name = "o_orders")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Orders {
 
-    /**订单ID*/
+    /*订单ID*/
     @Id
     private String id;
 
@@ -60,11 +60,16 @@ public class Orders {
     /*交易取消时间*/
     private Date cancelTime;
 
+    /*挂起或者关闭时间*/
+    private Date statusTime;
+
     /*创建时间*/
     private Date createTime;
 
     /*修改时间*/
     private Date updateTime;
-
+    
+    /*客户端类型：客户端类型[0小程序、1Android、2IOS]*/
+    private Integer clientType;
 
 }

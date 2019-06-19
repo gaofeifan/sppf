@@ -20,23 +20,23 @@ import javax.validation.constraints.NotNull;
 public class OrderRequest {
 
     @ApiModelProperty(value = "用户ID", required = true)
-    @NotNull
+    @NotNull(message="用户ID不能为空")
     private String userId;
 
     @ApiModelProperty(value = "车场ID", required = true)
-    @NotNull
-    private Long parkingId;
+    @NotNull(message="车场ID不能为空")
+    private Long parkId;
 
     @ApiModelProperty(value = "车位ID", required = true)
-    @NotNull
-    private String parkingLotId;
+    @NotNull(message="车位ID不能为空")
+    private String placeId;
 
     @ApiModelProperty(value = "订单类型 1预约 2扫码 3 分享", required = true)
-    @NotNull
+    @NotNull(message="订单类型不能为空")
     private Integer orderType;
 
     @ApiModelProperty(value = "车牌号ID", required = true)
-    @NotNull
+    @NotNull(message="plateId不能为空")
     private String plateId;
 
 }

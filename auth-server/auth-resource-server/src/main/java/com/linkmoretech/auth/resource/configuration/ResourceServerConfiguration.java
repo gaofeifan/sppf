@@ -1,7 +1,7 @@
 package com.linkmoretech.auth.resource.configuration;
 
-import com.sun.deploy.util.StringUtils;
-import com.sun.tools.javac.util.ArrayUtils;
+/*import com.sun.deploy.util.StringUtils;
+import com.sun.tools.javac.util.ArrayUtils;*/
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,8 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     @Override
     public void configure(HttpSecurity http) throws Exception {
 
-        String matchers  = StringUtils.join(Arrays.asList(oauthResourceConfig.getIgnores().toArray()), ",");
+        String matchers  = null;
+        //StringUtils.join(Arrays.asList(oauthResourceConfig.getIgnores().toArray()), ",");
         log.info("过滤URL {}", matchers);
         http
               .authorizeRequests()
