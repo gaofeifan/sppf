@@ -1,0 +1,32 @@
+server:
+  port: 8080
+eureka:
+  client:
+    service-url:
+      ##defaultZone:  http://eureka1:8761/eureka/,http://eureka2:8762/eureka/,http://eureka3:8763/eureka/
+      defaultZone:  http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+spring:
+  application:
+    name: config
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/linkmoretech/config-reposity.git
+          username: linkmoretech
+          password: 1lingmaokeji
+      label: master
+  rabbitmq:
+    username: guest
+    password: guest
+    addresses: 192.168.1.80:5672,192.168.1.80:5673,192.168.1.80:5674
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      cors:
+        allowed-origins: "*"
+        allowed-headers: "*"

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.linkmoretech</groupId>
+	<artifactId>sppf</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>sppf</name>
+	<description>Smart Parking Platform</description>
+	<packaging>pom</packaging>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.6.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+	<modules>
+		<module>eureka-server</module>
+		<module>config-server</module>
+		<module>operate-gateway</module>
+		<module>sppf-service</module>
+        <module>common-component</module>
+		<module>api-gateway</module>
+        <module>auth-server</module>
+    </modules>
+	<properties>
+		<java.version>1.8</java.version>
+		<spring-cloud.version>Finchley.SR2</spring-cloud.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<druid.version>1.0.29</druid.version> 
+		<aliyun.sdk.core.version>2.4.2</aliyun.sdk.core.version>
+		<aliyun.sdk.sms.version>3.0.0-rc1</aliyun.sdk.sms.version>
+		<aliyun.sdk.dysmsapi.version>1.0.0</aliyun.sdk.dysmsapi.version> 
+		<aliyun.sdk.oss.version>2.5.0</aliyun.sdk.oss.version>
+		<jpush.client.version>3.2.7</jpush.client.version> 
+		<commons-lang3.version>3.4</commons-lang3.version>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.47</version>
+		</dependency>
+	</dependencies>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<repositories>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+</project>

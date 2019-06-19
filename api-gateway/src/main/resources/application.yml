@@ -1,0 +1,53 @@
+server:
+  port: 80
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+eureka:
+  client:
+    service-url:
+      ##defaultZone: http://eureka1:8761/eureka,http://eureka2:8762/eureka,http://eureka3:8763/eureka
+      defaultZone: http://192.168.1.239:8761/eureka
+  instance:
+    prefer-ip-address: true
+
+zuul:
+  routes:
+    parking:
+      path: /parking/**
+      serviceId:  parking
+      stripPrefix: true
+    versatile:
+      path: /versatile/**
+      serviceId: versatile
+      stripPrefix: true
+      sensitive-headers:
+      custom-sensitive-headers: true
+    user:
+      path: /user/**
+      serviceId: user
+      stripPrefix: true
+    account:
+      path: /account/**
+      serviceId: account
+      stripPrefix: true
+      sensitive-headers:
+      custom-sensitive-headers: true
+  ##重试
+  retryable: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+ribbon:
+  ReadTimeout: 15000
+  SocketTimeout: 15000
+
