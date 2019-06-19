@@ -49,8 +49,8 @@ public class AuthorityFilter extends ZuulFilter {
 
     private final String clientSecurt = "linkmore2018";
 
-    String[] skipAuthUrls = {"/account/system/login", "/account/manage/login-mobile",
-            "/account/personal/login", "/account/personal/login-mobile"};
+    String[] skipAuthUrls = {"/account/login", "/account/login-mobile",
+            "/account/personal/login", "/account/personal/login-mobile", "/account/sms/code"};
 
 
     /**

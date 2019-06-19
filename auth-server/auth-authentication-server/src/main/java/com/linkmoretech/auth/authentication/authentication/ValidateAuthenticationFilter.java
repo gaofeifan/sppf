@@ -1,6 +1,7 @@
 package com.linkmoretech.auth.authentication.authentication;
 
-import com.alibaba.fastjson.JSONObject;
+import com.linkmoretech.auth.authentication.construct.ParamsConstruct;
+import com.linkmoretech.auth.common.util.HttpRequestBodyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -8,8 +9,6 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -20,10 +19,6 @@ import java.util.Map;
 @Slf4j
 public  abstract class ValidateAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-    protected final String CLIENT_ID = "clientId";
-
-    private String mobileParams = "mobile";
-
     protected boolean postOnly = true;
 
     protected ValidateAuthenticationFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
@@ -33,20 +28,7 @@ public  abstract class ValidateAuthenticationFilter extends AbstractAuthenticati
     protected abstract void setDetails(HttpServletRequest request, AbstractAuthenticationToken authRequest);
 
     protected Map<String, String> getLoginParams(HttpServletRequest request) {
-        Map returnMap = new HashMap<>();
-        try {
-            BufferedReader br = request.getReader();
-            String str, wholeStr = "";
-            while ((str = br.readLine()) != null) {
-                wholeStr += str;
-            }
-            log.info(wholeStr);
-
-            returnMap = JSONObject.parseObject(wholeStr, Map.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return returnMap;
+        return HttpRequestBodyUtil.getHttpBody(request);
     }
 
     protected String getTokenValue(Map<String, String> paramsMap, String clientKey) {
@@ -66,8 +48,8 @@ public  abstract class ValidateAuthenticationFilter extends AbstractAuthenticati
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         }
         Map<String, String> loginParams = getLoginParams(request);
-        String clientId = loginParams.get(this.CLIENT_ID);
-        String mobile = loginParams.get(mobileParams);
+        String clientId = loginParams.get(ParamsConstruct.CLIENT_ID);
+        String mobile = loginParams.get(ParamsConstruct.MOBILE_PARAMS);
         return new String[]{clientId, mobile};
     }
 }

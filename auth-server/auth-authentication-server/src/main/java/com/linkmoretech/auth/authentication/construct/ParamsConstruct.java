@@ -10,22 +10,16 @@ public interface ParamsConstruct {
    /**
     * 大后台登录
     * */
-   String LOGIN_CUSTOMER = "/system/login";
+   String LOGIN_CUSTOMER = "/login";
 
    /**
-    * 小后台登录
+    * 短信验证码发送
     * */
-   String LOGIN_PLATFORM = "/platform/login";
-
-   /**
-    * 管理版密码登录
-    * */
-   String LOGIN_MANAGE_PASSWORD = "/manage/login";
-
+   String SEND_SMS = "/sms/code";
    /**
     * 管理版手机号登录
     * */
-   String LOGIN_MANAGE_MOBILE = "/manage/login-mobile";
+   String LOGIN_MANAGE_MOBILE = "/login-mobile";
 
    /**
     * json登录不需要跳转至登录界面，需要提示未登录信息，默认提示地址
@@ -33,4 +27,15 @@ public interface ParamsConstruct {
    String NO_LOGIN_TIP_INFO = "/no-login";
 
    String LOGIN_MOBILE_PERSONAL = "/personal/login-mobile";
+
+
+   /**
+    * 管理版客户端标示
+    * */
+   String CLIENT_MANAGE = "manage";
+
+
+   String CLIENT_ID = "clientId";
+
+   String MOBILE_PARAMS = "mobile";
 }

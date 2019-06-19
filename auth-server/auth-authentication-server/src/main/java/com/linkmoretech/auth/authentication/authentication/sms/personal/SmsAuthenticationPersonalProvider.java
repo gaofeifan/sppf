@@ -1,7 +1,6 @@
 package com.linkmoretech.auth.authentication.authentication.sms.personal;
 
 import com.linkmoretech.auth.common.bean.AccountUserDetail;
-import com.linkmoretech.auth.common.service.UserDetailAccountAbstract;
 import com.linkmoretech.auth.common.service.UserDetailMobileAbstract;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +8,6 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * @Author: alec

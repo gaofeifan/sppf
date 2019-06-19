@@ -6,19 +6,14 @@ import com.linkmoretech.auth.authentication.construct.ParamsConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @Author: alec
@@ -28,7 +23,6 @@ import java.util.Map;
 @Slf4j
 public class SmsAuthenticationManagerFilter extends ValidateAuthenticationFilter {
 
-    private String mobileParams = "mobile";
 
 
     public SmsAuthenticationManagerFilter() {
@@ -43,14 +37,6 @@ public class SmsAuthenticationManagerFilter extends ValidateAuthenticationFilter
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse httpServletResponse) throws AuthenticationException, IOException, ServletException {
-        /*if (this.postOnly && !request.getMethod().equals("POST")) {
-            throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
-        }
-        Map<String, String> loginParams = getLoginParams(request);
-
-        String clientId = loginParams.get(this.CLIENT_ID);
-
-        String mobile = loginParams.get(mobileParams);*/
         String[] params = this.attempt(request);
         SmsAuthenticationManagerToken authRequest = new SmsAuthenticationManagerToken(params[1], params[0]);
         this.setDetails(request, authRequest);

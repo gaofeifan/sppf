@@ -39,7 +39,7 @@ public class AccAuthenticationManagerFilter extends ValidateAuthenticationFilter
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         }
         Map<String, String> loginParams = getLoginParams(request);
-        String clientId = getTokenValue(loginParams, this.CLIENT_ID);
+        String clientId = getTokenValue(loginParams, ParamsConstruct.CLIENT_ID);
         String username = getTokenValue(loginParams, usernameParams);
         String password = getTokenValue(loginParams, passwordParams);
         AccAuthenticationManagerToken authRequest = new AccAuthenticationManagerToken(username, password, clientId);
