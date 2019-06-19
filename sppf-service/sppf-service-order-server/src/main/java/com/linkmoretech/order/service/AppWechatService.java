@@ -24,5 +24,5 @@ public interface AppWechatService {
 	 */
 	ResAppWechatOrder order(ReqAppWechatOrder wechat) throws JDOMException, IOException;
 
-	public Boolean verify(String json);
+	Boolean verify(String json);
 }
