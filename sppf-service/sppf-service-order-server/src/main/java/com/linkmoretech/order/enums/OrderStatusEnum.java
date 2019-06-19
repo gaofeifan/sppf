@@ -14,10 +14,13 @@ public enum  OrderStatusEnum {
     BOOKED(1, "已预约"),
     STOPED(2, "已停车"),
     PAID(3, "已支付"),
-    DEPARTURE(4, "已离场"),
-    CLOSE(5, "已关闭"),
+    CANCEL(4, "已取消"),
+    REFUND(5,"已退款"),
     SUSPENDED(6, "已挂起"),
-    CANCEL(7, "已取消"),
+    CLOSE(7, "已关闭"),
+    SAILIN(8,"已进场"),
+    SAILOUT(9,"已离场"),
+    DEPARTURE(10, "已驶离")
     ;
 
     private Integer code;
