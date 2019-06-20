@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 import lombok.Data;
 
 /**
- * Config - 支付宝
- * @author liwenlong
- * @version 2.0
- *
+ * 支付宝支付
+ * @author jhb
+ * @Date 2019年6月20日 下午7:11:02
+ * @Version 1.0
  */
 @ConfigurationProperties(prefix = "app-alipay")
 @Component

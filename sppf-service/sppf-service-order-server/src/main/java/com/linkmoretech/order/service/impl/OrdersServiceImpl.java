@@ -5,6 +5,7 @@ import com.linkmoretech.common.enums.StatusEnum;
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
+import com.linkmoretech.order.common.response.ResOrderDetail;
 import com.linkmoretech.order.config.GeneratedIdComponent;
 import com.linkmoretech.order.entity.OrderDetail;
 import com.linkmoretech.order.entity.Orders;
@@ -20,12 +21,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 订单业务逻辑层
- * @Author: alec
- * @Description:
- * @date: 上午9:20 2019/4/15
+ * @author jhb
+ * @Date 2019年6月20日 下午7:19:38
+ * @Version 1.0
  */
 @Service
 @Slf4j
@@ -298,4 +300,24 @@ public class OrdersServiceImpl implements OrdersService {
                 return false;
             }
         }
+
+	@Override
+	public ResCurrentOrder current(String userId) {
+		return null;
+	}
+
+	@Override
+	public Boolean controlDown(ReqDownLock ros) {
+		return null;
+	}
+
+	@Override
+	public ResOrderDetail detail(String orderId, String userId) {
+		return null;
+	}
+
+	@Override
+	public List<ResCheckedOrder> list(Long start, String userId) {
+		return null;
+	}
 }

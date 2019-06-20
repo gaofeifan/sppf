@@ -11,11 +11,10 @@ import lombok.extern.slf4j.Slf4j;
 import springfox.documentation.annotations.ApiIgnore;
 
 /**
- * Controller - 第三方回调
- * 
- * @author liwenlong
- * @version 2.0
- *
+ * 第三方回调
+ * @author jhb
+ * @Date 2019年6月20日 下午7:15:01
+ * @Version 1.0
  */
 @ApiIgnore
 @RestController

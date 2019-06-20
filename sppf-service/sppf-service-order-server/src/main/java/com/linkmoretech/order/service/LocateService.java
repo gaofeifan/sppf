@@ -4,8 +4,9 @@ import com.linkmoretech.order.common.response.ResLocate;
 
 /**
  * Service接口 - 定位
- * @author liwenlong
- * @version 2.0
+ * @author jhb
+ * @Date 2019年6月20日 下午7:23:08
+ * @Version 1.0
  */
 public interface LocateService {
 

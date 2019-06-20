@@ -1,12 +1,11 @@
 package com.linkmoretech.order.service;
 
 /**
- * 订单明细服务层
- * @Author: alec
- * @Description:
- * @date: 下午5:07 2019/4/12
+ * Service接口 - 订单明细
+ * @author jhb
+ * @Date 2019年6月20日 下午7:22:38
+ * @Version 1.0
  */
-
 public interface OrderDetailService {
 
     /**

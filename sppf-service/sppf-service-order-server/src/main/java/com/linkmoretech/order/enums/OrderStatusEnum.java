@@ -3,10 +3,10 @@ package com.linkmoretech.order.enums;
 import lombok.Getter;
 
 /**
- * 订单状态枚举
- * @Author: alec
- * @Description:
- * @date: 下午7:58 2019/4/11
+ * 订单状态类型
+ * @author jhb
+ * @Date 2019年6月20日 下午7:16:41
+ * @Version 1.0
  */
 @Getter
 public enum  OrderStatusEnum {

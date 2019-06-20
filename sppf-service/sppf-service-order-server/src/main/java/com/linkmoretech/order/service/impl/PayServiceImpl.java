@@ -61,11 +61,10 @@ import com.linkmoretech.order.service.WechatMiniService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Service实现 - 支付
- * 
+ * 支付实现
  * @author jhb
- * @version 2.0
- *
+ * @Date 2019年6月20日 下午7:19:55
+ * @Version 1.0
  */
 @Service
 @Slf4j

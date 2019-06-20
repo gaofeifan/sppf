@@ -10,10 +10,10 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 订单列表返回数据
- * @Author: alec
- * @Description:
- * @date: 下午8:09 2019/4/12
+ * 订单列表数据
+ * @author jhb
+ * @Date 2019年6月20日 下午7:25:31
+ * @Version 1.0
  */
 @Data
 @AllArgsConstructor

@@ -19,10 +19,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Controller - 支付
- * @author liwenlong
- * @version 2.0
- *
+ * 结账支付
+ * @author jhb
+ * @Date 2019年6月20日 下午7:15:51
+ * @Version 1.0
  */
 @Api(tags="Pay",description="订单结账")
 @RestController

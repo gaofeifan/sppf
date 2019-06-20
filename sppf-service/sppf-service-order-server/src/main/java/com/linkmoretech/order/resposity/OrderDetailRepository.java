@@ -13,9 +13,9 @@ import javax.transaction.Transactional;
 
 /**
  * 订单明细持久层
- * @Author: alec
- * @Description:
- * @date: 下午1:48 2019/4/12
+ * @author jhb
+ * @Date 2019年6月20日 下午7:17:53
+ * @Version 1.0
  */
 @Repository
 @Transactional

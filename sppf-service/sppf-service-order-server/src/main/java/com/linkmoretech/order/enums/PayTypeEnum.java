@@ -3,10 +3,10 @@ package com.linkmoretech.order.enums;
 import lombok.Getter;
 
 /**
- * 订单支付类型
- * @Author: alec
- * @Description:
- * @date: 下午8:20 2019/4/11
+ * 支付类型
+ * @author jhb
+ * @Date 2019年6月20日 下午7:17:08
+ * @Version 1.0
  */
 @Getter
 public enum PayTypeEnum {

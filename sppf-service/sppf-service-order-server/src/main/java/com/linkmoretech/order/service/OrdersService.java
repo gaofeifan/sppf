@@ -1,14 +1,17 @@
 package com.linkmoretech.order.service;
 
+import java.util.List;
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
+import com.linkmoretech.order.common.response.ResOrderDetail;
 import com.linkmoretech.order.vo.*;
 
 /**
- * @Author: alec
- * @Description:
- * @date: 下午5:03 2019/4/12
+ * Service接口 - 订单
+ * @author jhb
+ * @Date 2019年6月20日 下午7:22:10
+ * @Version 1.0
  */
 public interface OrdersService {
 
@@ -70,12 +73,32 @@ public interface OrdersService {
      * @throws CommonException
      */
     Boolean upLock(OrderDownLockRequest downLockRequest) throws CommonException;
-
-
-
+    
     /**
-     * 支付订单(同步完成支付,即不需要调用第三方支付回调)
-     * */
-
+     * 根据当前登录用户ID获取当前订单信息
+     * @param userId
+     * @return
+     */
+	ResCurrentOrder current(String userId);
+	/**
+	 * 当前订单页面控制降锁
+	 * @param ros
+	 * @return
+	 */
+	Boolean controlDown(ReqDownLock ros);
+	/**
+	 * 查看订单详情
+	 * @param orderId
+	 * @param userId
+	 * @return
+	 */
+	ResOrderDetail detail(String orderId, String userId);
+	/**
+	 * 查询已完成订单
+	 * @param start
+	 * @param userId
+	 * @return
+	 */
+	List<ResCheckedOrder> list(Long start, String userId);
 
 }

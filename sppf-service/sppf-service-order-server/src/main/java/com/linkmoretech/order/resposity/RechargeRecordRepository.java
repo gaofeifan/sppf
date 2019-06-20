@@ -5,9 +5,9 @@ import com.linkmoretech.order.entity.RechargeRecord;
 
 /**
  * 充值明细持久层
- * @Author: jhb
- * @Description:
- * @date: 下午1:48 2019/4/12
+ * @author jhb
+ * @Date 2019年6月20日 下午7:18:25
+ * @Version 1.0
  */
 public interface RechargeRecordRepository extends JpaRepository<RechargeRecord, String> {
 

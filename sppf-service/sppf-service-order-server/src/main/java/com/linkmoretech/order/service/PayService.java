@@ -12,7 +12,8 @@ import com.linkmoretech.order.common.response.ResPayConfirm;
 /**
  * Service接口 - 支付
  * @author jhb
- * @version 2.0
+ * @Date 2019年6月20日 下午7:21:51
+ * @Version 1.0
  */
 public interface PayService {
 
