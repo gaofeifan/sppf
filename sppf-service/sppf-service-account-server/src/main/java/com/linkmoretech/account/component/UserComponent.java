@@ -6,6 +6,7 @@ import com.linkmoretech.account.entity.User;
 import com.linkmoretech.account.entity.UserRoles;
 import com.linkmoretech.account.resposity.ResourcesRepository;
 import com.linkmoretech.account.resposity.RolesResourcesRepository;
+import com.linkmoretech.account.resposity.UserRepository;
 import com.linkmoretech.account.resposity.UserRolesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,9 @@ import java.util.stream.Collectors;
 public class UserComponent {
 
     @Autowired
+    UserRepository userRepository;
+
+    @Autowired
     UserRolesRepository userRolesRepository;
 
     @Autowired
@@ -38,5 +42,13 @@ public class UserComponent {
         List<Long> resourcesId = rolesResources.stream().map(RolesResources::getResourcesId).collect(Collectors.toList());
         List<Resources> resourcesList = resourcesRepository.getAllByIdIn(resourcesId);
         return resourcesList;
+    }
+
+    public User validateUser(String clientId, String username) {
+        User user = userRepository.getUserByClientIdAndMobile(clientId, username);
+        if (user == null) {
+            user = userRepository.getUserByClientIdAndUserName(clientId, username);
+        }
+        return user;
     }
 }

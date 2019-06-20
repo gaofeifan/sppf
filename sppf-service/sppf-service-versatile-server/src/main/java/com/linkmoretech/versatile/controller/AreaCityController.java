@@ -1,7 +1,5 @@
 package com.linkmoretech.versatile.controller;
 
-import com.alibaba.fastjson.JSONObject;
-import com.linkmoretech.auth.common.bean.AccountUserDetail;
 import com.linkmoretech.auth.common.util.AuthenticationTokenAnalysis;
 import com.linkmoretech.common.annation.IgnoreResponseAdvice;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
@@ -13,11 +11,7 @@ import com.linkmoretech.versatile.vo.response.AreaCityTreeResponse;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -54,12 +48,17 @@ public class AreaCityController {
 
     @ApiOperation(value = "城市列表", notes = "城市列表")
     @GetMapping(value = "list")
-    public List<AreaCityListResponse> list(Authentication authentication,
+    public List<AreaCityListResponse> list(
+                                           OAuth2Authentication oAuth2Authentication,
+                                           Principal principal,
+                                           Authentication authentication,
                                            @RequestParam(value = "parentId", required = false) Long parentId) {
-
-        AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
+        log.info("token {}", principal.getClass().getName());
+        log.info("token {}", oAuth2Authentication.getClass().getName());
+        log.info("token {}", authentication.getClass().getName());
+        AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(oAuth2Authentication);
         log.info("登录用户 {}", authenticationTokenAnalysis.getUsername());
-        log.info("登录用户 {}", authenticationTokenAnalysis.getDataAuthentications());
+        //log.info("登录用户 {}", authenticationTokenAnalysis.getDataAuthentications());
         return areaCityService.list(parentId);
     }
 

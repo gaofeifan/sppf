@@ -86,11 +86,12 @@ public class SmsCodeFilter extends OncePerRequestFilter implements InitializingB
         String mobile = loginParams.get(ParamsConstruct.MOBILE_PARAMS);
         String code = loginParams.get(CODE_FIELD);
         String validateCode =  validateCodeManage.findValidateCode(clientId, mobile);
+        log.info("code {} - validate {} ", code, validateCode);
         if (StringUtils.isEmpty(validateCode)) {
             throw new ValidateCodeException("验证码已过期");
         }
         if (!validateCode.equals(code)) {
-            throw new ValidateCodeException("验证码不匹配");
+            throw new ValidateCodeException("验证码不正确");
         }
         validateCodeManage.deleteValidateCode(clientId, mobile);
         log.info("login params {}" ,loginParams);

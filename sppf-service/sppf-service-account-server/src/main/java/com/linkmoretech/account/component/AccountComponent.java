@@ -62,7 +62,7 @@ public class AccountComponent {
                 user.getPassword(),
                 user.getStatus().equals(EnableStatusEnum.ENABLED.getCode()),
                 AuthorityUtils.createAuthorityList(userResponseBean.getOptionResources()),
-                userResponseBean.getDataResources());
+                userResponseBean.getDataResources(), user.getClientId());
 
         return userDetails;
     }

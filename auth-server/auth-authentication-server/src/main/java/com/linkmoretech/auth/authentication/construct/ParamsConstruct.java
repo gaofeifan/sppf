@@ -10,7 +10,7 @@ public interface ParamsConstruct {
    /**
     * 大后台登录
     * */
-   String LOGIN_CUSTOMER = "/login";
+   String LOGIN_CUSTOMER = "/system/login";
 
    /**
     * 短信验证码发送

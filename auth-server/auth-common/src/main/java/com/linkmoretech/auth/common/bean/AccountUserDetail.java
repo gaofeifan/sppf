@@ -1,5 +1,7 @@
 package com.linkmoretech.auth.common.bean;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,17 +17,20 @@ import java.util.Set;
 
 public class AccountUserDetail extends User implements UserDetails {
 
+    @Getter
+    @Setter
     private Set<Long> dataAuthorities;
+
+    @Getter
+    @Setter
+    private String clientId;
 
     public AccountUserDetail (String username, String password, boolean enable,
                               Collection<? extends GrantedAuthority> authorities,
-                              Set<Long> dataAuthorities) {
+                              Set<Long> dataAuthorities, String clientId) {
         super(username, password, enable, true, true, true, authorities);
         this.dataAuthorities = dataAuthorities;
-    }
-
-    public Set<Long> getDataAuthorities () {
-        return dataAuthorities;
+        this.clientId = clientId;
     }
 
 }

@@ -3,6 +3,7 @@ package com.linkmoretech.auth.common.configuration;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
@@ -11,7 +12,7 @@ import java.util.Set;
  * Description:
  * @date: 14:44 2019-06-18
  */
-public abstract class SmsAuthenticationToken extends AbstractAuthenticationToken {
+public abstract class SmsAuthenticationToken extends AbstractAuthenticationToken implements Serializable {
 
     protected static final long serialVersionUID = 500L;
 

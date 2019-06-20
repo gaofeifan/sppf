@@ -1,6 +1,5 @@
 package com.linkmoretech.auth.authentication.authentication.sms.personal;
 
-import com.linkmoretech.auth.common.service.UserDetailAccountAbstract;
 import com.linkmoretech.auth.common.service.UserDetailMobileAbstract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;

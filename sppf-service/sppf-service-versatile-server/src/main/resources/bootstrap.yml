@@ -21,8 +21,3 @@ security:
       user-info-uri: http://localhost:8086/principal
       prefer-token-info: false
 
-resource:
-  ignores:
-    - /city/**
-    - /oauth/**
-    - /area/**

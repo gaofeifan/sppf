@@ -33,6 +33,7 @@ public class ValidateCodeManageImpl implements ValidateCodeManage {
 
     @Override
     public String findValidateCode(String clientId, String mobile) {
+        log.info("clientId {}, mobile {}", clientId, mobile);
         String key = REDIS_VALIDATE_CODE + mobile + ":" + clientId;
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         String code = valueOperations.get(key);

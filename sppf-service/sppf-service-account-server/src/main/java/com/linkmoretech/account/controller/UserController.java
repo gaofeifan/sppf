@@ -13,8 +13,6 @@ import com.linkmoretech.common.vo.PageSearchRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,6 +49,8 @@ public class UserController {
 
     @GetMapping(value = "info")
     public UserInfoResponse info(Authentication authentication) {
+        log.info("token {}", authentication.getClass().getName());
+        log.info("cl {}", authentication);
         AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
         String username = authenticationTokenAnalysis.getUsername();
         String clientId = authenticationTokenAnalysis.getClientId();
