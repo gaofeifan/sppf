@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import java.nio.file.AccessDeniedException;
 
 /**
  * @Author: alec
@@ -34,8 +35,14 @@ public class GlobalExceptionAdvice {
         return ResponseUtil.returnFailure(ResponseCodeEnum.PARAMS_ERROR);
     }
 
+    @ExceptionHandler(value = AccessDeniedException.class)
+    public  ResponseCommon<String> AccessDeniedException (AccessDeniedException accessDeniedException) {
+        return ResponseUtil.returnFailure(ResponseCodeEnum.UNAUTHORIZED, accessDeniedException.getMessage());
+    }
+
     @ExceptionHandler(value = Exception.class)
-    public void otherException(Exception exception){
+    public ResponseCommon<String> otherException(Exception exception){
         exception.printStackTrace();
+        return ResponseUtil.returnFailure(ResponseCodeEnum.FAILURE, exception.getMessage());
     }
 }

@@ -3,6 +3,7 @@ package com.linkmoretech.auth.authentication.authentication;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -38,6 +39,7 @@ public class ValidateSuccessHandler implements AuthenticationSuccessHandler {
     @Autowired
     ClientDetailsService clientDetailsService;
 
+    @Qualifier("defaultAuthorizationServerTokenServices")
     @Autowired
     AuthorizationServerTokenServices authorizationServerTokenServices;
 

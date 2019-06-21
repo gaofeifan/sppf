@@ -28,6 +28,13 @@ public interface ParamsConstruct {
 
    String LOGIN_MOBILE_PERSONAL = "/personal/login-mobile";
 
+   String SWAGGER_URL = "/swagger-ui.html";
+
+   String CSS = "/swagger-resources/**";
+
+   String JS = "/webjars/**";
+
+   String DOC = "/v2/**";
 
    /**
     * 管理版客户端标示

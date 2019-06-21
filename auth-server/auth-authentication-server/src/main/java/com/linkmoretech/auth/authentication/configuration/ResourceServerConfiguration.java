@@ -66,6 +66,10 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
             .authorizeRequests() // 授权设定
             .antMatchers(
+                    ParamsConstruct.SWAGGER_URL,
+                    ParamsConstruct.CSS,
+                    ParamsConstruct.JS,
+                    ParamsConstruct.DOC,
                     ParamsConstruct.LOGIN_CUSTOMER,
                     ParamsConstruct.SEND_SMS,
                     ParamsConstruct.LOGIN_MANAGE_MOBILE,

@@ -1,5 +1,6 @@
 package com.linkmoretech.auth.common.util;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.linkmoretech.auth.common.bean.AccountUserDetail;
 import com.linkmoretech.auth.common.configuration.SmsAuthenticationToken;
@@ -49,16 +50,15 @@ public class AuthenticationTokenAnalysis {
     }
 
     private void analyseTokenJson(Authentication oauthAuthentication) {
-
         this.username = (String) oauthAuthentication.getPrincipal();
-
         String mapKey = "principal";
         String tokeValue = JSONObject.toJSONString(oauthAuthentication.getDetails());
         log.info(tokeValue);
         Map tokenMap = JSONObject.parseObject(tokeValue, Map.class);
         Map value = (Map) tokenMap.get(mapKey);
         this.clientId = (String) value.get("clientId");
-        this.dataAuthentications = (Set)value.get("dataAuthorities");
+        List dataList = JSONObject.parseArray(JSONObject.toJSONString(value.get("dataAuthorities")));
+        this.dataAuthentications = new HashSet(dataList);
         log.info("value {}", value);
     }
 }

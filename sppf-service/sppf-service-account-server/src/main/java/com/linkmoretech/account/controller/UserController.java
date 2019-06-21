@@ -49,8 +49,6 @@ public class UserController {
 
     @GetMapping(value = "info")
     public UserInfoResponse info(Authentication authentication) {
-        log.info("token {}", authentication.getClass().getName());
-        log.info("cl {}", authentication);
         AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
         String username = authenticationTokenAnalysis.getUsername();
         String clientId = authenticationTokenAnalysis.getClientId();
