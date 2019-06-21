@@ -9,9 +9,10 @@ import org.springframework.stereotype.Component;
 import lombok.Data;
 
 /**
- * Config - 小程序配置
- * @author cl
- * @version 3.0
+ * 小程序配置
+ * @author jhb
+ * @Date 2019年6月20日 下午7:14:20
+ * @Version 1.0
  */
 @ConfigurationProperties(prefix = "wechat-mini-plus")
 @Component
@@ -27,7 +28,5 @@ public class WechatMiniConfigPlus {
 	public void setMiniProps(Map<String, String> miniProps) {
 		this.miniProps = miniProps;
 	}
-	
-	
 	
 }

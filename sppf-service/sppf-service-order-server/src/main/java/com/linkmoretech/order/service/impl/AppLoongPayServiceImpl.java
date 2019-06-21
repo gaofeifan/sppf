@@ -14,10 +14,10 @@ import com.linkmoretech.order.pay.loong.JianHangLong;
 import com.linkmoretech.order.service.AppLoongPayService;
 
 /**
- * 龙支付接口实现
- * @author   GFF
- * @Date     2018年10月17日
- * @Version  v2.0
+ * 龙支付接口
+ * @author jhb
+ * @Date 2019年6月20日 下午7:18:51
+ * @Version 1.0
  */
 @Service
 public class AppLoongPayServiceImpl implements AppLoongPayService {

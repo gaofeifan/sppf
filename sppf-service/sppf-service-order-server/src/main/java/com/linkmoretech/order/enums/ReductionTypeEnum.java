@@ -3,10 +3,10 @@ package com.linkmoretech.order.enums;
 import lombok.Getter;
 
 /**
- * 减免类型
- * @Author: alec
- * @Description:
- * @date: 上午11:52 2019/4/12
+ * 优惠减免类型
+ * @author jhb
+ * @Date 2019年6月20日 下午7:17:20
+ * @Version 1.0
  */
 @Getter
 public enum  ReductionTypeEnum {

@@ -9,14 +9,15 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
 
 /**
- * @Author: alec
- * @Description:
- * @date: 下午7:52 2019/4/12
+ * 创建订单数据
+ * @author jhb
+ * @Date 2019年6月20日 下午7:26:06
+ * @Version 1.0
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel(value = "创建订单参数")
+@ApiModel(value = "创建订单数据")
 public class OrderRequest {
 
     @ApiModelProperty(value = "用户ID", required = true)

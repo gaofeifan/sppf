@@ -4,9 +4,9 @@ import lombok.Getter;
 
 /**
  * 订单类型
- * @Author: alec
- * @Description:
- * @date: 上午11:49 2019/4/12
+ * @author jhb
+ * @Date 2019年6月20日 下午7:16:56
+ * @Version 1.0
  */
 @Getter
 public enum OrderTypeEnum {

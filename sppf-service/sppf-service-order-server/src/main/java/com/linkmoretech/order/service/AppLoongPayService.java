@@ -8,9 +8,9 @@ import com.linkmoretech.order.common.response.ResLoongPay;
 
 /**
  * 建行龙支付接口
- * @author   GFF
- * @Date     2018年10月17日
- * @Version  v2.0
+ * @author jhb
+ * @Date 2019年6月20日 下午7:23:46
+ * @Version 1.0
  */
 public interface AppLoongPayService {
 

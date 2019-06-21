@@ -7,7 +7,7 @@ import com.linkmoretech.order.common.response.ResWechatUserList;
 
 /**
  * 微信 服务处理，消息转换等
- * @author liwl
+ * @author jhb
  * @version 1.0
  */
 @Service
@@ -23,21 +23,21 @@ public interface WechatService {
 
 	/**
 	 * @Description  根据appid  appsecret  key刷新
-	 * @Author   GFF 
+	 * @Author   jhb 
 	 * @Version  v2.0
 	 */
 	public ResToken resetToken(String appid, String appsecret, String key);
 
 	/**
 	 * @Description  推送微信消息
-	 * @Author   GFF 
+	 * @Author   jhb 
 	 * @Version  v2.0
 	 */
 	public void pushTemplateMsg(ReqTemplateMsg msg);
 
 	/**
 	 * @Description  获取公众号关注的用户列表
-	 * @Author   GFF 
+	 * @Author   jhb 
 	 * @Version  v2.0
 	 */
 	public ResWechatUserList getUserList(String token);

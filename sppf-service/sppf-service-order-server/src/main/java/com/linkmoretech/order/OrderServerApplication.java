@@ -9,9 +9,9 @@ import org.springframework.context.annotation.ComponentScan;
 
 /**
  * 订单服务启动类
- * @Author: alec
- * @Description:
- * @date: 下午7:28 2019/4/11
+ * @author jhb
+ * @Date 2019年6月20日 下午7:27:47
+ * @Version 1.0
  */
 @EnableDiscoveryClient
 @SpringBootApplication

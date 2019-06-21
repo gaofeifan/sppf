@@ -15,10 +15,10 @@ import com.linkmoretech.order.common.response.ResLocate;
 import com.linkmoretech.order.service.LocateService;
 
 /**
- * Service实现 - 定位
- * 
- * @author liwenlong
- * @version 2.0
+ * 定位实现
+ * @author jhb
+ * @Date 2019年6月20日 下午7:19:20
+ * @Version 1.0
  */
 @Service
 public class LocateServiceImpl implements LocateService {

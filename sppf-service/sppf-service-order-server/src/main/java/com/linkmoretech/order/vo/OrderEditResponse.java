@@ -8,9 +8,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * @Author: alec
- * @Description:
- * @date: 下午8:00 2019/4/12
+ * 创建订单数据
+ * @author jhb
+ * @Date 2019年6月20日 下午7:25:09
+ * @Version 1.0
  */
 @Data
 @AllArgsConstructor

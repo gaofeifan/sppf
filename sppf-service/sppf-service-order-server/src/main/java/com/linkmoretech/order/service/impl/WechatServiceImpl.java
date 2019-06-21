@@ -33,7 +33,7 @@ import net.sf.json.JSONObject;
 
 /**
  * 微信 服务处理，消息转换等
- * @author liwl
+ * @author jhb
  * @version 1.0
  */
 @Service

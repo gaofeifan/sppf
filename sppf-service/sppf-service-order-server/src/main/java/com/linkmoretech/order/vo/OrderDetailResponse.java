@@ -11,9 +11,9 @@ import java.util.Date;
 
 /**
  * 订单明细数据
- * @Author: alec
- * @Description:
- * @date: 下午8:09 2019/4/12
+ * @author jhb
+ * @Date 2019年6月20日 下午7:24:11
+ * @Version 1.0
  */
 @Data
 @AllArgsConstructor

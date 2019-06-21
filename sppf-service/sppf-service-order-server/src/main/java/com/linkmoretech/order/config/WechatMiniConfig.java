@@ -4,10 +4,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import lombok.Data;
+
 /**
- * Config - 小程序配置
- * @author liwenlong
- * @version 2.0
+ * 微信小程序配置
+ * @author jhb
+ * @Date 2019年6月20日 下午7:13:37
+ * @Version 1.0
  */
 @ConfigurationProperties(prefix = "wechat-mini")
 @Component

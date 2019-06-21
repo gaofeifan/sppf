@@ -4,9 +4,9 @@ import com.linkmoretech.order.common.request.ReqOrder;
 
 /**
  * Service接口 - 停车场对接
- * @author liwenlong
- * @version 2.0
- *
+ * @author jhb
+ * @Date 2019年6月20日 下午7:23:26
+ * @Version 1.0
  */
 public interface DockingService {
 

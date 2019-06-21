@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 import lombok.Data;
 
 /**
- * Confifg - 银联
- * @author liwenlong
- * @version 1.0
- *
+ * 银联支付
+ * @author jhb
+ * @Date 2019年6月20日 下午7:13:05
+ * @Version 1.0
  */
 @ConfigurationProperties(prefix = "union-pay")
 @Component

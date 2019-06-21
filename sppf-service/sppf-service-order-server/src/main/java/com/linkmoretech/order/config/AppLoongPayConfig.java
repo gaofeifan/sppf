@@ -7,9 +7,9 @@ import lombok.Data;
 
 /**
  * 建行龙支付
- * @author   GFF
- * @Date     2018年10月17日
- * @Version  v2.0
+ * @author jhb
+ * @Date 2019年6月20日 下午7:10:41
+ * @Version 1.0
  */
 @ConfigurationProperties(prefix = "loong-pay")
 @Component

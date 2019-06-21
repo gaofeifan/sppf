@@ -6,10 +6,10 @@ import org.springframework.stereotype.Component;
 import lombok.Data;
 
 /**
- * Config - 微信支付
- * @author liwenlong
- * @version 2.0
- *
+ * 微信支付
+ * @author jhb
+ * @Date 2019年6月20日 下午7:11:21
+ * @Version 1.0
  */
 @ConfigurationProperties(prefix = "app-wechat")
 @Component

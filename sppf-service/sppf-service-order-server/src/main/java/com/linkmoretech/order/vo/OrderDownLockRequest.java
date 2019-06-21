@@ -13,6 +13,12 @@ import javax.validation.constraints.NotNull;
  * @Description:
  * @date: 下午8:15 2019/6/10
  */
+/**
+ * 降锁请求数据
+ * @author jhb
+ * @Date 2019年6月20日 下午7:24:39
+ * @Version 1.0
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

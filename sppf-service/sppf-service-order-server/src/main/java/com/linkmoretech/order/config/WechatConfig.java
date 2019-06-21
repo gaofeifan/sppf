@@ -6,11 +6,10 @@ import org.springframework.stereotype.Component;
 import lombok.Data;
 
 /**
- * Config - 微信服务号配置
- * 
- * @author liwenlong
- * @version 2.0
- *
+ * 微信服务号
+ * @author jhb
+ * @Date 2019年6月20日 下午7:13:23
+ * @Version 1.0
  */
 @ConfigurationProperties(prefix = "wechat")
 @Component
