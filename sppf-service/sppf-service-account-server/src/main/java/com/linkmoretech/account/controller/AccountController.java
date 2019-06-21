@@ -98,8 +98,4 @@ public class AccountController {
                               @RequestParam (value = "mobile") String mobile) throws CommonException {
         smsCodeService.createSmsCode(mobile, clientId);
     }
-
-    private String getToken(String token) {
-        return token.substring(6);
-    }
 }
