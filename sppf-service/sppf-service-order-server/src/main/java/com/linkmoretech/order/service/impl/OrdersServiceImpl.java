@@ -1,5 +1,6 @@
 package com.linkmoretech.order.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.enums.StatusEnum;
 import com.linkmoretech.common.exception.CommonException;
@@ -20,6 +21,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
@@ -303,17 +307,251 @@ public class OrdersServiceImpl implements OrdersService {
 
 	@Override
 	public ResCurrentOrder current(String userId) {
+		ResCurrentOrder currentOrder = null;
+		Orders orders = this.ordersRepository.findOrdersByUserIdAndStatusIn(userId,OrderStatusEnum.BOOKED.getCode(), OrderStatusEnum.SUSPENDED.getCode());
+		if(orders != null) {
+			OrderDetail orderDetail = this.orderDetailRepository.findOrderDetailByOrderId(orders.getId());
+			currentOrder = new ResCurrentOrder();
+			currentOrder.setOrderId(orders.getId());
+			currentOrder.setParkId(Long.valueOf(orderDetail.getParkId()));
+			currentOrder.setParkName(orderDetail.getParkName());
+			currentOrder.setPlaceId(Long.valueOf(orderDetail.getPlaceId()));
+			currentOrder.setPlaceName(orderDetail.getPlaceName());
+			currentOrder.setPlateNo(orderDetail.getPlateNo());
+			currentOrder.setFloor(orderDetail.getFloorName());
+			currentOrder.setCreateTime(orders.getCreateTime());
+			Date start = orders.getCreateTime();
+			Date end = new Date(); 
+			if(orders.getStatus() == OrderStatusEnum.SUSPENDED.getCode()) {
+				end = orders.getStatusTime(); 
+			}
+			currentOrder.setFinishTime(end);
+			currentOrder.setParkingTime(new Long((end.getTime()-start.getTime())/(60*1000L)).intValue());
+			//TODO 根据计费和时间计算总金额
+			currentOrder.setTotalAmount(new BigDecimal(0d));
+			//TODO 设置免费时长
+			currentOrder.setFreeMins(15);
+			//TODO 获取车区服务中车区的经纬度信息
+			currentOrder.setPreLatitude(new BigDecimal(0d));
+			currentOrder.setPreLongitude(new BigDecimal(0d));
+			currentOrder.setPathFlag((short)0);
+			/*currentOrder.setPrefectureAddress(pre.getAddress());
+			currentOrder.setGuideImage(pre.getRouteGuidance());
+			currentOrder.setGuideRemark(pre.getRouteDescription());*/
+			
+			//TODO 根据车位id获取车区服务中车位锁编号
+			currentOrder.setBluetooth("");
+			
+			List<Orders> ordersList = this.ordersRepository.getDayOfCancelOrderList(userId);
+			log.info("....current order....{}",JSON.toJSON(ordersList));
+			if(null != ordersList && ordersList.size() >= 4){
+				currentOrder.setCancelFlag((short)2);
+            }
+			
+			if(orders.getStatus() == OrderStatusEnum.SUSPENDED.getCode()) {
+				//当订单处于挂起状态时，直接结账离场
+				currentOrder.setCancelFlag((short)2);
+				currentOrder.setDownFlag((short)2);
+			}
+			
+			if(orderDetail.getDownLockSuccess() != null && orderDetail.getDownLockSuccess() == 1) {
+				currentOrder.setCancelFlag((short)2);
+				currentOrder.setDownFlag((short)1);
+				log.info("..........current order lock down success");
+			}
+			log.info("..........current order {}", JSON.toJSON(currentOrder));
+			
+		}
+		/*		
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Map<String, Object> param = new HashMap<String,Object>();
+			param.put("stallId", orders.getStallId());
+			param.put("plateNo", orders.getPlateNo());
+			param.put("startTime", sdf.format(orders.getCreateTime()));
+			if (orders.getStatus().intValue() == OrderStatus.SUSPENDED.value) {
+				param.put("endTime", sdf.format(orders.getStatusTime()));
+			} else {
+				param.put("endTime", sdf.format(new Date()));
+			}
+			log.info("..........current order request param:{}", JSON.toJSON(param));
+			Map<String, Object> map = this.strategyFeeClient.amount(param);
+			log.info("..........current order response result map:{}", JSON.toJSON(map));
+			if (map != null) {
+				Object object = map.get("chargePrice");
+				if (object != null) {
+					ro.setTotalAmount(new BigDecimal(object.toString()));
+					Map<String,Object> checkParam = new HashMap<String,Object>();
+					checkParam.put("plateNo", orders.getPlateNo());
+					checkParam.put("preId", orders.getPreId());
+					boolean flag = userPlateClient.exists(checkParam);
+					log.info("..........current order free plate :{}, flag :{}", orders.getPlateNo(), flag);
+					if(flag) {
+						ro.setTotalAmount(new BigDecimal(0.00));
+					}
+				}
+			}
+			
+			ResPrefectureDetail pre = this.prefectureClient.findById(orders.getPreId());
+			if (pre != null) {
+				ro.setPreLongitude(pre.getLongitude());
+				ro.setPreLatitude(pre.getLatitude());
+				ro.setPrefectureAddress(pre.getAddress());
+				ro.setGuideImage(pre.getRouteGuidance());
+				ro.setGuideRemark(pre.getRouteDescription());
+				ro.setUnderLayer(pre.getUnderLayer());
+				ro.setPathFlag(pre.getPathFlag());
+			}
+			ResStallEntity stall = this.stallClient.findById(ro.getStallId());
+			if (stall != null) {
+				ro.setStallName(stall.getStallName());
+				ro.setBluetooth(stall.getLockSn());
+				//若车位含有楼层，覆盖车区楼层信息
+				if(StringUtils.isNotBlank(stall.getFloor())) {
+					ro.setUnderLayer(stall.getFloor());
+				}
+			}
+			if(orders.getLockDownStatus() != null && orders.getLockDownStatus().intValue() == 1) {
+				ro.setCancelFlag((short)2);
+				ro.setDownFlag((short)1);
+				log.info("..........current order lock down success");
+			} else {
+				//根据车位锁编号判断车锁状态是否为降下
+				Map<String,Object> lockParam = stallClient.watch(orders.getStallId());
+				log.info("..........current order lock down failed response result lock-param = {}", JSON.toJSON(lockParam));
+				if(lockParam != null && !lockParam.isEmpty() && "200".equals(String.valueOf(lockParam.get("code"))) &&
+						Integer.valueOf(lockParam.get("status").toString()) == LockStatus.DOWN.status) {
+					ro.setCancelFlag((short)2);
+					ro.setDownFlag((short)1);
+				}
+			}
+			long beginTime = orders.getBeginTime().getTime();
+			long now = new Date().getTime();
+			if(orders.getStallId() != null) {
+				Map<String,Object> feeParam = new HashMap<String,Object>();
+				feeParam.put("stallId", orders.getStallId());
+				int freeMins = strategyFeeClient.freeMins(feeParam);
+				ro.setFreeMins(freeMins);
+				log.info("..........current order free mins {}", freeMins);
+				if(now >= beginTime + freeMins * 60 * 1000){
+					ro.setCancelFlag((short)2);
+					ro.setRemainMins(0);
+				}else {
+					ro.setRemainMins(getSecondTime(beginTime + freeMins * 60 * 1000 - now));
+				}
+			}
+			
+			//当前用户当天取消订单数
+			List<ResUserOrder> ordersList = ordersClusterMapper.getDayOfCanceOrderlList(cu.getId());
+			//4.判断当天取消预约次数是否超过5次
+			if(null != ordersList && ordersList.size() >= baseConfig.getCancelNumber()){
+				ro.setCancelFlag((short)2);
+            }
+			
+			if(orders.getStatus() == OrderStatus.SUSPENDED.value) {
+				//当订单处于挂起状态时，直接结账离场
+				ro.setCancelFlag((short)2);
+				ro.setDownFlag((short)2);
+			}
+			log.info("..........current order {}", JSON.toJSON(ro));
+		}*/
+		
+		
+		
+		
 		return null;
 	}
 
 	@Override
-	public Boolean controlDown(ReqDownLock ros) {
-		return null;
+	public Boolean controlDown(ReqDownLock reqDownLock) {
+
+        Orders orders = ordersRepository.getOne(reqDownLock.getOrderId());
+        OrderDetail orderDetail = orderDetailRepository.findOrderDetailByOrderId(reqDownLock.getOrderId());
+
+        Boolean authStatus = orderDetail.getPlaceId().equals(reqDownLock.getPlaceId())
+                && orders.getStatus() == OrderStatusEnum.BOOKED.getCode()
+                && orders.getUserId().equals(reqDownLock.getUserId());
+        if(authStatus){
+            //车区服务控制降锁逻辑，所需参数
+            //orderId,stallId
+            Boolean downStatus = null;
+            if(!downStatus){
+                //根据车区服务返回值进行前端展示
+                /*if(this.redisService.exists(RedisKey.ORDER_STALL_DOWN_FAILED.key+ros.getOrderId())) {
+                    Object object = this.redisService.get(RedisKey.ORDER_STALL_DOWN_FAILED.key+ros.getOrderId());
+                    log.info("down flag reason = {}", StatusEnum.get((int)object));
+                    throw new BusinessException(StatusEnum.get((int)object));
+                }else {
+                    log.info("....................the server is unconnecting");
+                    this.redisService.set(RedisKey.ORDER_STALL_DOWN_FAILED.key + ros.getOrderId(), StatusEnum.DOWN_LOCK_FAIL_RETRY.code,ExpiredTime.STALL_DOWN_FAIL_EXP_TIME.time);
+                    throw new BusinessException(StatusEnum.DOWN_LOCK_FAIL_RETRY);
+                }*/
+            }
+            Integer downLockStatus = downStatus ? OperateStatusEnum.SUCCESS.getCode() : OperateStatusEnum.FAILURE.getCode();
+            orderDetailRepository.updateOrderDetailDownLock(reqDownLock.getOrderId(),new Date(),downLockStatus);
+            return downStatus;
+        }else{
+            return false;
+        }
 	}
 
 	@Override
 	public ResOrderDetail detail(String orderId, String userId) {
-		return null;
+		ResOrderDetail resOrderDetail = null;
+		Orders orders = ordersRepository.getOne(orderId);
+        OrderDetail orderDetail = orderDetailRepository.findOrderDetailByOrderId(orderId);
+        if (!orders.getUserId().equals(userId)) {
+			return null;
+		}
+        if(orders != null) {
+        	
+        	resOrderDetail = new ResOrderDetail();
+    
+        	resOrderDetail.setParkName(orderDetail.getParkName());
+        	resOrderDetail.setPlaceName(orderDetail.getPlaceName());
+        	resOrderDetail.setPlateNo(orderDetail.getPlateNo());
+        	
+        	resOrderDetail.setOrderTime(orders.getCreateTime());
+        	resOrderDetail.setEndTime(orders.getFinishTime());
+        	resOrderDetail.setPayTime(orders.getPayTime());
+        	
+        	resOrderDetail.setStatus(orders.getStatus().shortValue());
+        	resOrderDetail.setPayType(orders.getPayType().shortValue());
+        	
+        	if(orders.getTotalAmount() == null) {
+        		orders.setTotalAmount(new BigDecimal(0d));
+    		}
+    		if(orders.getPayAmount() == null) {
+    			orders.setPayAmount(new BigDecimal(0d));
+    		}
+    		if(orders.getReductionAmount() == null) {
+    			orders.setReductionAmount(new BigDecimal(0d));
+    		}
+    		resOrderDetail.setTotalAmount(orders.getTotalAmount().setScale(2, RoundingMode.HALF_UP));
+    		resOrderDetail.setPayAmount(orders.getPayAmount().setScale(2, RoundingMode.HALF_UP));
+    		resOrderDetail.setCouponAmount(orders.getReductionAmount().setScale(2, RoundingMode.HALF_UP));
+    		
+    		long day = 0;
+    		long hour = 0;
+    		long min = 0;
+    		long time = (orders.getFinishTime().getTime()-orders.getCreateTime().getTime())/(60*1000L);
+    		day = time / (24*60);
+    		hour =( time % (24*60) ) / 60;
+    		min = time % 60;
+    		StringBuffer parkingTime = new StringBuffer();
+    		if(day!=0) {
+    			parkingTime.append(day);
+    			parkingTime.append("天");
+    			parkingTime.append(hour);
+    			parkingTime.append("时"); 
+    		}else if(hour!=0) {
+    			parkingTime.append(hour);
+    			parkingTime.append("时");
+    		} 
+    		parkingTime.append(min);
+    		parkingTime.append("分");
+    		resOrderDetail.setParkingTime(parkingTime.toString()); 
+        }
+        return resOrderDetail;
 	}
 
 	@Override
