@@ -29,4 +29,6 @@ public class AliyuncsConfig {
     private String defaultConnectTimeout;
 
     private String defaultReadTimeout;
+
+    private String sign;
 }

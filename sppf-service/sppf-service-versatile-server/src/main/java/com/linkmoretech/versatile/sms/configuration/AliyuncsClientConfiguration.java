@@ -2,6 +2,7 @@ package com.linkmoretech.versatile.sms.configuration;
 
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
+import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
@@ -46,5 +47,13 @@ public class AliyuncsClientConfiguration {
                 aliyuncsConfig.getProduct(), aliyuncsConfig.getSendUrl());
 
         return iClientProfile;
+    }
+
+    @Bean
+    public SendSmsRequest sendSmsRequest () {
+
+        SendSmsRequest sendSmsRequest = new SendSmsRequest();
+        sendSmsRequest.setSignName(aliyuncsConfig.getSign());
+        return sendSmsRequest;
     }
 }
