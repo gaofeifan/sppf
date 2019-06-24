@@ -1,6 +1,7 @@
 package com.linkmoretech.parking.repository;
 
 import com.linkmoretech.parking.entity.CarPark;
+import com.linkmoretech.parking.entity.CarPlace;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -18,4 +19,6 @@ public interface CarParkRepository extends JpaRepository<CarPark, Long> {
      * @return 车场列表
      * */
     List<CarPark> findAllByCityCode(String cityCode);
+
+    CarPark findByLockGroupCode(String groupCode);
 }

@@ -18,12 +18,4 @@ public interface LeasePlaceRepository extends JpaRepository<LeasePlace, Long> {
      * @return 长租信息
      * */
     LeasePlace getFirstByLeaseCode(String leaseCode);
-
-
-    /**
-     * 根据授权码查询长租授权信息
-     * @param leaseCode 授权码
-     * @return 长租信息列表
-     * */
-    List<LeasePlace> getAllByLeaseCode(String leaseCode);
 }

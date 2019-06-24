@@ -32,5 +32,4 @@ public interface FloorPlanRepository extends JpaRepository<FloorPlan, Long> {
      * @return 返回已删除的车场分布数据
      * */
     List<FloorPlan> deleteAllByParkId(Long parkId);
-
 }

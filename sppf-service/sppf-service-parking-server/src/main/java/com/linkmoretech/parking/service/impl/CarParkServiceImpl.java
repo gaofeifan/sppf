@@ -7,6 +7,7 @@ import com.linkmoretech.common.vo.PageSearchRequest;
 import com.linkmoretech.parking.component.BindLockPlatformComponent;
 import com.linkmoretech.parking.component.CarParkComponent;
 import com.linkmoretech.parking.entity.CarPark;
+import com.linkmoretech.parking.entity.CarPlace;
 import com.linkmoretech.parking.entity.Coordinate;
 import com.linkmoretech.parking.entity.FloorPlan;
 import com.linkmoretech.parking.enums.CoordinateTypeEnum;
@@ -16,6 +17,7 @@ import com.linkmoretech.parking.repository.CarParkRepository;
 import com.linkmoretech.parking.repository.CoordinateRepository;
 import com.linkmoretech.parking.repository.FloorPlanRepository;
 import com.linkmoretech.parking.service.CarParkService;
+import com.linkmoretech.parking.service.CarPlaceService;
 import com.linkmoretech.parking.vo.request.CarParkCreateRequest;
 import com.linkmoretech.parking.vo.request.CarParkEditRequest;
 import com.linkmoretech.parking.vo.request.CarParkLineRequest;
@@ -29,12 +31,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import reactor.ipc.netty.http.server.HttpServerRequest;
+
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 /**
  * @Author: alec
@@ -44,7 +45,8 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class CarParkServiceImpl implements CarParkService {
-
+    @Autowired
+    CarPlaceService carPlaceService;
     @Autowired
     CarParkRepository carParkRepository;
     @Autowired
@@ -277,4 +279,88 @@ public class CarParkServiceImpl implements CarParkService {
         coordinateRepository.saveAll(coordinateList);
         return coordinateList;
     }
+
+    @Override
+    public CarPark findByGateway(String groupCode) {
+        CarPark carPark = carParkComponent.findByGateway(groupCode);
+        return carPark;
+    }
+    @Override
+    public List<CityParkListResponse> carParkList(HttpServerRequest request) {
+        List<CarPark> carParks = carParkRepository.findAll();
+        List<Long> parkIds = carParks.stream().map(car -> car.getId()).collect(Collectors.toList());
+        List<CarPlace> carPlaces = carPlaceService.findCarPlaceByParkIds(parkIds);
+
+        List<CityParkListResponse> citys = new ArrayList<>();
+        CityParkListResponse city = null;
+        if (carParks == null || carParks.size() == 0) {
+            return citys;
+        }
+        Set<String> collect = carParks.stream().map(car -> car.getCityCode()).collect(Collectors.toSet());
+        CarParkListResponse carParkList = null;
+        for (String code : collect) {
+            city = new CityParkListResponse();
+            List<CarPark> parks = carParks.stream().filter(car -> car.getCityCode().equals(code)).collect(Collectors.toList());
+            int i = 0;
+            for (CarPark carPark : parks) {
+                if (i == 0) {
+                    city.setCityCode(carPark.getCityCode());
+                    city.setCityName(carPark.getCityName());
+                }
+                carParkList = new CarParkListResponse();
+                carParkList = computeCarPlaceStatus(carParkList, carPlaces);
+                carParkList.setId(carPark.getId());
+                carParkList.setParkName(carPark.getParkName());
+                city.getPrakList().add(carParkList);
+                citys.add(city);
+                i++;
+            }
+        }
+        return citys;
+    }
+
+
+    private CarParkListResponse computeCarPlaceStatus(CarParkListResponse carPark,List<CarPlace> carPlaces) {
+        int ownerAmount = 0, ownerUseAmount = 0, tempAmount = 0, tempUseAmount = 0, carAmount = 0, carUseAmount = 0,
+                leisureAmount = 0, faultAmount = 0;
+        for (CarPlace car : carPlaces) {
+            if (car.getParkId().longValue() == carPark.getId().longValue()) {
+                if (car.getLockStatus().intValue() == 3) {
+                    faultAmount++;
+                }
+                switch (car.getPlaceType().intValue()) {
+                    case 1:
+                        carAmount++;
+                        ownerAmount++;
+                        if (car.getPlaceStatus().intValue() == 2) {
+                            carUseAmount++;
+                            ownerUseAmount++;
+                        } else if (car.getPlaceStatus().intValue() == 1) {
+                            leisureAmount++;
+                        }
+                        break;
+                    case 2:
+                        carAmount++;
+                        tempAmount++;
+                        if (car.getPlaceStatus().intValue() == 2) {
+                            carUseAmount++;
+                            tempUseAmount++;
+                        } else if (car.getPlaceStatus().intValue() == 1) {
+                            leisureAmount++;
+                        }
+                        break;
+                }
+            }
+        }
+        carPark.setParkAllAmount(carAmount);
+        carPark.setParkLeisureAmount(leisureAmount);
+        carPark.setParkFaultAmount(faultAmount);
+        carPark.setParkUseNumber(carUseAmount);
+        carPark.getCarPlaceType().put("固定",new CarParkListResponse.ParkCarPlaceTypeBuilder().type((short)1).typeName("固定").parkAmount(ownerAmount).parkUseAmount(ownerUseAmount).builder());
+        carPark.getCarPlaceType().put("临停",new CarParkListResponse.ParkCarPlaceTypeBuilder().type((short)2).typeName("临停").parkAmount(tempAmount).parkUseAmount(tempUseAmount).builder());
+        return carPark;
+    }
+
+
+
 }

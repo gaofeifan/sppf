@@ -13,3 +13,9 @@ eureka:
       ##defaultZone:  http://eureka1:8761/eureka,http://eureka2:8762/eureka,http://eureka3:8763/eureka
   instance:
     prefer-ip-address: true
+
+
+lock:
+  app-secret: b36441d95239bc919eac75aa18c0c54b
+  app-id: 95b94e076c8546db9f329bbd8c0f2030
+  linkemore-lock-url: http://open-api.linkmoreparking.cn

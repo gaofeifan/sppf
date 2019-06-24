@@ -20,6 +20,7 @@ public class CarPlaceInfoResponse {
     /** 车场名称;所在车场名称 */
     private String parkName ;
 
+    private  Long id;
     /** 车位编号;车位编号 */
     private String placeNo ;
 
@@ -40,4 +41,7 @@ public class CarPlaceInfoResponse {
     /** 更新时间;更新时间 */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime ;
+
+
+    private Integer lineStatus ;
 }

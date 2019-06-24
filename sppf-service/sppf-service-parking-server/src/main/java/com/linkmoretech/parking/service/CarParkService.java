@@ -3,13 +3,12 @@ package com.linkmoretech.parking.service;
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
+import com.linkmoretech.parking.entity.CarPark;
 import com.linkmoretech.parking.vo.request.CarParkCreateRequest;
 import com.linkmoretech.parking.vo.request.CarParkEditRequest;
 import com.linkmoretech.parking.vo.request.CarParkLineRequest;
-import com.linkmoretech.parking.vo.response.CarParkEditResponse;
-import com.linkmoretech.parking.vo.response.CarParkInfoResponse;
-import com.linkmoretech.parking.vo.response.CarParkPageResponse;
-import com.linkmoretech.parking.vo.response.CarParkSelectResponse;
+import com.linkmoretech.parking.vo.response.*;
+import reactor.ipc.netty.http.server.HttpServerRequest;
 
 import java.util.List;
 
@@ -79,4 +78,13 @@ public interface CarParkService {
      * @throws CommonException 自定义异常
      * */
     void upDownLine(CarParkLineRequest carParkLineRequest) throws CommonException;
+
+    /**
+     * @Author GFF
+     * @Description 根据分组编号查询
+     * @Date 2019/6/19
+     */
+    CarPark findByGateway(String groupCode);
+
+    List<CityParkListResponse> carParkList(HttpServerRequest request);
 }

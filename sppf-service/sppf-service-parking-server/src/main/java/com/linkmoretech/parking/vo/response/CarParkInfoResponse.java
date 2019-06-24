@@ -40,6 +40,8 @@ public class CarParkInfoResponse {
 
     private String updateBy;
 
+    private String lockGroupCode;
+
     @JsonProperty(value = "floorPlans")
     private List<FloorPlanResponse> floorPlanResponseList;
 }

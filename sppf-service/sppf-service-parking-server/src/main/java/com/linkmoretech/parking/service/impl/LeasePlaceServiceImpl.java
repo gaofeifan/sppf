@@ -21,12 +21,7 @@ import com.linkmoretech.parking.repository.LicensePlateRepository;
 import com.linkmoretech.parking.service.LeasePlaceService;
 import com.linkmoretech.parking.vo.request.LeasePlaceBatchRequest;
 import com.linkmoretech.parking.vo.request.LeasePlaceCreateRequest;
-import com.linkmoretech.parking.vo.request.LeasePlaceEditRequest;
-import com.linkmoretech.parking.vo.response.LeasePlaceEditResponse;
-import com.linkmoretech.parking.vo.response.LeasePlaceInfoResponse;
 import com.linkmoretech.parking.vo.response.LeasePlaceListResponse;
-import com.linkmoretech.parking.vo.response.LeasePlaceResponse;
-import com.linkmoretech.versatile.client.AreaCityClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
@@ -62,8 +57,6 @@ public class LeasePlaceServiceImpl implements LeasePlaceService {
     LeaseOrderComponent leaseOrderComponent;
     @Autowired
     AmqpTemplate amqpTemplate;
-    @Autowired
-    AreaCityClient areaCityClient;
 
     @Override
     public PageDataResponse<LeasePlaceListResponse> searchPage(PageSearchRequest pageSearchRequest) {
@@ -85,11 +78,9 @@ public class LeasePlaceServiceImpl implements LeasePlaceService {
         List<LeasePlaceListResponse> leaseListResponsePlaceList = leasePlaceList.stream().map(leasePlace -> {
             LeasePlaceListResponse leasePlaceListResponse = new LeasePlaceListResponse();
             BeanUtils.copyProperties(leasePlace, leasePlaceListResponse);
-            if (licensePlateMap.get(leasePlace.getPlaceId()) != null) {
-                List<String> plateList = licensePlateMap.get(leasePlace.getPlaceId()).stream()
-                        .map(LicensePlate::getLicensePlateNo).collect(Collectors.toList());
-                leasePlaceListResponse.setLicensePlateNoList(plateList);
-            }
+            List<String> plateList = licensePlateMap.get(leasePlace.getPlaceId()).stream()
+                    .map(LicensePlate::getLicensePlateNo).collect(Collectors.toList());
+            leasePlaceListResponse.setLicensePlateNoList(plateList);
             return leasePlaceListResponse;
         }).collect(Collectors.toList());
         pageDataResponse.setData(leaseListResponsePlaceList);
@@ -98,11 +89,18 @@ public class LeasePlaceServiceImpl implements LeasePlaceService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void create(LeasePlaceCreateRequest leasePlaceCreateRequest) throws CommonException {
-
+        /**
+         * 1 当前车位是否已是长租车位
+         * 2 创建长租车位记录
+         * 3 创建车位与车牌对应关系(默认不限制使用 n * n 方式记录)
+         * 4 更新对应车场类型(如果全部车位是固定 更新为固定 否则更新为组合)
+         * 5 更新对应车位类型(将车位类型更新为 固定)
+         * */
         CarPark carPark = carParkComponent.getCarPark(leasePlaceCreateRequest.getParkId());
         List<CarPlace> carPlaceList = carPlaceRepository.getAllByParkIdAndIdIn(leasePlaceCreateRequest.getParkId(),
                 leasePlaceCreateRequest.getPlaceIdList());
         validatePlace(carPlaceList);
+        Date currentDate = new Date();
         String leaseCode = leaseOrderComponent.getLeaseCode(carPark);
         List<LeasePlace> leasePlaceList =carPlaceList.stream().map(carPlace -> {
             LeasePlace leasePlace = new LeasePlace();
@@ -111,7 +109,10 @@ public class LeasePlaceServiceImpl implements LeasePlaceService {
             leasePlace.setParkName(carPlace.getParkName());
             leasePlace.setPlaceId(carPlace.getId());
             leasePlace.setPlaceNo(carPlace.getPlaceNo());
-            batchSave(leaseCode, leasePlaceCreateRequest.getUsername(), leasePlace);
+            leasePlace.setLeaseStatus(UserStatusEnum.ENABLED.getCode());
+            leasePlace.setCreateTime(currentDate);
+            leasePlace.setUpdateTime(currentDate);
+            leasePlace.setLeaseCode(leaseCode);
             return leasePlace;
         }).collect(Collectors.toList());
        log.info("存储长租车位信息 {}", leasePlaceList);
@@ -120,42 +121,6 @@ public class LeasePlaceServiceImpl implements LeasePlaceService {
        batchUpdateStatus(carPark, resultData, leasePlaceCreateRequest.getUsername(), CarPlaceTypeEnum.FIXED_PLACE);
        decreaseStock(licensePlateList);
     }
-    /**
-     * 可以添加车位及车牌，不删除车位
-     * */
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void update(LeasePlaceEditRequest leasePlaceEditRequest) throws CommonException {
-        /**
-         * 更新长租车位信息
-         * */
-        List<LeasePlace> leasePlaceList =  leasePlaceRepository.getAllByLeaseCode(leasePlaceEditRequest.getLeaseCode());
-        leasePlaceList.forEach(leasePlace -> {
-            leasePlace.setStartDate(leasePlaceEditRequest.getStartDate());
-            leasePlace.setEndDate(leasePlaceEditRequest.getEndDate());
-            leasePlace.setLinkMobile(leasePlaceEditRequest.getLinkMobile());
-            leasePlace.setUpdateBy(leasePlaceEditRequest.getUsername());
-            leasePlace.setUpdateTime(new Date());
-        });
-        List<LeasePlace> resultData = leasePlaceRepository.saveAll(leasePlaceList);
-        List<String> licenseList = leasePlaceEditRequest.getLicensePlateList();
-        List<LicensePlate> licensePlateList = licensePlateRepository.getAllByLeaseCode(leasePlaceEditRequest.getLeaseCode());
-        Set<String> existPlates = licensePlateList.stream().map(LicensePlate::getLicensePlateNo).collect(Collectors.toSet());
-        /**
-         * 添加信的车牌号
-         * */
-        List<String> addList = new ArrayList<>(licenseList);
-        addList.removeAll(existPlates);
-        List<LicensePlate> addLicensePlateList =  batchSaveLicensePlate(resultData, addList);
-        /**
-         * 需要删除车牌号
-         * */
-        Set<String> deleteList = new HashSet<>(existPlates);
-        deleteList.removeAll(licenseList);
-        licensePlateRepository.deleteAllByLicensePlateNoInAndLeaseCode(deleteList, leasePlaceEditRequest.getLeaseCode());
-        decreaseStock(addLicensePlateList);
-    }
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void batchImport(LeasePlaceBatchRequest leasePlaceBatchRequest) throws CommonException {
@@ -163,28 +128,29 @@ public class LeasePlaceServiceImpl implements LeasePlaceService {
          * 验证车场信息
          * */
         CarPark carPark = carParkComponent.getCarPark(leasePlaceBatchRequest.getParkId());
-
         /**
          * 解析Excel 拆分成参数列表
          * */
         List<String> leasePlaceList = new ArrayList<>();
         Map<String, List<String>> licensePlateMap = new HashMap<>();
         Map<String, LeasePlace> leasePlaceMap = new HashMap<>();
-        String leaseCode = leaseOrderComponent.getLeaseCode(carPark);
+        Date currentDate = new Date();
         leasePlaceBatchRequest.getLeasePlaceBatchParamsRequests().forEach(params -> {
             log.info("place list {}", params.getPlaceList());
             leasePlaceList.addAll(params.getPlaceList());
             params.getPlaceList().forEach(place -> {
-                licensePlateMap.put(place.trim(), params.getLicensePlateList());
+                licensePlateMap.put(place, params.getLicensePlateList());
                 LeasePlace leasePlace = new LeasePlace();
-                leasePlace.setPlaceNo(place.trim());
+                leasePlace.setPlaceNo(place);
                 leasePlace.setParkName(carPark.getParkName());
                 leasePlace.setParkId(carPark.getId());
                 leasePlace.setLinkMobile(params.getLinkMobile());
                 leasePlace.setStartDate(params.getStartDate());
                 leasePlace.setEndDate(params.getEndDate());
-                batchSave(leaseCode, leasePlaceBatchRequest.getUsername(), leasePlace);
-                leasePlaceMap.put(place.trim(), leasePlace);
+                leasePlace.setCreateTime(currentDate);
+                leasePlace.setUpdateTime(currentDate);
+                leasePlace.setLeaseStatus(UserStatusEnum.ENABLED.getCode());
+                leasePlaceMap.put(place, leasePlace);
             });
         });
         /**
@@ -193,18 +159,9 @@ public class LeasePlaceServiceImpl implements LeasePlaceService {
         log.info("car id {} and place {}", carPark.getId(), leasePlaceList);
         List<CarPlace> carPlaceList = carPlaceRepository.getAllByParkIdAndPlaceNoIn(carPark.getId(), leasePlaceList);
         validatePlace(carPlaceList);
-        if (carPlaceList.size() != leasePlaceList.size()) {
-            throw new CommonException(ResponseCodeEnum.PARAMS_ERROR, "有不合法车位号，请核对车位号");
-        }
         for (CarPlace carPlace : carPlaceList) {
-            log.info("carPlace id {}, no {} , map {}", carPlace.getId(), carPlace.getPlaceNo(), leasePlaceMap);
-            LeasePlace tempLease = leasePlaceMap.get(carPlace.getPlaceNo());
-            if (tempLease != null) {
-                tempLease.setPlaceId(carPlace.getId());
-                leasePlaceMap.put(carPlace.getPlaceNo(), tempLease);
-            }
+            leasePlaceMap.get(carPlace.getPlaceNo()).setPlaceId(carPlace.getId());
         }
-        log.info("save data {}", leasePlaceMap.values());
         List<LeasePlace> resultData = leasePlaceRepository.saveAll(leasePlaceMap.values());
         List<LicensePlate> licensePlateList = batchSaveLicensePlate(licensePlateMap, leasePlaceMap);
         decreaseStock(licensePlateList);
@@ -242,6 +199,10 @@ public class LeasePlaceServiceImpl implements LeasePlaceService {
         log.info("车区服务提供 查询个人授权详情{}", leaseInput);
         /**
          * 根据传入车牌号 查询该车牌号所有对应对 长租信息
+         *
+         * leaseCode 车场名称 车场ID
+         * 车位名称 车位编码 status
+         * 车位名称 车位编码 status
          * */
         LeasePlace leasePlace = leasePlaceRepository.getFirstByLeaseCode(leaseInput.getLeaseCode());
         if (leasePlace == null) {
@@ -304,76 +265,15 @@ public class LeasePlaceServiceImpl implements LeasePlaceService {
             licensePlateRepository.updateLicensePlateStatus(carPark.getId(), placeId, status);
         }
     }
-
-    @Override
-    public LeasePlaceInfoResponse getLeasePlaceDetail(Long id) throws CommonException {
-        LeasePlaceInfoResponse leasePlaceInfoResponse = new LeasePlaceInfoResponse();
-        Optional<LeasePlace> optional = leasePlaceRepository.findById(id);
-        if (!optional.isPresent()) {
-            return leasePlaceInfoResponse;
-        }
-        LeasePlace leasePlace = optional.get();
-        BeanUtils.copyProperties(leasePlace, leasePlaceInfoResponse);
-
-        CarPark carPark = carParkComponent.getCarPark(leasePlace.getParkId());
-        log.info("车场 {}", carPark);
-        leasePlaceInfoResponse.setCityName(carPark.getCityName());
-        List<LicensePlate> licensePlateList = licensePlateRepository.getAllByPlaceNoAndLeaseCode(leasePlace.getPlaceNo(),
-                leasePlace.getLeaseCode());
-        if (licensePlateList != null) {
-            List<String> licensePlateNo = licensePlateList.stream().map(LicensePlate::getLicensePlateNo).collect(Collectors.toList());
-            leasePlaceInfoResponse.setLicensePlateNoList(licensePlateNo);
-        }
-        log.info("查询info {}", leasePlaceInfoResponse);
-        return leasePlaceInfoResponse;
-    }
-
-    @Override
-    public LeasePlaceEditResponse getDetail(String leaseCode) throws CommonException {
-        List<LeasePlace> leasePlaceList = leasePlaceRepository.getAllByLeaseCode(leaseCode);
-        LeasePlaceEditResponse leasePlaceEditResponse = new LeasePlaceEditResponse();
-        if (leasePlaceList == null) {
-            return  leasePlaceEditResponse;
-        }
-        LeasePlace firstLeasePlace = leasePlaceList.get(0);
-        BeanUtils.copyProperties(firstLeasePlace, leasePlaceEditResponse);
-        CarPark carPark = carParkComponent.getCarPark(firstLeasePlace.getParkId());
-        List<String> cityCodes = areaCityClient.getAllCityCode(carPark.getCityCode());
-        leasePlaceEditResponse.setCityCodes(cityCodes);
-        List<LeasePlaceResponse> placeIdList = leasePlaceList.stream()
-                .map(leasePlace -> {
-                    LeasePlaceResponse leasePlaceResponse = new LeasePlaceResponse();
-                    leasePlaceResponse.setId(leasePlace.getPlaceId());
-                    leasePlaceResponse.setPlaceNo(leasePlace.getPlaceNo());
-                    return leasePlaceResponse;
-                }).collect(Collectors.toList());
-        leasePlaceEditResponse.setPlaceIdList(placeIdList);
-        List<LicensePlate> licensePlateList = licensePlateRepository.getAllByLeaseCode(leaseCode);
-        List<String> licensePlateNoList = licensePlateList.stream().map(LicensePlate::getLicensePlateNo).collect(Collectors.toList());
-        leasePlaceEditResponse.setLicensePlateList(licensePlateNoList);
-        return leasePlaceEditResponse;
-    }
-
-    private void batchSave (String leaseCode, String username, LeasePlace leasePlace) {
-        Date currentDate = new Date();
-        leasePlace.setCreateTime(currentDate);
-        leasePlace.setUpdateTime(currentDate);
-        leasePlace.setCreateBy(username);
-        leasePlace.setUpdateBy(username);
-        leasePlace.setLeaseStatus(UserStatusEnum.ENABLED.getCode());
-        leasePlace.setLeaseCode(leaseCode);
-    }
-
-    private List<LicensePlate> batchSaveLicensePlate(Map<String, List<String>> licensePlateMap, Map<String, LeasePlace> placeMap) {
+    private List<LicensePlate> batchSaveLicensePlate(Map<String, List<String>> licensePlateMap,
+                                       Map<String, LeasePlace> placeMap) {
         List<LicensePlate> licensePlates = new ArrayList<>();
         Iterator<String> iterator = licensePlateMap.keySet().iterator();
         while (iterator.hasNext()) {
             String placeNo = iterator.next();
             List<String> plateList = licensePlateMap.get(placeNo);
-            log.info("添加车牌记录 {}", plateList);
             licensePlates.addAll(getLicensePlateList(plateList, placeMap.get(placeNo)));
         }
-        log.info("添加记录 {}", licensePlates);
         List<LicensePlate> list = licensePlateRepository.saveAll(licensePlates);
         return list;
     }
@@ -403,7 +303,8 @@ public class LeasePlaceServiceImpl implements LeasePlaceService {
         }
         List<CarPlace> disableList = carPlaceList.stream().filter(carPlace ->
                 carPlace.getLineStatus().equals(LineStatusEnum.OFFLINE.getCode()) ||
-                carPlace.getPlaceType().equals(CarPlaceTypeEnum.FIXED_PLACE.getCode())).collect(Collectors.toList());
+                        carPlace.getPlaceType().equals(CarPlaceTypeEnum.FIXED_PLACE.getCode())
+        ).collect(Collectors.toList());
         if (disableList.size() > 0) {
             disableList.forEach(carPlace -> {
                 log.warn("车位 {}, 类型 {} , 状态 {} , 不可用", carPlace.getPlaceNo(), carPlace.getPlaceType(), carPlace.getLineStatus());
@@ -416,12 +317,14 @@ public class LeasePlaceServiceImpl implements LeasePlaceService {
         batchUpdateStatus(carPark, placeIdList, new Date(), updateBy, carPlaceTypeEnum);
     }
     private void batchUpdateStatus(CarPark carPark, List<Long> placeIdList, Date currentDate, String updateBy, CarPlaceTypeEnum carPlaceTypeEnum) {
+        /**
+         * 编辑车位位固定车位
+         * */
         log.info("批量更新车位属性 {} - {}", placeIdList, carPlaceTypeEnum.getMessage());
         carPlaceRepository.updatePlaceType(placeIdList, carPlaceTypeEnum.getCode(), currentDate, updateBy);
         carParkComponent.updateCarParkType(carPark);
     }
     private void decreaseStock(List<LicensePlate> licensePlates) {
-        log.info("message is {}" , licensePlates);
         List<LicensePlateOutput> licensePlateOutputs = new ArrayList<>();
         Map<String, List<LicensePlate>> listMap = licensePlates.stream().collect(Collectors.groupingBy(LicensePlate::getLeaseCode));
         for(Map.Entry<String, List<LicensePlate>>  leaseMap: listMap.entrySet()) {
@@ -431,8 +334,10 @@ public class LeasePlaceServiceImpl implements LeasePlaceService {
             licensePlateOutput.setLicensePlateNoList(licensePlateList);
             licensePlateOutputs.add(licensePlateOutput);
         }
+        /**
+         * 通过mq异步发送长租车位信息
+         * */
         if (licensePlateOutputs.size() > 0 ){
-            log.info("异步发送消息 {}", licensePlateOutputs);
             amqpTemplate.convertAndSend(MqLeasePlaceQueueCommon.ADD_LEASE_PLACE_QUEUE, JSONObject.toJSONString(licensePlateOutputs));
         }
     }

@@ -19,10 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 public class LeasePlaceListResponse {
 
-
     private Long id;
-
-    private String leaseCode;
 
     private String placeNo;
 
