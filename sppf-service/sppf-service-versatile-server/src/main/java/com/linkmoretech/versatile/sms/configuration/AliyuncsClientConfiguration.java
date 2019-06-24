@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
  * Description:
  * @date: 14:39 2019-06-21
  */
-@Configuration
+//@Configuration
 public class AliyuncsClientConfiguration {
 
     private final String CONNECT_TIMOUT = "sun.net.client.defaultConnectTimeout";

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * Description: 阿里云客户端发送短信
  * @date: 18:08 2019-06-21
  */
-@Component
+//@Component
 public class AliClient {
 
     @Autowired
