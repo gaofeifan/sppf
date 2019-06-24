@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 /**
  * @Author: alec
  * Description:
@@ -14,5 +17,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PasswordEditRequest {
 
+    @NotEmpty(message = "密码不能为空")
     private String password;
+
+    private String oldPassword;
+
+    @NotNull(message = "重置方式不能为空")
+    private Integer type;
 }

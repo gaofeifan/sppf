@@ -6,9 +6,12 @@ import com.linkmoretech.account.resposity.UserRepository;
 import com.linkmoretech.account.service.AccountService;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 /**
  * @Author: alec
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
  * @date: 20:32 2019-06-19
  */
 @Service
+@Slf4j
 public class AccountServiceImpl implements AccountService {
 
     @Autowired
@@ -35,17 +39,20 @@ public class AccountServiceImpl implements AccountService {
             throw new CommonException(ResponseCodeEnum.PARAMS_ERROR, "用户不存在");
         }
         user.setPassword(passwordEncoder.encode(password));
-
+        user.setUpdateTime(new Date());
         userRepository.save(user);
     }
 
     @Override
     public void updatePassword(String clientId, String username, String password, String oldPassword) throws CommonException {
         User user = userComponent.validateUser(clientId,username);
+
+        log.info("oldPassword {}, new password {}, oldPassword {}", user.getPassword(), password, oldPassword);
+
         if (user == null) {
             throw new CommonException(ResponseCodeEnum.PARAMS_ERROR, "用户不存在");
         }
-        if (!passwordEncoder.matches(user.getPassword(), oldPassword)) {
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
             throw new CommonException(ResponseCodeEnum.PARAMS_ERROR, "原密码不正确");
         }
         updatePassword(clientId, username, password);

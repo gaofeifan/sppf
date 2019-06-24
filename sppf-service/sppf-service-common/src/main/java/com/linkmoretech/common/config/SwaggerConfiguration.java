@@ -1,6 +1,7 @@
 package com.linkmoretech.common.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,42 +29,33 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @Configuration
 @EnableSwagger2
-@ConfigurationProperties(prefix = "swagger")
 @Data
 @Slf4j
 public class SwaggerConfiguration {
-	
-	private String title = "应用接口";
-	private String description = "本文档 完全基于RESTful接口说明";
-	private String version = "1.0";
-	private String contact = "凌猫停车"; 
-	private String basePackage = "";
+
+    @Autowired
+    SwaggerConfig swaggerConfig;
 	
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())
                 .select()
                 //.apis(basePackage("com.linkmoretech.user.controller,com.linkmoretech.order.controller"))
-                .apis(RequestHandlerSelectors.basePackage(this.basePackage))
+                .apis(RequestHandlerSelectors.basePackage(swaggerConfig.getBasePackage()))
                 .paths(PathSelectors.any()).build();
     }
     @Bean
     public ApiInfo apiInfo() {
-        return new ApiInfoBuilder().title(this.title)
-                .description(this.description)
-                .contact(new Contact(this.contact,null,null))
-                .version(this.version)
+        return new ApiInfoBuilder().title(swaggerConfig.getTitle())
+                .description(swaggerConfig.getDescription())
+                .contact(new Contact(swaggerConfig.getContact(),"http://baidu.com",null))
+                .version(swaggerConfig.getVersion())
                 .build();
     }
     
     public static Predicate<RequestHandler> basePackage(final String basePackage) {
 		log.info("basePackage ======================= {} " + basePackage);
-        return new Predicate<RequestHandler>() {
-            @Override
-            public boolean apply(RequestHandler input) {
-                return declaringClass(input).transform(handlerPackage(basePackage)).or(true);
-            }
-        };
+        return input -> declaringClass(input).transform(handlerPackage(basePackage)).or(true);
     }
     
     /**
@@ -73,18 +65,14 @@ public class SwaggerConfiguration {
      * @return Function
      */
     private static Function<Class<?>, Boolean> handlerPackage(final String basePackage) {
-        return new Function<Class<?>, Boolean>() {
-            
-            @Override
-            public Boolean apply(Class<?> input) {
-                for (String strPackage : basePackage.split(",")) {
-                    boolean isMatch = input.getPackage().getName().startsWith(strPackage);
-                    if (isMatch) {
-                        return true;
-                    }
+        return input -> {
+            for (String strPackage : basePackage.split(",")) {
+                boolean isMatch = input.getPackage().getName().startsWith(strPackage);
+                if (isMatch) {
+                    return true;
                 }
-                return false;
             }
+            return false;
         };
     }
     
