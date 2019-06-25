@@ -31,7 +31,7 @@ public class SmsAuthenticationPersonalProvider implements AuthenticationProvider
         }
         SmsAuthenticationPersonalToken resultToken = new SmsAuthenticationPersonalToken(userDetails,
                 clientId,
-                userDetails.getAuthorities(), userDetails.getDataAuthorities());
+                userDetails.getAuthorities(), userDetails.getUserId());
         resultToken.setDetails(authentication.getDetails());
         return resultToken;
     }

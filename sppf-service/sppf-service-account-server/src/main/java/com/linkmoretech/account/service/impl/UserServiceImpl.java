@@ -1,15 +1,13 @@
 package com.linkmoretech.account.service.impl;
 
-import com.linkmoretech.account.component.AccountComponent;
 import com.linkmoretech.account.component.UserComponent;
 import com.linkmoretech.account.entity.*;
+import com.linkmoretech.account.enums.AuthTypeEnum;
 import com.linkmoretech.account.enums.EnableStatusEnum;
 import com.linkmoretech.account.resposity.*;
 import com.linkmoretech.account.service.UserService;
 import com.linkmoretech.account.vo.request.SearchRequest;
 import com.linkmoretech.account.vo.request.UserCreateRequest;
-import com.linkmoretech.account.vo.request.UserRolesRequest;
-import com.linkmoretech.account.vo.response.LoginSuccessResponse;
 import com.linkmoretech.account.vo.response.UserInfoResponse;
 import com.linkmoretech.account.vo.response.UserListResponse;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
@@ -17,6 +15,7 @@ import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -61,59 +60,34 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(UserCreateRequest userCreateRequest) throws CommonException {
+
         log.debug("参数信息 {}", userCreateRequest);
-        List<UserRolesRequest> userRoles = userCreateRequest.getRoles();
-        Map<String, List<User>> userMap = new HashMap<>();
-        List<UserRoles> saveUserRolesList = new ArrayList<>();
-        List<UserDataRoles> saveUserDataRoles = new ArrayList<>();
-        /**
-         * 验证帐号是否存在
-         * */
-        List<User> userList = userRepository.getAllByUserNameOrMobile(userCreateRequest.getUserName(),
-                userCreateRequest.getMobile());
-        if (userList != null) {
-            /**
-             * 对用户客户端分组
-             * */
-            userMap = userList.stream().collect(Collectors.groupingBy(User::getClientId));
+        User user = userRepository.getUserByClientIdAndUserName(userCreateRequest.getClientId(), userCreateRequest.getUserName());
+        if (user != null) {
+            throw new CommonException(ResponseCodeEnum.ERROR, "用户帐号已存在");
         }
-        log.info("存在数据{}" , userMap);
-        for (UserRolesRequest userRolesRequest : userRoles) {
-            User user = new User();
-            Date currentDate = new Date();
-            BeanUtils.copyProperties(userCreateRequest, user);
-            if (userMap.get(userRolesRequest.getClientId()) != null) {
-                throw new CommonException(ResponseCodeEnum.ERROR, "用户帐号或手机号在 帐号中已存在");
-            }
-            user.setClientId(userRolesRequest.getClientId());
-            user.setStatus(EnableStatusEnum.ENABLED.getCode());
-            user.setCreateTime(currentDate);
-            user.setUpdateTime(currentDate);
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            User returnUser = userRepository.save(user);
-            log.info("保存用户成功 {}", returnUser);
-            /**
-             * 存储用户角色
-             * */
-            List<UserRoles> userRolesTempList = userRolesRequest.getRolesId().stream().map(rolesId -> {
-                UserRoles userRolesTemp = new UserRoles();
-                userRolesTemp.setUserId(returnUser.getId());
-                userRolesTemp.setRolesId(rolesId);
-                return userRolesTemp;
-            }).collect(Collectors.toList());
-            saveUserRolesList.addAll(userRolesTempList);
-            if (userCreateRequest.getCarParkIds() != null) {
-                List<UserDataRoles> userDataRolesTempList = userCreateRequest.getCarParkIds().stream().map(carParkId -> {
-                    UserDataRoles userDataRolesTemp = new UserDataRoles();
-                    userDataRolesTemp.setCarParkId(carParkId);
-                    userDataRolesTemp.setUserId(returnUser.getId());
-                    return userDataRolesTemp;
-                }).collect(Collectors.toList());
-                saveUserDataRoles.addAll(userDataRolesTempList);
+        if (!StringUtils.isEmpty(userCreateRequest.getMobile())) {
+            user = userRepository.getUserByClientIdAndMobile(userCreateRequest.getClientId(), userCreateRequest.getMobile());
+            if (user != null ) {
+                throw new CommonException(ResponseCodeEnum.ERROR, "手机号已存在");
             }
         }
-        userRolesRepository.saveAll(saveUserRolesList);
-        userDataRolesRepository.saveAll(saveUserDataRoles);
+        user = new User();
+        Date currentDate = new Date();
+        BeanUtils.copyProperties(userCreateRequest, user);
+        user.setStatus(EnableStatusEnum.DISABLED.getCode());
+        user.setCreateTime(currentDate);
+        user.setUpdateTime(currentDate);
+        user.setAuthStatus(AuthTypeEnum.getStatus(userCreateRequest.getAuthStatus()).getCode());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        User returnUser = userRepository.save(user);
+        List<UserRoles> userRolesTempList = userCreateRequest.getRoles().stream().map(rolesId -> {
+            UserRoles userRolesTemp = new UserRoles();
+            userRolesTemp.setUserId(returnUser.getId());
+            userRolesTemp.setRolesId(rolesId);
+            return userRolesTemp;
+        }).collect(Collectors.toList());
+        userRolesRepository.saveAll(userRolesTempList);
     }
 
     @Override

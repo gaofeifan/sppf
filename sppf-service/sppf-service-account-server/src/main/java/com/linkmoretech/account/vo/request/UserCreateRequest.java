@@ -16,17 +16,18 @@ import java.util.List;
 @NoArgsConstructor
 public class UserCreateRequest {
 
+    private String clientId;
+
     private String userName;
 
     private String password;
 
     private String mobile;
 
+    private Integer authStatus;
     /**
      * 用户操作数据权限，空为所有车场
      * */
-    private List<Long> carParkIds;
-
-    private List<UserRolesRequest> roles;
+    private List<Long> roles;
 
 }

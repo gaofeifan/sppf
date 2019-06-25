@@ -33,7 +33,7 @@ public class SmsAuthenticationManagerProvider implements AuthenticationProvider 
         SmsAuthenticationManagerToken resultToken = new SmsAuthenticationManagerToken(userDetails,
                 clientId,
                 userDetails.getAuthorities(),
-                userDetails.getDataAuthorities());
+                userDetails.getUserId());
         resultToken.setDetails(authentication.getDetails());
         return resultToken;
     }

@@ -19,7 +19,7 @@ public class AccountUserDetail extends User implements UserDetails {
 
     @Getter
     @Setter
-    private Set<Long> dataAuthorities;
+    private Long userId;
 
     @Getter
     @Setter
@@ -27,9 +27,9 @@ public class AccountUserDetail extends User implements UserDetails {
 
     public AccountUserDetail (String username, String password, boolean enable,
                               Collection<? extends GrantedAuthority> authorities,
-                              Set<Long> dataAuthorities, String clientId) {
+                              Long userId, String clientId) {
         super(username, password, enable, true, true, true, authorities);
-        this.dataAuthorities = dataAuthorities;
+        this.userId = userId;
         this.clientId = clientId;
     }
 
