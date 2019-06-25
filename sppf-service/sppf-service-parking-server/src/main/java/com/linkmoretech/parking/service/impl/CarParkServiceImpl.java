@@ -308,9 +308,9 @@ public class CarParkServiceImpl implements CarParkService {
                     city.setCityName(carPark.getCityName());
                 }
                 carParkList = new CarParkListResponse();
-                carParkList = computeCarPlaceStatus(carParkList, carPlaces);
                 carParkList.setId(carPark.getId());
                 carParkList.setParkName(carPark.getParkName());
+                carParkList = computeCarPlaceStatus(carParkList, carPlaces);
                 city.getPrakList().add(carParkList);
                 citys.add(city);
                 i++;
@@ -325,7 +325,7 @@ public class CarParkServiceImpl implements CarParkService {
                 leisureAmount = 0, faultAmount = 0;
         for (CarPlace car : carPlaces) {
             if (car.getParkId().longValue() == carPark.getId().longValue()) {
-                if (car.getLockStatus().intValue() == 3) {
+                if (car.getLockStatus() == null || car.getLockStatus().intValue() == 3) {
                     faultAmount++;
                 }
                 switch (car.getPlaceType().intValue()) {

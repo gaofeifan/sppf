@@ -1,25 +1,19 @@
 package com.linkmoretech.parking.controller.read;
 
-import com.linkmoretech.common.enums.ResponseCodeEnum;
-import com.linkmoretech.common.exception.CommonException;
-import com.linkmoretech.common.vo.PageDataResponse;
-import com.linkmoretech.common.vo.PageSearchRequest;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.linkmoretech.parking.service.CarParkService;
-import com.linkmoretech.parking.vo.request.CarParkCreateRequest;
-import com.linkmoretech.parking.vo.request.CarParkEditRequest;
-import com.linkmoretech.parking.vo.request.CarParkLineRequest;
-import com.linkmoretech.parking.vo.response.*;
+import com.linkmoretech.parking.vo.response.CityParkListResponse;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
 import reactor.ipc.netty.http.server.HttpServerRequest;
-
-import javax.validation.Valid;
-import java.util.List;
 
 /**
  * @Author: GFF
