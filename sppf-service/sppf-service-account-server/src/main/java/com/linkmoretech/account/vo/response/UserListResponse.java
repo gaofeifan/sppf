@@ -28,8 +28,10 @@ public class UserListResponse {
 
     private String mobile;
 
+    private Integer authStatus;
+
     private List<String> rolesList;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:dd")
+    @JsonFormat(pattern = "MM-dd HH:mm:dd")
     private Date lastLoginTime;
 }

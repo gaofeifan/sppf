@@ -25,7 +25,7 @@ public class SmsAuthenticationManagerToken extends SmsAuthenticationToken {
 
     public SmsAuthenticationManagerToken(Object principal, String clientId,
                                          Collection<? extends GrantedAuthority> authorities,
-                                         Set<Long> dataResourcesId) {
-        super(principal, clientId, authorities, dataResourcesId);
+                                         Long userId) {
+        super(principal, clientId, authorities, userId);
     }
 }

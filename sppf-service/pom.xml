@@ -23,6 +23,8 @@
         <module>sppf-service-versatile-client</module>
         <module>sppf-service-versatile-server</module>
         <module>sppf-service-account-server</module>
+        <module>sppf-service-account-common</module>
+        <module>sppf-service-account-client</module>
     </modules>
     <modelVersion>4.0.0</modelVersion>
 

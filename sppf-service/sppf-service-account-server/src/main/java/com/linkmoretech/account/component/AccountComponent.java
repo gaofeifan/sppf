@@ -45,7 +45,6 @@ public class AccountComponent {
             List<String> resourceValue = resourcesList.stream().map(Resources::getRouterName).collect(Collectors.toList());
             strArray = resourceValue.toArray(new String[resourceValue.size()]);
             userResponseBean.setOptionResources(strArray);
-            dataSet.add(1L);
             userResponseBean.setDataResources(dataSet);
             user.setLastLoginTime(new Date());
             userRepository.save(user);
@@ -62,7 +61,7 @@ public class AccountComponent {
                 user.getPassword(),
                 user.getStatus().equals(EnableStatusEnum.ENABLED.getCode()),
                 AuthorityUtils.createAuthorityList(userResponseBean.getOptionResources()),
-                userResponseBean.getDataResources(), user.getClientId());
+                user.getId(), user.getClientId());
 
         return userDetails;
     }

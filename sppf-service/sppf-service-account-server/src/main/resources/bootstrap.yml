@@ -19,3 +19,8 @@ security:
     client:
       client-id: linkmoretech
       client-secret: linkmore2018
+
+resource:
+  ignores:
+    - /account/auth-user/getParkData
+    - /account/auth-user/getPlaceData
