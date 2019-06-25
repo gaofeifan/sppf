@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 /**
@@ -85,4 +87,8 @@ public interface OrdersRepository extends JpaRepository<Orders, String> {
     @Query(value = "update o_orders set finish_time=?3, pay_time=?3, update_time =?3, status=?2  where id=?1", nativeQuery = true)
     @Modifying
 	void finishOrder(String id, Integer status, Date current);
+
+    //and date(createTime) = curdate()
+    @Query("select o from Orders o where o.userId =?3 and o.status = 4 ")
+	List<Orders> getDayOfCancelOrderList(String userId);
 }

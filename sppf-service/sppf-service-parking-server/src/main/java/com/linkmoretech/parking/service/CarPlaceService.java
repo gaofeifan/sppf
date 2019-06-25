@@ -3,12 +3,13 @@ package com.linkmoretech.parking.service;
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
+import com.linkmoretech.parking.entity.CarPlace;
 import com.linkmoretech.parking.vo.request.CarPlaceCreateRequest;
 import com.linkmoretech.parking.vo.request.CarPlaceEditRequest;
-import com.linkmoretech.parking.vo.response.CarPlaceEditResponse;
-import com.linkmoretech.parking.vo.response.CarPlaceInfoResponse;
-import com.linkmoretech.parking.vo.response.CarPlacePageResponse;
-import com.linkmoretech.parking.vo.response.CarPlaceSelectedResponse;
+import com.linkmoretech.parking.vo.request.CarPlaceListRequest;
+import com.linkmoretech.parking.vo.response.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 /**
  * @Author: alec
@@ -77,4 +78,24 @@ public interface CarPlaceService {
      * @throws CommonException 自定义异常
      * */
     void upDownLine(Long id, Integer lineStatus) throws CommonException;
+    /**
+     * @Author GFF
+     * @Description  根据车场id批量查询
+     * @Date 2019/6/6
+     */
+    List<CarPlace> findCarPlaceByParkIds(List<Long> parkIds);
+
+
+    List<CarPalceListResponse> findCarPlaceListByParkId(HttpServletRequest request,CarPlaceListRequest carPlace);
+
+    CarPlaceDetailsResponse details(HttpServletRequest request, Long carPlaceId);
+
+    public CarPlaceDetailsSnResponse detailsSn(HttpServletRequest request, String sn, Long parkId);
+
+    CarPlace findByPlaceNoAndParkId(String stallName, Long preId);
+
+    void insert(CarPlace stall);
+
+
+    void updateLockCode(Long id, String lockCode);
 }

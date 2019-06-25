@@ -512,73 +512,75 @@ public class PayServiceImpl implements PayService {
 	@Override
 	public ResOrderDetail verify(String orderId, String userId) throws CommonException {
 
-		/*CacheUser cu = (CacheUser) this.redisService.get(appUserFactory.createTokenRedisKey(request));
-		ResUserOrder order = this.ordersClusterMapper.findUserLatest(cu.getId());
-		*/
-		Orders order = ordersRepository.getOne(orderId);
+		Orders orders = ordersRepository.getOne(orderId);
 		OrderDetail orderDetail = orderDetailRepository.findOrderDetailByOrderId(orderId);
 		Boolean flag = false;
 
-		if (order == null || !order.getUserId().equals(userId)) {
+		if (orders == null || !orders.getUserId().equals(userId)) {
 			flag = false;
-		} else if (order.getStatus() == OrderStatusEnum.PAID.getCode()) {
+		} else if (orders.getStatus() == OrderStatusEnum.PAID.getCode()) {
 			flag = true;
 		}
-		log.info("orderId:{},userId:{},verify:{},order:{}", orderId, userId, flag, JsonUtil.toJson(order));
-		ResOrderDetail detail = null;
-		if (flag && order.getUserId().equals(userId)) {
-			detail = new ResOrderDetail();
-			detail.setActualAmount(order.getPayAmount());
-			detail.setOrderNo(order.getId());
-			detail.setPlateNumber(orderDetail.getPlateNo()); 
-			detail.setOrderTime(order.getCreateTime());
-			detail.setId(order.getId());
-			detail.setStartTime(order.getCreateTime()); 
-			detail.setPayTime(order.getPayTime());
-			detail.setEndTime(order.getFinishTime());
-			detail.setStatus(order.getStatus().shortValue());
-			detail.setStallName(orderDetail.getPlaceName());
-			detail.setPrefectureName(orderDetail.getParkName());   
-			
-			if(order.getTotalAmount() == null) {
-				order.setTotalAmount(new BigDecimal(0d));
-			}
-			if(order.getPayAmount() == null) {
-				order.setPayAmount(new BigDecimal(0d));
-			}
-			
-			detail.setTotalAmount(order.getTotalAmount().setScale(2, RoundingMode.HALF_UP));
-			detail.setActualAmount(order.getPayAmount().setScale(2, RoundingMode.HALF_UP));
-			detail.setPayType(order.getPayType().shortValue());
-			long day = 0;
-			long hour = 0;
-			long min = 0;
-			long time = (detail.getEndTime().getTime()-detail.getStartTime().getTime())/(60*1000L);
-			day = time / (24*60);
-			hour =( time % (24*60) ) / 60;
-			min = time % 60;
-			StringBuffer parkingTime = new StringBuffer();
-			if(day!=0) {
-				parkingTime.append(day);
-				parkingTime.append("天");
-				parkingTime.append(hour);
-				parkingTime.append("时"); 
-			}else if(hour!=0) {
-				parkingTime.append(hour);
-				parkingTime.append("时");
-			} 
-			parkingTime.append(min);
-			parkingTime.append("分");
-			detail.setParkingTime(parkingTime.toString()); 
-			detail.setLeaveTime(15);
+		log.info("orderId:{},userId:{},verify:{},order:{}", orderId, userId, flag, JsonUtil.toJson(orders));
+		ResOrderDetail resOrderDetail = null;
+		if (flag && orders.getUserId().equals(userId)) {
+			resOrderDetail = new ResOrderDetail();
+
+        	
+        	resOrderDetail = new ResOrderDetail();
+    
+        	resOrderDetail.setParkName(orderDetail.getParkName());
+        	resOrderDetail.setPlaceName(orderDetail.getPlaceName());
+        	resOrderDetail.setPlateNo(orderDetail.getPlateNo());
+        	
+        	resOrderDetail.setOrderTime(orders.getCreateTime());
+        	resOrderDetail.setEndTime(orders.getFinishTime());
+        	resOrderDetail.setPayTime(orders.getPayTime());
+        	
+        	resOrderDetail.setStatus(orders.getStatus().shortValue());
+        	resOrderDetail.setPayType(orders.getPayType().shortValue());
+        	
+        	if(orders.getTotalAmount() == null) {
+        		orders.setTotalAmount(new BigDecimal(0d));
+    		}
+    		if(orders.getPayAmount() == null) {
+    			orders.setPayAmount(new BigDecimal(0d));
+    		}
+    		if(orders.getReductionAmount() == null) {
+    			orders.setReductionAmount(new BigDecimal(0d));
+    		}
+    		resOrderDetail.setTotalAmount(orders.getTotalAmount().setScale(2, RoundingMode.HALF_UP));
+    		resOrderDetail.setPayAmount(orders.getPayAmount().setScale(2, RoundingMode.HALF_UP));
+    		resOrderDetail.setCouponAmount(orders.getReductionAmount().setScale(2, RoundingMode.HALF_UP));
+    		
+    		long day = 0;
+    		long hour = 0;
+    		long min = 0;
+    		long time = (orders.getFinishTime().getTime()-orders.getCreateTime().getTime())/(60*1000L);
+    		day = time / (24*60);
+    		hour =( time % (24*60) ) / 60;
+    		min = time % 60;
+    		StringBuffer parkingTime = new StringBuffer();
+    		if(day!=0) {
+    			parkingTime.append(day);
+    			parkingTime.append("天");
+    			parkingTime.append(hour);
+    			parkingTime.append("时"); 
+    		}else if(hour!=0) {
+    			parkingTime.append(hour);
+    			parkingTime.append("时");
+    		} 
+    		parkingTime.append(min);
+    		parkingTime.append("分");
+    		resOrderDetail.setParkingTime(parkingTime.toString()); 
 		}else {
-			if(order!= null && order.getUserId().equals(userId)) {
-				log.info("get the order null reset the value falg :{}, order:{}", flag, JsonUtil.toJson(order));
+			if(orders!= null && orders.getUserId().equals(userId)) {
+				log.info("get the order null reset the value falg :{}, order:{}", flag, JsonUtil.toJson(orders));
 			}else {
 				log.info("verfiy error");
 			}
 		}
-		return detail;
+		return resOrderDetail;
 	} 
 
 	@Override

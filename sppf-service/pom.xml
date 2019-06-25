@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -53,4 +54,68 @@
             <version>1.9</version>
         </dependency>
     </dependencies>
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>sppf</artifactId>
+        <groupId>com.linkmoretech</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <packaging>pom</packaging>
+    <modules>
+        <module>sppf-service-common</module>
+        <module>sppf-service-user-common</module>
+        <module>sppf-service-user-client</module>
+        <module>sppf-service-user-server</module>
+        <module>sppf-service-order-common</module>
+        <module>sppf-service-order-client</module>
+        <module>sppf-service-order-server</module>
+        <module>sppf-service-parking-client</module>
+        <module>sppf-service-parking-common</module>
+        <module>sppf-service-parking-server</module>
+        <module>sppf-service-versatile-common</module>
+        <module>sppf-service-versatile-client</module>
+        <module>sppf-service-versatile-server</module>
+        <module>sppf-service-account-server</module>
+    </modules>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.linkmoretech</groupId>
+    <artifactId>sppf-service</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+        <!-- apache 提供的一些工具类 -->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.9</version>
+        </dependency>
+    </dependencies>
+>>>>>>> b8ba7c9f208685a4244ff1a880e3d02c02a1c468
 </project>

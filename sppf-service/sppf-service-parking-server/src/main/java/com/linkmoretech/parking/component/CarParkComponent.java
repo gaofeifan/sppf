@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.Optional;
 
 /**
  * @Author: alec
@@ -56,12 +55,11 @@ public class CarParkComponent {
      * 根据车场ID 查询车场
      * */
     public CarPark getCarPark(Long carParkId) throws CommonException {
-        log.info("车场ID {}", carParkId);
-        Optional<CarPark> optional = carParkRepository.findById(carParkId);
-        if (! optional.isPresent()) {
+        CarPark carPark = carParkRepository.findById(carParkId).get();
+        if (carPark.getId() == null) {
             throw new CommonException(ResponseCodeEnum.ERROR, "未找到相关车场");
         }
-        return optional.get();
+        return carPark;
     }
 
     /**
@@ -73,5 +71,14 @@ public class CarParkComponent {
             throw new CommonException(ResponseCodeEnum.ERROR, "车位数据不存在");
         }
         return carPlace;
+    }
+
+    /**
+     * @Author GFF
+     * @Description  根据分组编号查询
+     * @Date 2019/6/19
+     */
+    public CarPark findByGateway(String groupCode) {
+        return carParkRepository.findByLockGroupCode(groupCode);
     }
 }

@@ -65,7 +65,7 @@ public class AppOrderController {
 	@RequestMapping(value = "current", method = RequestMethod.GET)
 	@ResponseBody
 	public ResCurrentOrder current(HttpServletRequest request) {
-		String userId = "";
+		String userId = "322424324125655";
 		ResCurrentOrder resOrder = this.ordersService.current(userId);
 		return resOrder;
 	}

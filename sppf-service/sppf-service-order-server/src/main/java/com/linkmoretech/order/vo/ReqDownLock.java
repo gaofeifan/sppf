@@ -19,7 +19,7 @@ public class ReqDownLock {
 	
 	@ApiModelProperty(value = "车位ID", required = true)
 	@Min(value=0,message="车位ID为大于0的长整数")
-	private Long stallId;
+	private Long placeId;
 	
 	@ApiModelProperty(value = "到达状态[0未知，1已到达，2未到达]", required = true) 
 	@Range(min=0, max=3,message="到达状态只能为0，1，2的数")

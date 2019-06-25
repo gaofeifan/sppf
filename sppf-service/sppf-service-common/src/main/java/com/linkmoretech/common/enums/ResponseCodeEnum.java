@@ -21,6 +21,11 @@ public enum  ResponseCodeEnum {
 
     LOGIN_LOSE(405, "未登录或Token失效"),
 
+    CARPLACEOCCUPIED(100000,"车位正在被使用"),
+    CAR_PLACE_NOT_DOWN(100000,"车位不在下线状态"),
+    STALL_LOCK_CODE_EXIST(8005076,"请将原有车位锁删除后 再安装"),
+    STALL_NOT_EXIST(8005076,"车位锁编号不存在") 
+
     ;
     private Integer code;
 

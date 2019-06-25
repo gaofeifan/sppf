@@ -52,14 +52,6 @@ public interface CarPlaceRepository extends JpaRepository<CarPlace, Long> {
      * @return 返回车位数
      * */
     long countByParkId(Long parkId);
-
-    /**
-     * 查询停车场车位数
-     * @param parkId 车场ID
-     * @param floorPlanId 层ID
-     * @return 车位数
-     * */
-    long countByParkIdAndFloorPlanId(Long parkId, Long floorPlanId);
     /**
      * 编辑车位的类型
      * @param idList 车位列表
@@ -70,4 +62,13 @@ public interface CarPlaceRepository extends JpaRepository<CarPlace, Long> {
             " where id in (?1)", nativeQuery = true)
     @Modifying
     void updatePlaceType(List<Long> idList, Integer placeType, Date updateTime, String updateBy);
+
+    List<CarPlace> getAllByParkIdIn(List<Long> parkIds);
+
+    CarPlace findByPlaceNoAndParkId(String placeNo, Long parkId);
+
+    @Query(value = "update p_car_place set lock_code=?2 where id in (?1)", nativeQuery = true)
+    void updateLockCode(Long id, String lockCode);
+
+    CarPlace getOneByLockCodeAndParkId(String sn, Long parkId);
 }

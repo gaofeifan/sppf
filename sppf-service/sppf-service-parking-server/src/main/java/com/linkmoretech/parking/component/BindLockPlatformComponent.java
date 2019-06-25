@@ -86,10 +86,8 @@ public class BindLockPlatformComponent {
         Map<String, Object> paramsMap = initParams();
         paramsMap.put("groupName", carPark.getParkName());
         paramsMap.put("cityCode", carPark.getCityCode());
-        paramsMap.put("cityName", carPark.getCityName());
         paramsMap.put("longitude", coordinate.getLongitude());
         paramsMap.put("latitude", coordinate.getLatitude());
-        paramsMap.put("state", 1);
         String serverUrl = "/api/v1/group/save-group";
         ResponseCommon responseCommon = execute(paramsMap, serverUrl);
         return String.valueOf(responseCommon.getData());

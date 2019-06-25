@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @Author: alec
@@ -31,13 +30,6 @@ public interface LicensePlateRepository extends JpaRepository<LicensePlate, Long
     void deleteAllByParkIdAndPlaceId(Long parkId, Long placeId);
 
     /**
-     * 删除对应车牌号
-     * @param leaseCode 长租授权码
-     * @param leaseCode 车牌
-     * */
-    void deleteAllByLicensePlateNoInAndLeaseCode(Set<String> licensePlateNo, String leaseCode);
-
-    /**
      * 更新车牌号对应车位的状态
      * @param parkId 车位列表
      * @param placeId 车位
@@ -55,19 +47,4 @@ public interface LicensePlateRepository extends JpaRepository<LicensePlate, Long
      * @return 车牌信息集合
      * */
     List<LicensePlate> getAllByLicensePlateNoInAndLeaseCode(List<String> licensePlateNo, String leaseCode);
-
-    /**
-     * 根据车位号查询长租车位信息
-     * @param placeNo 车牌号
-     * @param leaseCode 车区授权码
-     * @return 车牌信息集合
-     * */
-    List<LicensePlate> getAllByPlaceNoAndLeaseCode(String placeNo, String leaseCode);
-
-    /**
-     * 根据车位号查询长租车位信息
-     * @param leaseCode 车区授权码
-     * @return 车牌信息集合
-     * */
-    List<LicensePlate> getAllByLeaseCode(String leaseCode);
 }
