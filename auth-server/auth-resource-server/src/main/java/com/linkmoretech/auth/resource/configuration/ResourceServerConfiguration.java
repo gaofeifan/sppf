@@ -1,5 +1,6 @@
 package com.linkmoretech.auth.resource.configuration;
 
+import com.linkmoretech.auth.common.configuration.OauthResourceConfig;
 import com.sun.deploy.util.StringUtils;
 import io.netty.util.internal.StringUtil;
 import lombok.Setter;
@@ -34,14 +35,14 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     @Override
     public void configure(HttpSecurity http) throws Exception {
 
-       /* String matchers = StringUtils.join(Arrays.asList(oauthResourceConfig.getIgnores().toArray()), ",");
+        String matchers = StringUtils.join(Arrays.asList(oauthResourceConfig.getIgnores().toArray()), ",");
         if (StringUtil.isNullOrEmpty(matchers)) {
             matchers = OAUTH_URL;
         }
-        log.info("过滤URL {}", matchers);*/
+        log.info("过滤URL {}", matchers);
         http
               .authorizeRequests()
-              .antMatchers(OAUTH_URL).permitAll()
+              .antMatchers(matchers).permitAll()
               /*  .authorizeRequests() // 授权设定
                 .antMatchers("/oauth/**", ParamsConstruct.LOGIN_CUSTOMER,
                         ParamsConstruct.LOGIN_MANAGE_PASSWORD,

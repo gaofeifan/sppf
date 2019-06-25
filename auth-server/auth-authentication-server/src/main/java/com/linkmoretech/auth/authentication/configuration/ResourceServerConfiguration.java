@@ -8,12 +8,19 @@ import com.linkmoretech.auth.authentication.authentication.sms.personal.SmsAuthe
 import com.linkmoretech.auth.authentication.authentication.sms.manager.SmsAuthenticationManagerConfig;
 import com.linkmoretech.auth.authentication.component.ValidateCodeManage;
 import com.linkmoretech.auth.authentication.construct.ParamsConstruct;
+import com.linkmoretech.auth.common.configuration.OauthResourceConfig;
+import com.sun.deploy.util.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @Author: alec
@@ -22,6 +29,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 @Configuration
 @EnableResourceServer
+@Slf4j
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
 
@@ -44,9 +52,30 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     @Autowired
     ValidateCodeManage validateCodeManage;
 
+    @Autowired
+    OauthResourceConfig oauthResourceConfig;
+
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
 
+        List<String> ignore = new ArrayList<>();
+
+        ignore.add(ParamsConstruct.SWAGGER_URL);
+        ignore.add(ParamsConstruct.CSS);
+        ignore.add(ParamsConstruct.JS);
+        ignore.add(ParamsConstruct.DOC);
+        ignore.add(ParamsConstruct.LOGIN_CUSTOMER);
+        ignore.add(ParamsConstruct.SEND_SMS);
+        ignore.add(ParamsConstruct.LOGIN_MANAGE_MOBILE);
+        ignore.add(ParamsConstruct.NO_LOGIN_TIP_INFO);
+        ignore.add(ParamsConstruct.LOGIN_MOBILE_PERSONAL);
+
+        if (oauthResourceConfig.getIgnores() != null) {
+            ignore.addAll(oauthResourceConfig.getIgnores());
+        }
+        String matchers = StringUtils.join(ignore, ",");
+        log.info("过滤URL {}", matchers);
         SmsCodeFilter smsCodeFilter = new SmsCodeFilter(validateCodeManage, validateFailureHandler);
         smsCodeFilter.afterPropertiesSet();
 
@@ -65,16 +94,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
             .and()
 
             .authorizeRequests() // 授权设定
-            .antMatchers(
-                    ParamsConstruct.SWAGGER_URL,
-                    ParamsConstruct.CSS,
-                    ParamsConstruct.JS,
-                    ParamsConstruct.DOC,
-                    ParamsConstruct.LOGIN_CUSTOMER,
-                    ParamsConstruct.SEND_SMS,
-                    ParamsConstruct.LOGIN_MANAGE_MOBILE,
-                    ParamsConstruct.NO_LOGIN_TIP_INFO,
-                    ParamsConstruct.LOGIN_MOBILE_PERSONAL).permitAll()    //对此链接不拦截
+            .antMatchers(matchers).permitAll()    //对此链接不拦截
             .anyRequest() // 所有请求
             .authenticated() //需要身份认证
             .and()
