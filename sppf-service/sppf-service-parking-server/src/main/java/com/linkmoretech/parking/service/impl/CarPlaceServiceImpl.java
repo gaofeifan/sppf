@@ -346,7 +346,7 @@ public class CarPlaceServiceImpl implements CarPlaceService {
         CarPlaceDetailsSnResponse carPlaceRes = new CarPlaceDetailsSnResponse();
         carPlaceRes.setCarPlaceLockSn(sn);
         LockService lockService = this.lockFactory.getLockService();
-        ResLockInfo lockInfo = lockService.lockInfo(carPlace.getLockCode());
+        ResLockInfo lockInfo = lockService.lockInfo(sn);
         if(carPlace != null){
             carPlaceRes.setCarPlaceId(carPlace.getId());
             carPlaceRes.setParkId(carPlace.getParkId());
@@ -366,7 +366,9 @@ public class CarPlaceServiceImpl implements CarPlaceService {
             carPlaceRes.setInductionState(lockInfo.getInductionState());
             carPlaceRes.setModel(lockInfo.getModel());
             carPlaceRes.setVersion(lockInfo.getVersion());
-            CarPark park = this.carParkRepository.findById(carPlace.getId()).get();
+            if(carPlace != null) {
+            	CarPark park = this.carParkRepository.findById(carPlace.getId()).get();
+           
             if(park != null){
                 carPlaceRes.setCityCode(park.getCityCode());
                 carPlaceRes.setCityName(park.getCityName());
@@ -381,6 +383,7 @@ public class CarPlaceServiceImpl implements CarPlaceService {
                         }
                     }
                 }
+            } 
             }
         }
         return carPlaceRes;
