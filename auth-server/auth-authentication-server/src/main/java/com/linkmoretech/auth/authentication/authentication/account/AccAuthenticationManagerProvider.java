@@ -41,7 +41,7 @@ public class AccAuthenticationManagerProvider implements AuthenticationProvider 
         AccAuthenticationManagerToken resultToken = new AccAuthenticationManagerToken(userDetails,
                 userDetails.getPassword(),
                 clientId,
-                userDetails.getDataAuthorities(),
+                userDetails.getUserId(),
                 userDetails.getAuthorities());
         resultToken.setDetails(authentication.getDetails());
         return resultToken;

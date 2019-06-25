@@ -4,21 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 /**
  * @Author: alec
- * Description: 用户角色参数
- * @date: 14:47 2019-05-31
+ * Description:
+ * @date: 17:52 2019-06-24
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRolesRequest {
+public class SearchUserRequest {
 
-
-    /**
-     * 对应角色
-     * */
-    private List<Long> rolesId;
+    private Long userId;
 }

@@ -38,6 +38,9 @@ public class User {
     /**用户状态*/
     private Integer status;
 
+    /**数据权限*/
+    private Integer authStatus;
+
     /**最近登陆时间*/
     private Date lastLoginTime;
 

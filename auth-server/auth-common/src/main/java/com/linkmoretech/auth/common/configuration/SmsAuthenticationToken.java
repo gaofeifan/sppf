@@ -20,7 +20,7 @@ public abstract class SmsAuthenticationToken extends AbstractAuthenticationToken
 
     protected String clientId;
 
-    protected Set<Long> dataResources;
+    protected Long userId;
 
     public SmsAuthenticationToken(Object principal, String clientId) {
         super((Collection)null);
@@ -30,11 +30,11 @@ public abstract class SmsAuthenticationToken extends AbstractAuthenticationToken
     }
 
     public SmsAuthenticationToken(Object principal, String clientId, Collection<? extends GrantedAuthority> authorities,
-                                  Set<Long> dataResources) {
+                                  Long userId) {
         super(authorities);
         this.principal = principal;
         this.clientId = clientId;
-        this.dataResources = dataResources;
+        this.userId = userId;
         super.setAuthenticated(true);
     }
 
@@ -47,8 +47,8 @@ public abstract class SmsAuthenticationToken extends AbstractAuthenticationToken
         return this.clientId;
     }
 
-    public Set<Long> getDataResources() {
-        return this.dataResources;
+    public Long getUserId() {
+        return this.userId;
     }
 
     public Object getPrincipal() {

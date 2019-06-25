@@ -25,9 +25,9 @@ public class AccAuthenticationManagerToken extends SmsAuthenticationToken {
     }
 
     public AccAuthenticationManagerToken(Object principal, Object credentials,
-                                         String clientId, Set<Long> dataResources,
+                                         String clientId, Long userId,
                                          Collection<? extends GrantedAuthority> authorities) {
-        super(principal,clientId, authorities, dataResources);
+        super(principal,clientId, authorities, userId);
         this.credentials = credentials;
     }
 

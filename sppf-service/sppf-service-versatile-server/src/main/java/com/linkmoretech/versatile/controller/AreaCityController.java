@@ -48,13 +48,14 @@ public class AreaCityController {
 
     @ApiOperation(value = "城市列表", notes = "城市列表")
     @GetMapping(value = "list")
-    @PreAuthorize(value = "hasAuthority('query-demo')")
+   // @PreAuthorize(value = "hasAuthority('query-demo')")
     public List<AreaCityListResponse> list(Authentication authentication,
                                            @RequestParam(value = "parentId", required = false) Long parentId) {
 
         AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
         log.info("登录用户 {}", authenticationTokenAnalysis.getUsername());
-        log.info("数据权限 {}", authenticationTokenAnalysis.getDataAuthentications());
+        log.info("客户端ID {}", authenticationTokenAnalysis.getClientId());
+        log.info("用户ID {}", authenticationTokenAnalysis.getUserId());
         return areaCityService.list(parentId);
     }
 
