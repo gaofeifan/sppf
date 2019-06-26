@@ -138,7 +138,7 @@ public class UserDataAuthServiceImpl implements UserDataAuthService {
 
         authUserParks.forEach(authUserPark -> {
             AuthDataListResponse authDataListResponse = new AuthDataListResponse(authUserPark.getId(), authUserPark.getParkId(),
-                    authUserPark.getParkName(), null);
+                    authUserPark.getParkName(), authUserPark.getAuthType(), authUserPark.getPlaceDiffer(),null);
 
             if (authUserPark.getAuthType().equals(AuthTypeEnum.NO_ALL.getCode()) && authUserPlaceMap != null) {
                List<AuthUserPlace> places = authUserPlaceMap.get(authUserPark.getId());

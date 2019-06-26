@@ -137,7 +137,9 @@ public class UserServiceImpl implements UserService {
 
         List<Resources> resourcesList = userComponent.getResourceIdListByUser(user);
 
-        List<String> menuList = resourcesList.stream().map(Resources :: getRouterName).collect(Collectors.toList());
+        List<String> menuList = resourcesList.stream()
+                .filter(resource -> resource.getParentId() != null)
+                .map(Resources :: getRouterName).collect(Collectors.toList());
 
         return new UserInfoResponse(user.getUserName(), menuList);
     }

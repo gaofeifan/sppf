@@ -22,5 +22,9 @@ public class AuthDataListResponse {
 
     private String parkName;
 
+    private Integer authType;
+
+    private String placeDiffer;
+
     private List<String> placeNo;
 }
