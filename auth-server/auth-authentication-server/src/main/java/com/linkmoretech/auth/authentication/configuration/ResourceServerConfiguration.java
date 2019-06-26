@@ -9,8 +9,9 @@ import com.linkmoretech.auth.authentication.authentication.sms.manager.SmsAuthen
 import com.linkmoretech.auth.authentication.component.ValidateCodeManage;
 import com.linkmoretech.auth.authentication.construct.ParamsConstruct;
 import com.linkmoretech.auth.common.configuration.OauthResourceConfig;
-import com.sun.deploy.util.StringUtils;
+
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
