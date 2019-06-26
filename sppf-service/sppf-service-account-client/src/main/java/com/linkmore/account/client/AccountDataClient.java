@@ -42,6 +42,6 @@ public interface AccountDataClient {
      * @return 可操作车位ID
      * */
     @GetMapping(value = "auth-user/getPlaceData")
-    List<String> getPlaceDataAccount(@RequestParam(value = "userId") Long userId, @RequestParam(value = "parkId")
+    List<Long> getPlaceDataAccount(@RequestParam(value = "userId") Long userId, @RequestParam(value = "parkId")
                                    Long parkId);
 }

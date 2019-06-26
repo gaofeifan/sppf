@@ -8,11 +8,14 @@ import com.linkmoretech.account.resposity.ResourcesRepository;
 import com.linkmoretech.account.resposity.RolesResourcesRepository;
 import com.linkmoretech.account.resposity.UserRepository;
 import com.linkmoretech.account.resposity.UserRolesRepository;
+import com.linkmoretech.common.enums.ResponseCodeEnum;
+import com.linkmoretech.common.exception.CommonException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -50,5 +53,13 @@ public class UserComponent {
             user = userRepository.getUserByClientIdAndUserName(clientId, username);
         }
         return user;
+    }
+
+    public User getUser(Long userId) throws CommonException {
+        Optional<User> optional = userRepository.findById(userId);
+        if (!optional.isPresent()) {
+            throw new CommonException(ResponseCodeEnum.PARAMS_ERROR, "用户不存在");
+        }
+        return optional.get();
     }
 }

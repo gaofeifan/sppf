@@ -2,8 +2,6 @@ package com.linkmoretech.account.vo.request;
 
 import lombok.Data;
 
-import java.util.List;
-
 /**
  * @Author: alec
  * Description:
@@ -12,7 +10,7 @@ import java.util.List;
 @Data
 public class AuthParkAddRequest {
 
-    private List<Long> parkIdList;
+    private Long parkId;
 
     private Long userId;
 

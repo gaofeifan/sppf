@@ -60,4 +60,10 @@ public class UserController {
             throws CommonException {
         userService.updateUserState(userId, status);
     }
+
+    @GetMapping(value = "enable-auth")
+    public void enableAuth(@RequestParam(value = "userId") Long userId, @RequestParam(value = "status") Integer status)
+            throws CommonException {
+        userService.updateUserAuth(userId, status);
+    }
 }

@@ -45,4 +45,11 @@ public interface UserService {
     void updateUserState(Long userId, Integer userState) throws CommonException;
 
 
+    /**
+     * 更新用户状态
+     * @param userId 用户ID
+     * @param authState 用户状态
+     * */
+    void updateUserAuth(Long userId, Integer authState) throws CommonException;
+
 }

@@ -14,5 +14,5 @@ public class AuthPlaceAddRequest {
 
     private Long authParkId;
 
-    private List<String> placeNo;
+    private List<String[]> placeNo;
 }

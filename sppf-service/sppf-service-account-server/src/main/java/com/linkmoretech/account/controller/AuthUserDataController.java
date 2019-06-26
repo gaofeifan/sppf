@@ -1,13 +1,9 @@
 package com.linkmoretech.account.controller;
 
-import com.linkmore.account.common.request.AccountParkRequest;
-import com.linkmore.account.common.request.AccountPlaceRequest;
 import com.linkmoretech.account.service.UserDataAuthService;
 import com.linkmoretech.account.vo.request.AuthParkAddRequest;
-import com.linkmoretech.account.vo.request.SearchRequest;
-import com.linkmoretech.account.vo.request.UserCreateRequest;
+import com.linkmoretech.account.vo.request.AuthPlaceAddRequest;
 import com.linkmoretech.account.vo.response.AuthDataListResponse;
-import com.linkmoretech.account.vo.response.ResourcesListResponse;
 import com.linkmoretech.common.annation.IgnoreResponseAdvice;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
@@ -45,6 +41,21 @@ public class AuthUserDataController {
         userDataAuthService.addParkAuth(authParkAddRequest);
     }
 
+    /**
+     * 添加车场权限
+     * */
+    @PostMapping(value = "add-place")
+    public void addPlace(@RequestBody AuthPlaceAddRequest authPlaceAddRequest, BindingResult bindingResult)
+            throws CommonException {
+        if (bindingResult.hasErrors()) {
+            throw new CommonException(ResponseCodeEnum.PARAMS_ERROR);
+        }
+        userDataAuthService.addPlaceAuth(authPlaceAddRequest);
+    }
+
+
+
+
     @PostMapping(value = "list")
     public PageDataResponse<AuthDataListResponse> list(@RequestBody PageSearchRequest<Long> pageRequest,
                                                        BindingResult bindingResult) throws CommonException {
@@ -54,7 +65,15 @@ public class AuthUserDataController {
         return userDataAuthService.list(pageRequest);
     }
 
+    @DeleteMapping(value = "remove-park")
+    public void removeParkAuth(@RequestParam(value = "authId") Long authId) throws CommonException {
+        userDataAuthService.removeParkAuth(authId);
+    }
 
+    @DeleteMapping(value = "clean-place")
+    public void cleanPlace(@RequestParam(value = "authId") Long authId) throws CommonException {
+        userDataAuthService.cleanPlaceAuth(authId);
+    }
 
     /**
      * 供其他服务调用数据权限
@@ -70,7 +89,7 @@ public class AuthUserDataController {
 
     @GetMapping(value = "getPlaceData")
     @IgnoreResponseAdvice
-    public List<String> getPlaceDataAccount(@RequestParam(value = "userId") Long userId, @RequestParam(value = "parkId")
+    public List<Long> getPlaceDataAccount(@RequestParam(value = "userId") Long userId, @RequestParam(value = "parkId")
             Long parkId) {
         return userDataAuthService.getPlaceNoList(userId, parkId);
     }

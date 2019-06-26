@@ -1,5 +1,6 @@
 package com.linkmoretech.parking;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
@@ -17,9 +18,11 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableFeignClients(basePackages = "com.linkmoretech")
 @EnableCircuitBreaker
 @ComponentScan(basePackages = "com.linkmoretech")
+@Slf4j
 public class ParkingServerApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ParkingServerApplication.class, args);
+        log.info("车区服务已启动");
     }
 }

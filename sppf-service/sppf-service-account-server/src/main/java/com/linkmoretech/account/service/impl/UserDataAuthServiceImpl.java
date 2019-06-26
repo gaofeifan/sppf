@@ -1,8 +1,8 @@
 package com.linkmoretech.account.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.linkmoretech.account.entity.AuthUserPark;
 import com.linkmoretech.account.entity.AuthUserPlace;
-import com.linkmoretech.account.entity.Resources;
 import com.linkmoretech.account.entity.User;
 import com.linkmoretech.account.enums.AuthTypeEnum;
 import com.linkmoretech.account.resposity.AuthUserParkRepository;
@@ -10,24 +10,27 @@ import com.linkmoretech.account.resposity.AuthUserPlaceRepository;
 import com.linkmoretech.account.resposity.UserRepository;
 import com.linkmoretech.account.service.UserDataAuthService;
 import com.linkmoretech.account.vo.request.AuthParkAddRequest;
-import com.linkmoretech.account.vo.request.SearchRequest;
+import com.linkmoretech.account.vo.request.AuthPlaceAddRequest;
 import com.linkmoretech.account.vo.response.AuthDataListResponse;
+import com.linkmoretech.common.enums.ResponseCodeEnum;
+import com.linkmoretech.common.exception.CommonException;
+import com.linkmoretech.common.util.CharUtil;
 import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
-import com.sun.deploy.util.ArrayUtil;
+import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
-import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -52,29 +55,61 @@ public class UserDataAuthServiceImpl implements UserDataAuthService {
      * 添加车场数据权限
      * */
     @Override
-    public void addParkAuth(AuthParkAddRequest authParkAddRequest) {
+    public void addParkAuth(AuthParkAddRequest authParkAddRequest) throws CommonException {
         /**
          * 检查该车场是否已添加
          * */
-        List<AuthUserPark> authUserParkList = authUserParkRepository.getAllByUserIdAndParkIdIn(authParkAddRequest.getUserId(),
-                authParkAddRequest.getParkIdList());
-        List<Long> authParkId = authParkAddRequest.getParkIdList();
-        if (authUserParkList != null) {
-            List<Long> parkIdList = authUserParkList.stream().map(AuthUserPark::getParkId).collect(Collectors.toList());
-            authParkId = authParkAddRequest.getParkIdList().stream().filter(parkId -> !parkIdList.contains(parkId)).collect(Collectors.toList());
+
+        AuthUserPark authUserPark = authUserParkRepository.getByUserIdAndParkId(authParkAddRequest.getUserId(),
+                authParkAddRequest.getParkId());
+
+        if (authUserPark != null) {
+           throw new CommonException(ResponseCodeEnum.ERROR, "该车场已配置");
         }
-        log.info("本次提交{}" , authParkId);
-        List<AuthUserPark> authUserParks = authParkId.stream().map(parkId -> {
-            AuthUserPark authUserPark = new AuthUserPark();
-            authUserPark.setParkId(parkId);
-            authUserPark.setUserId(authParkAddRequest.getUserId());
-            authUserPark.setAuthType(AuthTypeEnum.getStatus(authParkAddRequest.getAuthStatus()).getCode());
-            return authUserPark;
-        }).collect(Collectors.toList());
-        authUserParkRepository.saveAll(authUserParks);
+        authUserPark = new AuthUserPark();
+        authUserPark.setParkId(authParkAddRequest.getParkId());
+        authUserPark.setUserId(authParkAddRequest.getUserId());
+        authUserPark.setAuthType(AuthTypeEnum.getStatus(authParkAddRequest.getAuthStatus()).getCode());
+        /**
+         * 调用车场服务获取车场名称
+         * */
+
+        authUserParkRepository.save(authUserPark);
     }
 
+    @Override
+    public void addPlaceAuth(AuthPlaceAddRequest authPlaceAddRequest) throws CommonException {
 
+        /**
+         *  查找车场授权数据得到车场ID
+         *  解析车位范围-- 格式化车位 - 转化成英文 大写
+         *  调用车区服务获得车位ID，车位编号
+         *  存储记录
+         * */
+        Optional<AuthUserPark> optional = authUserParkRepository.findById(authPlaceAddRequest.getAuthParkId());
+
+        if (!optional.isPresent()) {
+            throw new CommonException(ResponseCodeEnum.ERROR, "数据不存在");
+        }
+
+        AuthUserPark authUserPark =  optional.get();
+
+        List<String[]> placeList = authPlaceAddRequest.getPlaceNo();
+
+        List<String[]> formatPlace = placeList.stream().map(places -> {
+            String[] place = new String[places.length];
+            place[0] = CharUtil.change(places[0]).toUpperCase();
+            place[1] = CharUtil.change(places[1]).toUpperCase();
+            return place;
+        }).collect(Collectors.toList());
+
+        authUserPark.setPlaceDiffer(JSONObject.toJSONString(formatPlace));
+        authUserParkRepository.save(authUserPark);
+        /**
+         * 调用车场服务 返回车位ID后存储
+         * */
+
+    }
 
     @Override
     public PageDataResponse<AuthDataListResponse> list(PageSearchRequest<Long> pageSearchRequest) {
@@ -119,6 +154,34 @@ public class UserDataAuthServiceImpl implements UserDataAuthService {
     }
 
     @Override
+    public void removeParkAuth(Long parkAuthId) throws CommonException {
+
+        Optional<AuthUserPark> optional = authUserParkRepository.findById(parkAuthId);
+
+        if (!optional.isPresent()) {
+            throw new CommonException(ResponseCodeEnum.ERROR, "数据不存在");
+        }
+        /**
+         * 删除车位数据
+         * */
+        authUserPlaceRepository.deleteAllByAuthDataId(parkAuthId);
+        authUserParkRepository.deleteById(parkAuthId);
+
+    }
+
+    @Override
+    public void cleanPlaceAuth(Long parkAuthId) throws CommonException {
+        Optional<AuthUserPark> optional = authUserParkRepository.findById(parkAuthId);
+        if (!optional.isPresent()) {
+            throw new CommonException(ResponseCodeEnum.ERROR, "数据不存在");
+        }
+        AuthUserPark authUserPark = optional.get();
+        authUserPark.setPlaceDiffer(null);
+        authUserParkRepository.save(authUserPark);
+        authUserPlaceRepository.deleteAllByAuthDataId(parkAuthId);
+    }
+
+    @Override
     public List<Long> getParkIdList(Long userId) {
         log.info("userId {}", userId);
         User user  = userRepository.findById(userId).get();
@@ -134,7 +197,7 @@ public class UserDataAuthServiceImpl implements UserDataAuthService {
     }
 
     @Override
-    public List<String> getPlaceNoList(Long userId, Long parkId) {
+    public List<Long> getPlaceNoList(Long userId, Long parkId) {
         User user  = userRepository.findById(userId).get();
         if (user.getAuthStatus().equals(AuthTypeEnum.NO_ALL.getCode())) {
             return null;
@@ -152,6 +215,6 @@ public class UserDataAuthServiceImpl implements UserDataAuthService {
             log.info("未配置车位，既查询车场全部数据");
             return new ArrayList<>();
         }
-        return authUserPlaces.stream().map(AuthUserPlace::getPlaceNo).collect(Collectors.toList());
+        return authUserPlaces.stream().map(AuthUserPlace::getPlaceId).collect(Collectors.toList());
     }
 }

@@ -1,5 +1,6 @@
 package com.linkmoretech.versatile.client;
 
+import com.linkmoretech.auth.resource.configuration.FeignConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,7 +12,7 @@ import java.util.List;
  * @Description:
  * @date: 2:08 PM 2019/5/7
  */
-@FeignClient(name = "versatile")
+@FeignClient(name = "versatile", configuration = FeignConfiguration.class)
 public interface AreaCityClient {
 
     /**
