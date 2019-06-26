@@ -30,5 +30,7 @@ public class AuthUserPark {
 
     private Integer authType;
 
+    private String placeDiffer;
+
 
 }

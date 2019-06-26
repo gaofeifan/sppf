@@ -21,3 +21,7 @@ security:
       user-info-uri: http://localhost:8086/principal
       prefer-token-info: false
 
+resource:
+  ignores:
+    - /account/auth-user/getParkData
+    - /account/auth-user/getPlaceData

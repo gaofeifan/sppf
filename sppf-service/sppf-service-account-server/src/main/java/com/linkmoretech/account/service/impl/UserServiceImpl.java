@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -136,25 +137,35 @@ public class UserServiceImpl implements UserService {
 
         List<Resources> resourcesList = userComponent.getResourceIdListByUser(user);
 
-        List<String> menuList = resourcesList.stream().map(Resources :: getRouterName).collect(Collectors.toList());
+        List<String> menuList = resourcesList.stream()
+                .filter(resource -> resource.getParentId() != null)
+                .map(Resources :: getRouterName).collect(Collectors.toList());
 
         return new UserInfoResponse(user.getUserName(), menuList);
     }
 
     @Override
     public void updateUserState(Long userId, Integer userState) throws CommonException {
-
         EnableStatusEnum enableStatusEnum = EnableStatusEnum.getStatus(userState);
-
         if (enableStatusEnum == null) {
             throw new CommonException(ResponseCodeEnum.PARAMS_ERROR, "状态码不正确");
         }
-        Optional<User> optional = userRepository.findById(userId);
-        if (!optional.isPresent()) {
-            throw new CommonException(ResponseCodeEnum.PARAMS_ERROR, "用户不存在");
-        }
-        User user = optional.get();
+        User user = userComponent.getUser(userId);
         user.setStatus(enableStatusEnum.getCode());
+        userRepository.save(user);
+    }
+
+    @Override
+    public void updateUserAuth(Long userId, Integer authState) throws CommonException {
+
+        AuthTypeEnum authTypeEnum = AuthTypeEnum.getStatus(authState);
+        if (authTypeEnum == null) {
+            throw new CommonException(ResponseCodeEnum.PARAMS_ERROR, "状态码不正确");
+        }
+        User user = userComponent.getUser(userId);
+        user.setAuthStatus(authTypeEnum.getCode());
+
+        log.info("更新用户 {}", user);
         userRepository.save(user);
     }
 }
