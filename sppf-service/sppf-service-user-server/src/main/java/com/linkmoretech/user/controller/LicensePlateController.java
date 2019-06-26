@@ -54,4 +54,15 @@ public class LicensePlateController {
                        @RequestParam(value = "plateNo") String plateNo) throws CommonException {
         licensePlateService.removePlate(userId, plateNo);
     }
+    
+    @ApiOperation(value = "根据id删除车牌号", notes = "根据车牌号ID删除已绑定车牌号")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id",value = "车牌id", dataType = "Long", paramType = "query")
+    })
+    @DeleteMapping(value = "remove-by-id")
+    public void remove(@RequestParam(value = "id") Long id) throws CommonException {
+        licensePlateService.removePlate(id);
+    }
+    
+    
 }

@@ -73,8 +73,8 @@ public class AppOrderController {
 	@ApiOperation(value = "用户已完成订单列表", notes = "订单列表[起始请从0开始每页10条记录]", consumes = "application/json")
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	@ResponseBody
-	public List<ResCheckedOrder> list(@RequestParam("start") Long start, @RequestParam(value = "orderFlag", defaultValue = "0", required = false) String orderFlag, HttpServletRequest request) {
-		String userId = "";
+	public List<ResCheckedOrder> list(@RequestParam("start") Long start, HttpServletRequest request) {
+		String userId = "322424324125655";
 		List<ResCheckedOrder> orders = this.ordersService.list(start, userId);
 		return orders;
 	}
@@ -82,8 +82,7 @@ public class AppOrderController {
 	@RequestMapping(value = "detail", method = RequestMethod.GET)
 	@ResponseBody
 	public ResOrderDetail detail(@Min(value=0,message="订单ID为大于0的长整数") @RequestParam("orderId") String orderId,HttpServletRequest request) {
-		String userId = "";
-		ResOrderDetail resOrderDetail = this.ordersService.detail(orderId,userId);
+		ResOrderDetail resOrderDetail = this.ordersService.detail(orderId);
 		return resOrderDetail;
 	}
 

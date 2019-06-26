@@ -38,6 +38,7 @@ public class SwaggerConfiguration {
 	
     @Bean
     public Docket createRestApi() {
+    	log.info("package = {} contact = {}", swaggerConfig.getBasePackage(), swaggerConfig.getContact());
         return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())
                 .select()
                 //.apis(basePackage("com.linkmoretech.user.controller,com.linkmoretech.order.controller"))
@@ -48,7 +49,7 @@ public class SwaggerConfiguration {
     public ApiInfo apiInfo() {
         return new ApiInfoBuilder().title(swaggerConfig.getTitle())
                 .description(swaggerConfig.getDescription())
-                .contact(new Contact(swaggerConfig.getContact(),"http://baidu.com",null))
+                .contact(new Contact(swaggerConfig.getContact(), null , null))
                 .version(swaggerConfig.getVersion())
                 .build();
     }
