@@ -1,10 +1,11 @@
 package com.linkmoretech.auth.resource.configuration;
 
 import com.linkmoretech.auth.common.configuration.OauthResourceConfig;
-import com.sun.deploy.util.StringUtils;
+
 import io.netty.util.internal.StringUtil;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
