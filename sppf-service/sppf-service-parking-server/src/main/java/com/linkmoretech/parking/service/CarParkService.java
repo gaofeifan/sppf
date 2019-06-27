@@ -12,6 +12,8 @@ import reactor.ipc.netty.http.server.HttpServerRequest;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+
 /**
  * 车场业务逻辑层
  * @Author: alec
@@ -86,5 +88,6 @@ public interface CarParkService {
      */
     CarPark findByGateway(String groupCode);
 
-    List<CityParkListResponse> carParkList(HttpServerRequest request);
+
+	List<CityParkListResponse> carParkList(Authentication authentication);
 }

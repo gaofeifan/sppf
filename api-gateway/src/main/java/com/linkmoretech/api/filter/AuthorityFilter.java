@@ -31,7 +31,7 @@ import java.util.*;
  * 后续结合oauth2
  * @date: 17:13 2019-06-05
  */
-@Component
+//@Component
 @Slf4j
 public class AuthorityFilter extends ZuulFilter {
 
@@ -50,7 +50,17 @@ public class AuthorityFilter extends ZuulFilter {
     private final String clientSecurt = "linkmore2018";
 
     String[] skipAuthUrls = {"/account/system/login", "/account/login-mobile",
-            "/account/personal/login", "/account/personal/login-mobile", "/account/sms/code"};
+            "/account/personal/login", "/account/personal/login-mobile", "/account/sms/code",
+    "/swagger-ui.html",
+	"/configuration",
+	"/swagger-resources",
+	"/swagger-resources/configuration/ui",
+	"/swagger-ui.html/swagger-resources/configuration/ui",
+	"/swagger-resources/configuration/security",
+	"/api-docs",
+	"/v2/api-docs",
+    
+    };
 
 
     /**

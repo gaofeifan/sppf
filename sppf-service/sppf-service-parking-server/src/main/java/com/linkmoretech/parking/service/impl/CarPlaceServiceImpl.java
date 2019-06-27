@@ -1,9 +1,13 @@
 package com.linkmoretech.parking.service.impl;
 
+import com.linkmore.account.client.AccountDataClient;
+import com.linkmoretech.auth.common.util.AuthenticationTokenAnalysis;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
+import com.linkmoretech.parking.common.PlaceParkIdAndRangeInput;
+import com.linkmoretech.parking.common.PlaceParkIdAndRangeOutput;
 import com.linkmoretech.parking.component.BindLockPlatformComponent;
 import com.linkmoretech.parking.component.CarParkComponent;
 import com.linkmoretech.parking.entity.CarPark;
@@ -23,14 +27,17 @@ import com.linkmoretech.parking.service.LockService;
 import com.linkmoretech.parking.vo.request.CarPlaceCreateRequest;
 import com.linkmoretech.parking.vo.request.CarPlaceEditRequest;
 import com.linkmoretech.parking.vo.request.CarPlaceListRequest;
-import com.linkmoretech.parking.vo.request.LockOperateRequest;
 import com.linkmoretech.parking.vo.response.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -39,7 +46,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 /**
  * @Author: alec
- * Description:
+ * Description
  * @date: 10:24 2019-05-08
  */
 @Service
@@ -51,7 +58,8 @@ public class CarPlaceServiceImpl implements CarPlaceService {
 
     @Autowired
     CarParkRepository carParkRepository;
-
+    @Autowired
+    AccountDataClient accountDataClient;
     @Autowired
     FloorPlanRepository floorPlanRepository;
 
@@ -243,12 +251,20 @@ public class CarPlaceServiceImpl implements CarPlaceService {
     }
 
     @Override
-    public List<CarPalceListResponse> findCarPlaceListByParkId(HttpServletRequest request, CarPlaceListRequest carPlaceListRequest) {
-        CarPlace carPlaceQuery = new CarPlace();
-        carPlaceQuery.setParkId(carPlaceListRequest.getCarParkId());
-        Example<CarPlace> of = Example.of(carPlaceQuery);
-        List<CarPlace> carPlaceList = this.carPlaceRepository.findAll(of);
-//        List<CarPlace> carPlaceList = this.carPlaceRepository.getAllByParkIdAndLike(carPlace);
+    public List<CarPalceListResponse> findCarPlaceListByParkId(HttpServletRequest request, CarPlaceListRequest carPlaceListRequest, Authentication authentication) {
+        AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
+        List<String> accountPlaceIds = accountDataClient.getPlaceDataAccount(authenticationTokenAnalysis.getUserId(), carPlaceListRequest.getCarParkId());
+        List<Long> placeIds = new ArrayList<>();
+        String placeId = null;
+        if(placeIds == null){
+
+        }else if( placeIds.size() == 0){
+            return null;
+        }else{
+            placeId = StringUtils.join(placeIds, ",");
+        }
+        List<CarPlace> carPlaceList = this.carPlaceRepository.findParkIdAndIdInAndTypeAndPlaceNo(carPlaceListRequest.getCarParkId(),placeId,carPlaceListRequest.getType(),StringUtils.isNotBlank(carPlaceListRequest.getCarPlaceName()) ? carPlaceListRequest.getCarPlaceName()+"%": null);
+//        this.carPlaceRepository.findByIdInAndParkIdAndPlaceNoLikeAndType(,carPlaceListRequest.getCarParkId(),)
         List<CarPalceListResponse> carPalceListResponses = new ArrayList<>();
         CarPalceListResponse carPalceListResponse;
         CarPark carPark = this.carParkRepository.findById(carPlaceListRequest.getCarParkId()).get();
@@ -390,6 +406,41 @@ public class CarPlaceServiceImpl implements CarPlaceService {
     }
 
 
+    @Override
+    public List<PlaceParkIdAndRangeOutput> findByParkIdAndIdRange(PlaceParkIdAndRangeInput input) {
+        List<PlaceParkIdAndRangeOutput> outputs = new ArrayList<>();
+        PlaceParkIdAndRangeOutput output;
+        if(input.getHeadId().size() != input.getEndId().size()){
+            try {
+                throw new CommonException(ResponseCodeEnum.PARAMS_ERROR);
+            } catch (CommonException e) {
+                e.printStackTrace();
+            }
 
-
+            List<CarPlace> list = this.carPlaceRepository.findAll(new Specification<CarPlace>() {
+                @Override
+                public Predicate toPredicate(Root<CarPlace> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                    List<Predicate> list = new ArrayList<>();
+                    list.add(cb.equal(root.get("parkId"), input.getParkId()));
+                    if (input.getHeadId().size() != 0) {
+                        for (int i = 0; i < input.getHeadId().size(); i++) {
+                            list.add(cb.or(cb.between(root.get("id"), input.getHeadId().get(i), input.getEndId().get(i))));
+                        }
+                    }
+                    Predicate[] predicates = new Predicate[list.size()];
+                    return cb.and(list.toArray(predicates));
+                }
+            });
+            for (CarPlace place: list ) {
+                output = new PlaceParkIdAndRangeOutput();
+                output.setParkId(place.getParkId());
+                output.setPlaceId(place.getId());
+                output.setPlaceNo(place.getPlaceNo());
+                output.setParkName(place.getParkName());
+                outputs.add(output);
+            }
+            return outputs;
+        }
+        return outputs;
+    }
 }

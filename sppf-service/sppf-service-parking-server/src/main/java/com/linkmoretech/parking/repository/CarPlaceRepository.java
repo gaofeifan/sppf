@@ -2,6 +2,7 @@ package com.linkmoretech.parking.repository;
 
 import com.linkmoretech.parking.entity.CarPlace;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @Description: 车位数据操作层
  * @date: 11:38 AM 2019/4/29
  */
-public interface CarPlaceRepository extends JpaRepository<CarPlace, Long> {
+public interface CarPlaceRepository extends JpaRepository<CarPlace, Long>, JpaSpecificationExecutor<CarPlace> {
     /**
      * 根据车场 和 id集合查询符合条件的车位列表
      * @param parkId 车场ID
@@ -71,4 +72,7 @@ public interface CarPlaceRepository extends JpaRepository<CarPlace, Long> {
     void updateLockCode(Long id, String lockCode);
 
     CarPlace getOneByLockCodeAndParkId(String sn, Long parkId);
+
+    @Query(value = "SELECT * FROM p_car_place WHERE park_id = ?1 and type = ?3 and if(?2 = null ,1=1, id in(?2)) and if(?4= null,1=1,place_no like ?4)", nativeQuery = true)
+    List<CarPlace> findParkIdAndIdInAndTypeAndPlaceNo(Long carParkId, String placeIds, Integer type, String carPlaceName);
 }

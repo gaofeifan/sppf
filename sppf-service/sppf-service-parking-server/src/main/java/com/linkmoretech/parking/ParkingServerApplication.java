@@ -16,7 +16,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @EnableFeignClients(basePackages = "com.linkmoretech")
 @EnableCircuitBreaker
-@ComponentScan(basePackages = "com.linkmoretech")
+@ComponentScan(basePackages = "co1m.linkmoretech")
 public class ParkingServerApplication {
 
     public static void main(String[] args) {

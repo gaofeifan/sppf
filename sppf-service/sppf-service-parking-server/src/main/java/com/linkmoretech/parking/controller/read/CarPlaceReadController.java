@@ -1,5 +1,7 @@
 package com.linkmoretech.parking.controller.read;
 
+import com.linkmoretech.parking.common.PlaceParkIdAndRangeInput;
+import com.linkmoretech.parking.common.PlaceParkIdAndRangeOutput;
 import com.linkmoretech.parking.service.CarParkService;
 import com.linkmoretech.parking.service.CarPlaceService;
 import com.linkmoretech.parking.vo.request.CarPlaceListRequest;
@@ -12,6 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import reactor.ipc.netty.http.server.HttpServerRequest;
 
@@ -33,8 +36,8 @@ public class CarPlaceReadController {
 
     @ApiOperation(value = "查询车位列表", notes = "获取车场下的车位")
     @PostMapping(value = "car-park-list")
-    public  List<CarPalceListResponse> carParkList(HttpServletRequest request, @RequestBody CarPlaceListRequest carPlace){
-        List<CarPalceListResponse> list = this.carPlaceService.findCarPlaceListByParkId(request,carPlace);
+    public  List<CarPalceListResponse> carParkList(HttpServletRequest request, Authentication authentication, @RequestBody CarPlaceListRequest carPlace){
+        List<CarPalceListResponse> list = this.carPlaceService.findCarPlaceListByParkId(request,carPlace,authentication);
         return list;
     }
 
@@ -49,5 +52,11 @@ public class CarPlaceReadController {
     public CarPlaceDetailsSnResponse detailsSn(HttpServletRequest request, @ApiParam("车位锁编号")  @RequestParam("sn") String sn,
                                                @ApiParam(value="车场",required=false) @RequestParam(value="carParkId",required=false) Long carParkId){
         return this.carPlaceService.detailsSn(request,sn,carParkId);
+    }
+
+    @PostMapping(value = "park-id-and-id-range")
+    @ApiOperation(value = "查询车位数据", notes = "根据车场id与车位区间的id查询")
+    public List<PlaceParkIdAndRangeOutput> findByParkIdAndIdRange(@RequestBody PlaceParkIdAndRangeInput input){
+        return this.carPlaceService.findByParkIdAndIdRange(input);
     }
 }

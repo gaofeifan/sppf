@@ -3,11 +3,14 @@ package com.linkmoretech.parking.service;
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
+import com.linkmoretech.parking.common.PlaceParkIdAndRangeInput;
+import com.linkmoretech.parking.common.PlaceParkIdAndRangeOutput;
 import com.linkmoretech.parking.entity.CarPlace;
 import com.linkmoretech.parking.vo.request.CarPlaceCreateRequest;
 import com.linkmoretech.parking.vo.request.CarPlaceEditRequest;
 import com.linkmoretech.parking.vo.request.CarPlaceListRequest;
 import com.linkmoretech.parking.vo.response.*;
+import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -86,8 +89,6 @@ public interface CarPlaceService {
     List<CarPlace> findCarPlaceByParkIds(List<Long> parkIds);
 
 
-    List<CarPalceListResponse> findCarPlaceListByParkId(HttpServletRequest request,CarPlaceListRequest carPlace);
-
     CarPlaceDetailsResponse details(HttpServletRequest request, Long carPlaceId);
 
     public CarPlaceDetailsSnResponse detailsSn(HttpServletRequest request, String sn, Long parkId);
@@ -98,4 +99,8 @@ public interface CarPlaceService {
 
 
     void updateLockCode(Long id, String lockCode);
+
+    List<CarPalceListResponse> findCarPlaceListByParkId(HttpServletRequest request, CarPlaceListRequest carPlace, Authentication authentication);
+
+    List<PlaceParkIdAndRangeOutput> findByParkIdAndIdRange(PlaceParkIdAndRangeInput input);
 }

@@ -22,7 +22,8 @@
         <module>common-component</module>
 		<module>api-gateway</module>
         <module>auth-server</module>
-    </modules>
+        <module>parking-gateway</module>
+	</modules>
 	<properties>
 		<java.version>1.8</java.version>
 		<spring-cloud.version>Finchley.SR2</spring-cloud.version>

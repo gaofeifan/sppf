@@ -98,6 +98,11 @@
         </dependency>
         <dependency>
             <groupId>com.linkmoretech</groupId>
+            <artifactId>sppf-service-account-client</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.linkmoretech</groupId>
             <artifactId>sppf-service-versatile-client</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
@@ -112,6 +117,11 @@
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
+            <groupId>com.linkmoretech</groupId>
+            <artifactId>sppf-service-account-client</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>de.siegmar</groupId>
             <artifactId>logback-gelf</artifactId>
             <version>2.0.0</version>
@@ -119,6 +129,16 @@
         <dependency>
             <groupId>com.linkmoretech</groupId>
             <artifactId>http-common-component</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.linkmoretech</groupId>
+            <artifactId>auth-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.linkmoretech</groupId>
+            <artifactId>auth-resource-server</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
