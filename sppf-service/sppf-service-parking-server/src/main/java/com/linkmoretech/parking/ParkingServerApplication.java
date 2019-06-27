@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @EnableFeignClients(basePackages = "com.linkmoretech")
 @EnableCircuitBreaker
 @Slf4j
-@ComponentScan(basePackages = "co1m.linkmoretech")
+@ComponentScan(basePackages = "com.linkmoretech")
 public class ParkingServerApplication {
 
     public static void main(String[] args) {

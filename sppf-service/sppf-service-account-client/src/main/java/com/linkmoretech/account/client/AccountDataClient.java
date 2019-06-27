@@ -1,4 +1,4 @@
-package com.linkmore.account.client;
+package com.linkmoretech.account.client;
 
 import com.linkmore.account.common.request.AccountParkRequest;
 import com.linkmore.account.common.request.AccountPlaceRequest;

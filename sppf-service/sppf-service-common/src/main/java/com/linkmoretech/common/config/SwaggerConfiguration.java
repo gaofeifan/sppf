@@ -1,5 +1,7 @@
 package com.linkmoretech.common.config;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -39,11 +41,14 @@ public class SwaggerConfiguration {
     @Bean
     public Docket createRestApi() {
     	log.info("package = {} contact = {}", swaggerConfig.getBasePackage(), swaggerConfig.getContact());
-        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
                 .select()
-                //.apis(basePackage("com.linkmoretech.user.controller,com.linkmoretech.order.controller"))
                 .apis(RequestHandlerSelectors.basePackage(swaggerConfig.getBasePackage()))
-                .paths(PathSelectors.any()).build();
+                .apis(RequestHandlerSelectors.withClassAnnotation(Api.class))
+                .apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
+                .paths(PathSelectors.any())
+                .build();
     }
     @Bean
     public ApiInfo apiInfo() {
@@ -53,35 +58,6 @@ public class SwaggerConfiguration {
                 .version(swaggerConfig.getVersion())
                 .build();
     }
-    
-    public static Predicate<RequestHandler> basePackage(final String basePackage) {
-		log.info("basePackage ======================= {} " + basePackage);
-        return input -> declaringClass(input).transform(handlerPackage(basePackage)).or(true);
-    }
-    
-    /**
-     * 处理包路径配置规则,支持多路径扫描匹配以逗号隔开
-     * 
-     * @param basePackage 扫描包路径
-     * @return Function
-     */
-    private static Function<Class<?>, Boolean> handlerPackage(final String basePackage) {
-        return input -> {
-            for (String strPackage : basePackage.split(",")) {
-                boolean isMatch = input.getPackage().getName().startsWith(strPackage);
-                if (isMatch) {
-                    return true;
-                }
-            }
-            return false;
-        };
-    }
-    
-    /**
-     * @param input RequestHandler
-     * @return Optional
-     */
-    private static Optional<? extends Class<?>> declaringClass(RequestHandler input) {
-        return Optional.fromNullable(input.getClass());
-    }
+
+
 }

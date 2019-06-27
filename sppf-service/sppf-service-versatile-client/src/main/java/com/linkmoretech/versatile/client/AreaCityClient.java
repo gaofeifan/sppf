@@ -1,6 +1,6 @@
 package com.linkmoretech.versatile.client;
 
-import com.linkmoretech.auth.resource.configuration.FeignConfiguration;
+import com.linkmoretech.auth.common.configuration.FeignConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;

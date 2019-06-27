@@ -44,6 +44,7 @@ public class CarPlaceReadController {
     @ApiOperation(value = "查询车位详情", notes = "获取车位的详情数据")
     @GetMapping(value = "details")
     public  CarPlaceDetailsResponse details(HttpServletRequest request, @ApiParam(value="车位id",required = true) @RequestParam("carPlaceId") Long carPlaceId){
+        log.info("details is running");
         return this.carPlaceService.details(request,carPlaceId);
     }
 
