@@ -3,6 +3,8 @@ package com.linkmoretech.account.controller;
 import com.linkmoretech.account.service.UserService;
 import com.linkmoretech.account.vo.request.SearchRequest;
 import com.linkmoretech.account.vo.request.UserCreateRequest;
+import com.linkmoretech.account.vo.request.UserEditRequest;
+import com.linkmoretech.account.vo.response.UserDetailResponse;
 import com.linkmoretech.account.vo.response.UserInfoResponse;
 import com.linkmoretech.account.vo.response.UserListResponse;
 import com.linkmoretech.auth.common.util.AuthenticationTokenAnalysis;
@@ -65,5 +67,19 @@ public class UserController {
     public void enableAuth(@RequestParam(value = "userId") Long userId, @RequestParam(value = "status") Integer status)
             throws CommonException {
         userService.updateUserAuth(userId, status);
+    }
+
+    @GetMapping(value = "detail")
+    public UserDetailResponse detail(@RequestParam(value = "userId") Long userId) throws CommonException {
+        return userService.detail(userId);
+    }
+
+    @PostMapping(value = "update")
+    public void update(@RequestBody UserEditRequest userEditRequest, BindingResult bindingResult)
+            throws CommonException {
+        if (bindingResult.hasErrors()) {
+            throw new CommonException(ResponseCodeEnum.PARAMS_ERROR);
+        }
+        userService.updateUserInfo(userEditRequest);
     }
 }

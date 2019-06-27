@@ -43,8 +43,6 @@ public class AuthorityFilter extends ZuulFilter {
 
     private final String secretKey = "123456";
 
-    private final String NAME_KEY = "username";
-
     private final String clientId = "linkmoretech";
 
     private final String clientSecurt = "linkmore2018";
@@ -79,10 +77,10 @@ public class AuthorityFilter extends ZuulFilter {
         String token =  clientId + ":" + clientSecurt;
         token = "Basic " +  Base64.getEncoder().encodeToString(token.getBytes(StandardCharsets.UTF_8));
         requestContext.addZuulRequestHeader(ACCESS_TOKEN, token);
-        log.info("aaa");
         //跳过不需要验证的路径
         if (Arrays.asList(skipAuthUrls).contains(url)) {
             log.info("传递token {}", token);
+            requestContext.getZuulRequestHeaders().put(AUTHORIZE_TOKEN, "*");
             return false;
         }
         return true;

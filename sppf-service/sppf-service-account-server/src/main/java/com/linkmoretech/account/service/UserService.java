@@ -2,7 +2,9 @@ package com.linkmoretech.account.service;
 
 import com.linkmoretech.account.vo.request.SearchRequest;
 import com.linkmoretech.account.vo.request.UserCreateRequest;
+import com.linkmoretech.account.vo.request.UserEditRequest;
 import com.linkmoretech.account.vo.response.LoginSuccessResponse;
+import com.linkmoretech.account.vo.response.UserDetailResponse;
 import com.linkmoretech.account.vo.response.UserInfoResponse;
 import com.linkmoretech.account.vo.response.UserListResponse;
 import com.linkmoretech.common.exception.CommonException;
@@ -32,7 +34,7 @@ public interface UserService {
 
 
     /**
-     * 根据手机号，验证码登录
+     * 查询帐号信息
      * */
     UserInfoResponse getUserInfo(String username, String clientId);
 
@@ -46,10 +48,24 @@ public interface UserService {
 
 
     /**
-     * 更新用户状态
+     * 更新用户数据开关状态
      * @param userId 用户ID
      * @param authState 用户状态
      * */
     void updateUserAuth(Long userId, Integer authState) throws CommonException;
+
+
+    /**
+     * 根据用户ID 查询用户信息
+     * @param userId 用户ID
+     * @return 用户详情
+     * */
+    UserDetailResponse detail(Long userId) throws CommonException;
+
+    /**
+     * 修改用户信息
+     * @param userEditRequest 修改用户参数
+     * */
+    void updateUserInfo(UserEditRequest userEditRequest) throws CommonException;
 
 }

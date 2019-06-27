@@ -1,6 +1,6 @@
 spring:
   application:
-    name: account
+    name: api-gateway
   cloud:
     config:
       discovery:
@@ -13,14 +13,3 @@ eureka:
       ##defaultZone:  http://eureka1:8761/eureka,http://eureka2:8762/eureka,http://eureka3:8763/eureka
   instance:
     prefer-ip-address: true
-
-security:
-  oauth2:
-    client:
-      client-id: linkmoretech
-      client-secret: linkmore2018
-
-resource:
-  ignores:
-    - /account/auth-user/getParkData
-    - /account/auth-user/getPlaceData
