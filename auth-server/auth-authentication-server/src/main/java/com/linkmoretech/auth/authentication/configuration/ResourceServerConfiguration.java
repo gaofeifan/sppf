@@ -59,23 +59,6 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     @Override
     public void configure(HttpSecurity http) throws Exception {
 
-        List<String> ignore = new ArrayList<>();
-
-        ignore.add(ParamsConstruct.SWAGGER_URL);
-        ignore.add(ParamsConstruct.CSS);
-        ignore.add(ParamsConstruct.JS);
-        ignore.add(ParamsConstruct.DOC);
-        ignore.add(ParamsConstruct.LOGIN_CUSTOMER);
-        ignore.add(ParamsConstruct.SEND_SMS);
-        ignore.add(ParamsConstruct.LOGIN_MANAGE_MOBILE);
-        ignore.add(ParamsConstruct.NO_LOGIN_TIP_INFO);
-        ignore.add(ParamsConstruct.LOGIN_MOBILE_PERSONAL);
-
-        if (oauthResourceConfig.getIgnores() != null) {
-            ignore.addAll(oauthResourceConfig.getIgnores());
-        }
-        String matchers = StringUtils.join(ignore, ",");
-        log.info("过滤URL {}", matchers);
         SmsCodeFilter smsCodeFilter = new SmsCodeFilter(validateCodeManage, validateFailureHandler);
         smsCodeFilter.afterPropertiesSet();
 
@@ -92,9 +75,14 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
             .and()
             .apply(smsAuthenticationManagerConfig)
             .and()
-
             .authorizeRequests() // 授权设定
-            .antMatchers(matchers).permitAll()    //对此链接不拦截
+            .antMatchers(
+                ParamsConstruct.LOGIN_CUSTOMER,
+                ParamsConstruct.LOGIN_MANAGE_MOBILE,
+                ParamsConstruct.SEND_SMS,
+                ParamsConstruct.NO_LOGIN_TIP_INFO,
+                ParamsConstruct.LOGIN_MOBILE_PERSONAL
+            ).permitAll()    //对此链接不拦截
             .anyRequest() // 所有请求
             .authenticated() //需要身份认证
             .and()
