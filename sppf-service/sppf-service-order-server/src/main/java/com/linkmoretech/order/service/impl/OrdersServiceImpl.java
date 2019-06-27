@@ -17,6 +17,8 @@ import com.linkmoretech.order.resposity.OrdersRepository;
 import com.linkmoretech.order.service.OrdersService;
 import com.linkmoretech.order.vo.*;
 import lombok.extern.slf4j.Slf4j;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,9 @@ import javax.transaction.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -61,9 +66,9 @@ public class OrdersServiceImpl implements OrdersService {
         /**
          * 根据用户ID查询该用户是否有未结算订单
          * */
-        Orders noFinishOrder = ordersRepository.findOrdersByUserIdAndStatusIn(orderRequest.getUserId(), OrderStatusEnum.BOOKED.getCode(),
+        List<Orders> noFinishOrders = ordersRepository.findOrdersByUserIdAndStatusIn(orderRequest.getUserId(), OrderStatusEnum.BOOKED.getCode(),
                 OrderStatusEnum.SUSPENDED.getCode());
-        if (noFinishOrder != null) {
+        if (CollectionUtils.isNotEmpty(noFinishOrders)) {
             throw new CommonException(ResponseCodeEnum.ERROR, "您有未支付的订单，请先结账");
         }
 
@@ -308,8 +313,9 @@ public class OrdersServiceImpl implements OrdersService {
 	@Override
 	public ResCurrentOrder current(String userId) {
 		ResCurrentOrder currentOrder = null;
-		Orders orders = this.ordersRepository.findOrdersByUserIdAndStatusIn(userId,OrderStatusEnum.BOOKED.getCode(), OrderStatusEnum.SUSPENDED.getCode());
-		if(orders != null) {
+		List<Orders>  orderList = this.ordersRepository.findOrdersByUserIdAndStatusIn(userId,OrderStatusEnum.BOOKED.getCode(), OrderStatusEnum.SUSPENDED.getCode());
+		if(CollectionUtils.isNotEmpty(orderList)) {
+			Orders orders = orderList.get(0);
 			OrderDetail orderDetail = this.orderDetailRepository.findOrderDetailByOrderId(orders.getId());
 			currentOrder = new ResCurrentOrder();
 			currentOrder.setOrderId(orders.getId());
@@ -495,13 +501,10 @@ public class OrdersServiceImpl implements OrdersService {
 	}
 
 	@Override
-	public ResOrderDetail detail(String orderId, String userId) {
+	public ResOrderDetail detail(String orderId) {
 		ResOrderDetail resOrderDetail = null;
 		Orders orders = ordersRepository.getOne(orderId);
         OrderDetail orderDetail = orderDetailRepository.findOrderDetailByOrderId(orderId);
-        if (!orders.getUserId().equals(userId)) {
-			return null;
-		}
         if(orders != null) {
         	
         	resOrderDetail = new ResOrderDetail();
@@ -515,7 +518,9 @@ public class OrdersServiceImpl implements OrdersService {
         	resOrderDetail.setPayTime(orders.getPayTime());
         	
         	resOrderDetail.setStatus(orders.getStatus().shortValue());
-        	resOrderDetail.setPayType(orders.getPayType().shortValue());
+        	if(orders.getPayType() != null) {
+        		resOrderDetail.setPayType(orders.getPayType().shortValue());
+        	}
         	
         	if(orders.getTotalAmount() == null) {
         		orders.setTotalAmount(new BigDecimal(0d));
@@ -556,6 +561,51 @@ public class OrdersServiceImpl implements OrdersService {
 
 	@Override
 	public List<ResCheckedOrder> list(Long start, String userId) {
-		return null;
+		List<Orders> orderList = this.ordersRepository.findFinishOrderList(userId,start);
+		log.info("已完成订单列表 = {}",JSON.toJSON(orderList));
+		List<ResCheckedOrder> res = new ArrayList<ResCheckedOrder>();
+		SimpleDateFormat sdf = new SimpleDateFormat("Y年M月d日 HH:mm");
+		DecimalFormat df2 =new DecimalFormat("0.00");
+		ResCheckedOrder ro = null;
+		OrderDetail orderDetail = null;
+		for (Orders order : orderList) {
+			orderDetail = orderDetailRepository.findOrderDetailByOrderId(order.getId());
+			ro = new ResCheckedOrder();
+			ro.setOrderId(order.getId());
+			ro.setCreateTime(sdf.format(order.getCreateTime()));
+			ro.setParkName(orderDetail.getParkName());
+			ro.setPlaceName(orderDetail.getPlaceName());
+			ro.setStatus(order.getStatus().shortValue());
+			ro.setTotalAmount(df2.format(order.getTotalAmount().doubleValue()));
+			
+			Date start1 = order.getCreateTime();
+			Date end = order.getFinishTime();
+			if(order.getCancelTime() != null) {
+				end = order.getCancelTime();
+			}
+		
+			long day = 0;
+			long hour = 0;
+			long min = 0;
+			long time = (end.getTime()-start1.getTime())/(60*1000L);
+			day = time / (24*60);
+			hour =( time % (24*60) ) / 60;
+			min = time % 60;
+			StringBuffer parkingTime = new StringBuffer();
+			if(day!=0) {
+				parkingTime.append(day);
+				parkingTime.append("天");
+				parkingTime.append(hour);
+				parkingTime.append("时"); 
+			}else if(hour!=0) {
+				parkingTime.append(hour);
+				parkingTime.append("时");
+			} 
+			parkingTime.append(min);
+			parkingTime.append("分");
+			ro.setParkingTime(parkingTime.toString()); 
+			res.add(ro);
+		}
+		return res;
 	}
 }

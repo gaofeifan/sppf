@@ -28,13 +28,6 @@ public interface LicensePlateRepository extends JpaRepository<LicensePlate, Long
     List<LicensePlate> findAllByUserIdIn(List<String> userIds);
 
     /**
-     * 根据用户ID和车牌号删除记录
-     * @param plateNo 车牌号
-     * @return 用户id
-     * */
-    List<LicensePlate> removeByPlateNoAndUserId(String plateNo, String userId);
-
-    /**
      * 根据用户ID查询车牌号
      * @param userId 用户ID
      * @return 返回车牌号列表
@@ -47,5 +40,13 @@ public interface LicensePlateRepository extends JpaRepository<LicensePlate, Long
      * @return 车牌实体集合
      * */
     List<LicensePlate> findAllByPlateNoIn(List<String> plateNoList);
+    
+    /**
+     * 根据车牌号和用户id查询车牌
+     * @param plateNo
+     * @param userId
+     * @return
+     */
+	List<LicensePlate> findByPlateNoAndUserId(String plateNo, String userId);
 
 }
