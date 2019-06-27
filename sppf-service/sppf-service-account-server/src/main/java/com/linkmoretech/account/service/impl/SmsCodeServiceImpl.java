@@ -57,7 +57,20 @@ public class SmsCodeServiceImpl implements SmsCodeService {
 
    }
 
-   private void validateUser(String mobile, String clientId) throws CommonException {
+    @Override
+    public void createSmsCode(String mobile, Integer smsType) {
+        /**
+         * 生成随机验证码
+         * */
+        ValidateCode validateCode = smsValidateCodeGenerator.createValidateCode();
+        /**
+         * 存储验证码
+         * */
+        validateCodeManage.saveValidateCode(validateCode, smsType.toString(), mobile);
+        log.info("向手机 {} 发送 登录 客户端{} 的验证码 {}", mobile, smsType, validateCode.getCode());
+    }
+
+    private void validateUser(String mobile, String clientId) throws CommonException {
        User user = userRepository.getUserByClientIdAndMobile(clientId, mobile);
        if (user == null) {
            throw new CommonException(ResponseCodeEnum.PARAMS_ERROR, "用户不存在");
