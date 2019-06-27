@@ -23,7 +23,7 @@ public class DocumentationConfig implements SwaggerResourcesProvider {
         /**
          * 添加下游服务doc
          * */
-        resources.add(swaggerResource("", "", ""))
+        resources.add(swaggerResource("", "", ""));
         return null;
     }
 

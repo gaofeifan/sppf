@@ -16,7 +16,6 @@
         <module>mongdb-common-component</module>
         <module>es-common-component</module>
         <module>http-common-component</module>
-        <module>swagger-common-component</module>
     </modules>
 
     <dependencies>
