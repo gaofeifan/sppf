@@ -1,6 +1,6 @@
 package com.linkmoretech.parking.service.impl;
 
-import com.linkmore.account.client.AccountDataClient;
+import com.linkmoretech.account.client.AccountDataClient;
 import com.linkmoretech.auth.common.util.AuthenticationTokenAnalysis;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
@@ -52,14 +52,18 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class CarPlaceServiceImpl implements CarPlaceService {
+
     LockFactory lockFactory = LockFactory.getInstance();
+
+    @Autowired
+    AccountDataClient accountDataClient;
+
     @Autowired
     CarPlaceRepository carPlaceRepository;
 
     @Autowired
     CarParkRepository carParkRepository;
-    @Autowired
-    AccountDataClient accountDataClient;
+
     @Autowired
     FloorPlanRepository floorPlanRepository;
 

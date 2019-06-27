@@ -18,7 +18,7 @@ public class SwaggerConfig {
     private String description = "本文档 完全基于REST full接口说明";
     private String version = "1.0";
     private String contact = "凌猫停车";
-    private String basePackage = "com.linkmoretech.user.controller";
+    private String basePackage = "com.linkmoretech.account.controller";
 
 
 }

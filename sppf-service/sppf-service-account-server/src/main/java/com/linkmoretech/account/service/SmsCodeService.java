@@ -15,4 +15,11 @@ public interface SmsCodeService {
      * @param mobile 手机号
      * */
     void createSmsCode(String mobile, String clientId) throws CommonException;
+
+    /**
+     * 生成验证码 - 个人版业务
+     * @param mobile 用户手机号
+     * @param smsType 验证码类型 1 用户注册 2 修改密码
+     * */
+    void createSmsCode(String mobile, Integer smsType) throws CommonException;
 }

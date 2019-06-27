@@ -1,6 +1,5 @@
 package com.linkmoretech.parking.service.impl;
 
-import com.linkmore.account.client.AccountDataClient;
 import com.linkmoretech.auth.common.util.AuthenticationTokenAnalysis;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
@@ -34,7 +33,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import reactor.ipc.netty.http.server.HttpServerRequest;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
@@ -48,8 +46,9 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class CarParkServiceImpl implements CarParkService {
-	@Autowired
-	AccountDataClient accountDataClient;
+
+    //@Autowired
+	//AccountDataClient accountDataClient;
 	@Autowired
     CarPlaceService carPlaceService;
     @Autowired
@@ -293,7 +292,8 @@ public class CarParkServiceImpl implements CarParkService {
     @Override
     public List<CityParkListResponse> carParkList(Authentication authentication) {
         AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
-        List<Long> accountParkIds = accountDataClient.getParkDataAccount(authenticationTokenAnalysis.getUserId());
+        //List<Long> accountParkIds = accountDataClient.getParkDataAccount(authenticationTokenAnalysis.getUserId());
+        List<Long> accountParkIds = new ArrayList<>();
         List<CarPark> carParks = null;
         if(accountParkIds == null){
             carParks = carParkRepository.findAll();

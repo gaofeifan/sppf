@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * @Author: alec
@@ -27,7 +28,6 @@ public class AppUser {
      * 手机号
      * */
     private String mobile;
-
     /**
      * 用户名
      * */
@@ -37,7 +37,6 @@ public class AppUser {
      * 用户微信OpenId
      * */
     private String openId;
-
     /**
      * 注册来源
      * */
@@ -49,6 +48,10 @@ public class AppUser {
     private String password;
 
 
+    private Date createTime;
+
+
+    private Date lastLoginTime;
 
 
 }
