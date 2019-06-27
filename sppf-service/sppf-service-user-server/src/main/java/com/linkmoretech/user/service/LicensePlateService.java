@@ -33,4 +33,9 @@ public interface LicensePlateService {
      * @param plateNo 车牌号
      * */
     void removePlate(String userId, String plateNo) throws CommonException;
+    /**
+     * 删除车牌号
+     * @param id
+     */
+	void removePlate(Long id) throws CommonException;
 }

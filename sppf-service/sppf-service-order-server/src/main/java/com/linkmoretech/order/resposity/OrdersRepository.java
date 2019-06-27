@@ -27,8 +27,7 @@ public interface OrdersRepository extends JpaRepository<Orders, String> {
      * @param status 订单状态
      * @return 订单
      * */
-    Orders findOrdersByUserIdAndStatusIn(String userId, Integer... status);
-    
+    List<Orders> findOrdersByUserIdAndStatusIn(String userId, Integer... status);
     
 
     /**
@@ -91,4 +90,7 @@ public interface OrdersRepository extends JpaRepository<Orders, String> {
     //and date(createTime) = curdate()
     @Query("select o from Orders o where o.userId =?3 and o.status = 4 ")
 	List<Orders> getDayOfCancelOrderList(String userId);
+
+    @Query(value ="select * from o_orders where user_id = ?1 and status in ('3','4','7') order by finish_time desc limit ?2,10", nativeQuery = true)
+	List<Orders> findFinishOrderList(String userId, Long start);
 }

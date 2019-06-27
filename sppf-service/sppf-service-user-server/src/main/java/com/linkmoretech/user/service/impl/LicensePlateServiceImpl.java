@@ -1,27 +1,29 @@
 package com.linkmoretech.user.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.user.component.LeaseUserComponent;
 import com.linkmoretech.user.entity.LeaseUser;
 import com.linkmoretech.user.entity.LicensePlate;
 import com.linkmoretech.user.entity.UserInfo;
-import com.linkmoretech.user.enums.LicensePlateTypeEnum;
 import com.linkmoretech.user.repository.LeaseUserRepository;
 import com.linkmoretech.user.repository.LicensePlateRepository;
 import com.linkmoretech.user.repository.UserInfoRepository;
 import com.linkmoretech.user.service.LicensePlateService;
 import com.linkmoretech.user.vo.LicensePlateAddRequest;
 import com.linkmoretech.user.vo.LicensePlateResponse;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @Author: alec
@@ -59,11 +61,13 @@ public class LicensePlateServiceImpl implements LicensePlateService {
         }
         List<LicensePlate> userLicensePlate = licensePlateRepository.findAllByUserId(licensePlateAddRequest.getUserId());
         log.info("用户 {} 已添加 {} 个车牌号", licensePlateAddRequest.getUserId(), userLicensePlate.size());
-        if (userLicensePlate.size() == PLATE_MAX) {
+        if (userLicensePlate.size() >= PLATE_MAX) {
             throw new CommonException(ResponseCodeEnum.PARAMS_ERROR, "车牌号不能超过 " + PLATE_MAX + "个");
         }
         LicensePlate licensePlateEntity = new LicensePlate();
         BeanUtils.copyProperties(licensePlateAddRequest, licensePlateEntity);
+        licensePlateEntity.setCreateTime(new Date());
+        licensePlateEntity.setUpdateTime(new Date());
         LicensePlate resultLicensePlate = licensePlateRepository.save(licensePlateEntity);
         Set<String> leaseCodeSet = leaseUserComponent.getLeaseCode(licensePlateAddRequest.getPlateNo());
         if (leaseCodeSet != null && leaseCodeSet.size() > 0) {
@@ -97,7 +101,7 @@ public class LicensePlateServiceImpl implements LicensePlateService {
 
     @Override
     public void removePlate(String userId, String plateNo) throws CommonException {
-        List<LicensePlate> plateList = licensePlateRepository.removeByPlateNoAndUserId(plateNo, userId);
+        List<LicensePlate> plateList = licensePlateRepository.findByPlateNoAndUserId(plateNo, userId);
         if (plateList.size() == 0) {
             throw new CommonException(ResponseCodeEnum.ERROR, "未找到对应记录");
         }
@@ -113,4 +117,24 @@ public class LicensePlateServiceImpl implements LicensePlateService {
         }
         licensePlateRepository.flush();
     }
+
+	@Override
+	public void removePlate(Long id) throws CommonException {
+		LicensePlate plate = licensePlateRepository.findById(id).get();
+		if(plate == null) {
+	        throw new CommonException(ResponseCodeEnum.ERROR, "未找到对应记录");
+		}
+		
+		/**
+         * 删除长租用户对应车牌信息
+         * */
+        Set<String> leaseCodeSet = leaseUserComponent.getLeaseCode(plate.getPlateNo());
+        if (leaseCodeSet != null && leaseCodeSet.size() > 0) {
+            /**
+             * 删除长租用户记录
+             * */
+            log.warn("需要删除长租记录 {}" , leaseCodeSet);
+        }
+		licensePlateRepository.deleteById(id);
+	}
 }

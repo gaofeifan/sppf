@@ -38,6 +38,8 @@ public class AccAuthenticationManagerProvider implements AuthenticationProvider 
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new InternalAuthenticationServiceException("密码不正确");
         }
+        log.info("创建登录token {}", userDetails.getUserId());
+
         AccAuthenticationManagerToken resultToken = new AccAuthenticationManagerToken(userDetails,
                 userDetails.getPassword(),
                 clientId,

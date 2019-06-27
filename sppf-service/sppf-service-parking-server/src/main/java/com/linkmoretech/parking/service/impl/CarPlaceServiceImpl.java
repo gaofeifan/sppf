@@ -253,8 +253,7 @@ public class CarPlaceServiceImpl implements CarPlaceService {
     @Override
     public List<CarPalceListResponse> findCarPlaceListByParkId(HttpServletRequest request, CarPlaceListRequest carPlaceListRequest, Authentication authentication) {
         AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
-        List<String> accountPlaceIds = accountDataClient.getPlaceDataAccount(authenticationTokenAnalysis.getUserId(), carPlaceListRequest.getCarParkId());
-        List<Long> placeIds = new ArrayList<>();
+        List<Long> placeIds = accountDataClient.getPlaceDataAccount(authenticationTokenAnalysis.getUserId(), carPlaceListRequest.getCarParkId());
         String placeId = null;
         if(placeIds == null){
 

@@ -89,10 +89,9 @@ public interface OrdersService {
 	/**
 	 * 查看订单详情
 	 * @param orderId
-	 * @param userId
 	 * @return
 	 */
-	ResOrderDetail detail(String orderId, String userId);
+	ResOrderDetail detail(String orderId);
 	/**
 	 * 查询已完成订单
 	 * @param start

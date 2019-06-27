@@ -1,4 +1,4 @@
-package com.linkmoretech.auth.resource.configuration;
+package com.linkmoretech.auth.common.configuration;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -17,4 +17,5 @@ import java.util.List;
 public class OauthResourceConfig {
 
     private List<String> ignores;
+
 }

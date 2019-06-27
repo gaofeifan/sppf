@@ -8,6 +8,8 @@ import com.linkmoretech.account.resposity.*;
 import com.linkmoretech.account.service.UserService;
 import com.linkmoretech.account.vo.request.SearchRequest;
 import com.linkmoretech.account.vo.request.UserCreateRequest;
+import com.linkmoretech.account.vo.request.UserEditRequest;
+import com.linkmoretech.account.vo.response.UserDetailResponse;
 import com.linkmoretech.account.vo.response.UserInfoResponse;
 import com.linkmoretech.account.vo.response.UserListResponse;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
@@ -22,6 +24,7 @@ import org.springframework.data.domain.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -59,6 +62,7 @@ public class UserServiceImpl implements UserService {
     UserComponent userComponent;
 
     @Override
+    @Transactional(rollbackOn = Exception.class)
     public void createUser(UserCreateRequest userCreateRequest) throws CommonException {
 
         log.debug("参数信息 {}", userCreateRequest);
@@ -81,13 +85,7 @@ public class UserServiceImpl implements UserService {
         user.setAuthStatus(AuthTypeEnum.getStatus(userCreateRequest.getAuthStatus()).getCode());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User returnUser = userRepository.save(user);
-        List<UserRoles> userRolesTempList = userCreateRequest.getRoles().stream().map(rolesId -> {
-            UserRoles userRolesTemp = new UserRoles();
-            userRolesTemp.setUserId(returnUser.getId());
-            userRolesTemp.setRolesId(rolesId);
-            return userRolesTemp;
-        }).collect(Collectors.toList());
-        userRolesRepository.saveAll(userRolesTempList);
+        saveRolesForUser(returnUser.getId(), userCreateRequest.getRoles());
     }
 
     @Override
@@ -136,25 +134,88 @@ public class UserServiceImpl implements UserService {
 
         List<Resources> resourcesList = userComponent.getResourceIdListByUser(user);
 
-        List<String> menuList = resourcesList.stream().map(Resources :: getRouterName).collect(Collectors.toList());
+        List<String> menuList = resourcesList.stream()
+                .filter(resource -> resource.getParentId() != null)
+                .map(Resources :: getRouterName).collect(Collectors.toList());
 
-        return new UserInfoResponse(user.getUserName(), menuList);
+        return new UserInfoResponse(user.getId(), user.getUserName(), menuList);
     }
 
     @Override
     public void updateUserState(Long userId, Integer userState) throws CommonException {
-
         EnableStatusEnum enableStatusEnum = EnableStatusEnum.getStatus(userState);
-
         if (enableStatusEnum == null) {
             throw new CommonException(ResponseCodeEnum.PARAMS_ERROR, "状态码不正确");
         }
-        Optional<User> optional = userRepository.findById(userId);
-        if (!optional.isPresent()) {
-            throw new CommonException(ResponseCodeEnum.PARAMS_ERROR, "用户不存在");
-        }
-        User user = optional.get();
+        User user = userComponent.getUser(userId);
         user.setStatus(enableStatusEnum.getCode());
         userRepository.save(user);
+    }
+
+    @Override
+    public void updateUserAuth(Long userId, Integer authState) throws CommonException {
+
+        AuthTypeEnum authTypeEnum = AuthTypeEnum.getStatus(authState);
+        if (authTypeEnum == null) {
+            throw new CommonException(ResponseCodeEnum.PARAMS_ERROR, "状态码不正确");
+        }
+        User user = userComponent.getUser(userId);
+        user.setAuthStatus(authTypeEnum.getCode());
+
+        log.info("更新用户 {}", user);
+        userRepository.save(user);
+    }
+
+    @Override
+    public UserDetailResponse detail(Long userId) throws CommonException {
+
+       User user =  userComponent.getUser(userId);
+       /**
+        * 查询角色ID
+        * */
+       List<UserRoles> userRolesList = userRolesRepository.getAllByUserId(userId);
+
+       UserDetailResponse userDetailResponse = new UserDetailResponse();
+       userDetailResponse.setId(userId);
+       userDetailResponse.setMobile(user.getMobile());
+       if (userRolesList != null) {
+           userDetailResponse.setRoles(userRolesList.stream().map(UserRoles::getRolesId).collect(Collectors.toList()));
+       }
+       return userDetailResponse;
+    }
+
+    @Override
+    @Transactional(rollbackOn = Exception.class)
+    public void updateUserInfo(UserEditRequest userEditRequest) throws CommonException {
+
+        User user =  userComponent.getUser(userEditRequest.getId());
+        /**
+         * 检测手机号是否存在
+         * */
+        if (!StringUtils.isEmpty(userEditRequest.getMobile())) {
+            log.info("查询数据 {}, {}", user.getClientId(), userEditRequest.getMobile());
+            User existUser = userRepository.getUserByClientIdAndMobile(user.getClientId(), userEditRequest.getMobile());
+            if (existUser != null && !existUser.getUserName().equals(user.getUserName())) {
+                throw new CommonException(ResponseCodeEnum.ERROR, "手机号已存在");
+            }
+            user.setMobile(userEditRequest.getMobile());
+        }
+        if (!StringUtils.isEmpty(userEditRequest.getPassword())) {
+            String password = passwordEncoder.encode(userEditRequest.getPassword());
+            user.setPassword(password);
+        }
+        userRolesRepository.deleteAllByUserId(userEditRequest.getId());
+        saveRolesForUser(userEditRequest.getId(), userEditRequest.getRoles());
+    }
+
+
+    private void saveRolesForUser(Long userId, List<Long> rolesList) {
+        List<UserRoles> userRolesTempList = rolesList.stream().map(rolesId -> {
+            UserRoles userRolesTemp = new UserRoles();
+            userRolesTemp.setUserId(userId);
+            userRolesTemp.setRolesId(rolesId);
+            return userRolesTemp;
+        }).collect(Collectors.toList());
+        userRolesRepository.saveAll(userRolesTempList);
     }
 }

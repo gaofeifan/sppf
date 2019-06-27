@@ -8,17 +8,18 @@ import java.util.List;
 
 /**
  * @Author: alec
- * Description:
- * @date: 16:44 2019-06-04
+ * Description: 编辑用户详情
+ * @date: 18:16 2019-06-26
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserInfoResponse {
+public class UserDetailResponse {
 
-    private Long userId;
+    private Long id;
 
-    private String username;
+    private String mobile;
 
-    private List<String> menu;
+    private List<Long> roles;
+
 }

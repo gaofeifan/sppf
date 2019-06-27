@@ -26,4 +26,11 @@ public interface UserRolesRepository extends JpaRepository<UserRoles, Long> {
      * @return 关联数据集合
      * */
     List<UserRoles> getAllByUserId(Long userId);
+
+
+    /**
+     * 根据用户ID删除角色
+     * @param userId 用户ID
+     * */
+    void deleteAllByUserId(Long userId);
 }

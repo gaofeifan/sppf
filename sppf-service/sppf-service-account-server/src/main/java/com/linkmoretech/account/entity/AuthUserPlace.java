@@ -25,4 +25,6 @@ public class AuthUserPlace {
     private Long authDataId;
 
     private String placeNo;
+
+    private Long placeId;
 }

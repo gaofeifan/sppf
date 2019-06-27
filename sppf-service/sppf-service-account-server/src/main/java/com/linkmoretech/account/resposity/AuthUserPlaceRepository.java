@@ -27,4 +27,10 @@ public interface AuthUserPlaceRepository extends JpaRepository<AuthUserPlace, Lo
      * @return 授权车位信息
      * */
     List<AuthUserPlace> getAllByAuthDataId(Long authId);
+
+    /**
+     * 删除车场下车位数据权限
+     * @param authId 车场授权ID
+     * */
+    void deleteAllByAuthDataId(Long authId);
 }

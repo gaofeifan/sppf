@@ -7,6 +7,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 车区服务启动类
  * @author Alec
@@ -16,6 +18,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @EnableFeignClients(basePackages = "com.linkmoretech")
 @EnableCircuitBreaker
+@Slf4j
 @ComponentScan(basePackages = "co1m.linkmoretech")
 public class ParkingServerApplication {
 
