@@ -27,7 +27,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping(value = "user")
-@Api(tags = "用户API", value = "User" )
+@Api(tags = "用户信息", value = "User" )
 @Slf4j
 public class UserInfoController {
 
