@@ -27,14 +27,17 @@ import java.util.Map.Entry;
 @Slf4j
 public class LockServiceImpl implements LockService {
 
+	private static final LockServiceImpl lockService = new LockServiceImpl();
+	private LockServiceImpl() {
+		proToTypeMap.put("appId", lockProperties.getAppId());
+		lockProperties = new LockProperties();
+		lockProperties.setAppId("95b94e076c8546db9f329bbd8c0f2030");
+		lockProperties.setAppSecret("b36441d95239bc919eac75aa18c0c54b");
+		lockProperties.setLinkemoreLockUrl("http://open-api.linkmoreparking.cn");
+	}
+
 	private static LockProperties lockProperties  = null;
 //	private LockProperties lockProperties  = SpringUtil.getBean(LockProperties.class);
-static {
-	lockProperties = new LockProperties();
-	lockProperties.setAppId("95b94e076c8546db9f329bbd8c0f2030");
-	lockProperties.setAppSecret("b36441d95239bc919eac75aa18c0c54b");
-	lockProperties.setLinkemoreLockUrl("http://open-api.linkmoreparking.cn");
-}
 	/*{
 		InputStream inputStream = this.getClass().getResourceAsStream("bootstrap.yml");
 		Properties properties = new Properties();
@@ -58,10 +61,7 @@ static {
 //		private static LockServiceImpl lockService = new LockServiceImpl();
 //	}
 	private Map<String,Object> proToTypeMap = new TreeMap<String,Object>();
-
-	{
-		proToTypeMap.put("appId", lockProperties.getAppId());
-	}
+	
 	private void init(){
 		proToTypeMap.put("timestamp",getTime());
 	}
@@ -501,6 +501,9 @@ static {
 		return lockMes.getStatus();
 	}
 	
+	public static LockService getInstance() {
+		return lockService;
+	}
 }
 
 class SignTool{

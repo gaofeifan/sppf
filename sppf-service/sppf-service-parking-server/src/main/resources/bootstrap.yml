@@ -18,7 +18,7 @@ security:
   oauth2:
     resource:
       id: resource
-      user-info-uri: http://localhost:8086/principal
+      user-info-uri: http://192.168.2.2:8086/principal
       prefer-token-info: false
 
 resource:

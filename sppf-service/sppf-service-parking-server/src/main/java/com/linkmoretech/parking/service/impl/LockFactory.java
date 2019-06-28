@@ -1,5 +1,7 @@
 package com.linkmoretech.parking.service.impl;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 import com.linkmoretech.parking.service.LockService;
 
 /**
@@ -14,25 +16,24 @@ public class LockFactory {
 
     public static final int MANAGE = 0;
     public static final int USER = 1;
-
+    private LockFactory() {}
     public static LockFactory getInstance(){
-        return LazyLockFactory.lockFactory;
+    	LockFactory lockFactory = LazyLockFactory.lockFactory;
+    	LazyLockFactory.init();
+        return lockFactory;
     }
+    
     /**
      * @Author GFF
      * @Description  server 0管理版  type  操作的状态（0直连 1 极光 2 socket） lock 是否使用分布式锁控制
      * @Date 2019/6/17
      */
     public LockService getLockService(int server,int type ,boolean isLock){
-        LockService lockService = new LockServiceImpl();
-        if(isLock){
+    	LockService lockService = LazyLockFactory.chm.get(server);
+    	if(isLock){
             lockService = new LockLockDecorator(lockService);
         }
-        if(server == 0){
-            lockService = new ManageLockDecorator(lockService);
-        }else if(server == 1){
-        }
-        lockService = new PushMessageDecorator(lockService);
+        lockService = new PushMessageDecorator(lockService,type);
         return lockService;
     }
 
@@ -41,7 +42,18 @@ public class LockFactory {
     }
 
 
+
+    /**
+     * @author   GFF
+     * @Date     2019年6月28日
+     * @Version  v2.0
+     */
     private static class LazyLockFactory{
         private static final LockFactory lockFactory = new LockFactory();
+        private static final ConcurrentHashMap<Integer, LockService> chm = new ConcurrentHashMap<>();
+        private static void init() {
+        	chm.put(MANAGE, new ManageLockDecorator(LockServiceImpl.getInstance()));
+        	chm.put(USER, new UserLockDecorator(LockServiceImpl.getInstance()));
+        }
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 import lombok.extern.slf4j.Slf4j;
 
+
 /**
  * 车区服务启动类
  * @author Alec

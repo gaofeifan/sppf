@@ -12,7 +12,7 @@ import java.util.Map;
  * @Date     2019年1月17日
  * @Version  v2.0
  */
-public class LockDecorator implements LockService{
+public abstract class LockDecorator implements LockService{
 
 	private LockService lockService;
 
