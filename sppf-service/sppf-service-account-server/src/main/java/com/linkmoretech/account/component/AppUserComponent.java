@@ -50,14 +50,14 @@ public class AppUserComponent {
 
         return optional.get();
     }
-    public AppUserDetail getUserDetail (AppUser appUser) {
+    public AppUserDetail getUserDetail (AppUser appUser, boolean isNewUser) {
         if (appUser == null) {
             return null;
         }
         AppUserDetail appUserDetail = new AppUserDetail(appUser.getUsername(),
                 appUser.getPassword(),
                 appUser.getUserId(),
-                ClientTypeEnum.PERSONAL.getCode(), true);
+                ClientTypeEnum.PERSONAL.getCode(), isNewUser);
         return appUserDetail;
     }
 }

@@ -28,6 +28,11 @@ public interface ParamsConstruct {
    String REGISTER_APP = "/app/register";
 
    /**
+    * 个人版登录
+    * */
+   String LOGIN_PERSION = "/app/login";
+
+   /**
     * json登录不需要跳转至登录界面，需要提示未登录信息，默认提示地址
     * */
    String NO_LOGIN_TIP_INFO = "/no-login";

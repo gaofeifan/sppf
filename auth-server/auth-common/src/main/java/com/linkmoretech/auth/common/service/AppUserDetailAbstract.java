@@ -13,4 +13,6 @@ public abstract class AppUserDetailAbstract implements UserDetailsService {
 
     public abstract UserDetails register(String mobile, Integer type) throws RegisterException;
 
+    public abstract UserDetails login(String mobile, Integer type) throws RegisterException;
+
 }

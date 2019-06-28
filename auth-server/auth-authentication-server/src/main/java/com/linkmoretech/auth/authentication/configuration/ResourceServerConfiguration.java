@@ -4,6 +4,7 @@ import com.linkmoretech.auth.authentication.authentication.ValidateFailureHandle
 import com.linkmoretech.auth.authentication.authentication.ValidateSuccessHandler;
 import com.linkmoretech.auth.authentication.authentication.account.AccAuthenticationManagerConfig;
 import com.linkmoretech.auth.authentication.authentication.sms.mobile.SmsCodeFilter;
+import com.linkmoretech.auth.authentication.authentication.sms.personal.AppLoginAuthenticationConfig;
 import com.linkmoretech.auth.authentication.authentication.sms.personal.AppRegisterAuthenticationConfig;
 import com.linkmoretech.auth.authentication.authentication.sms.manager.SmsAuthenticationManagerConfig;
 import com.linkmoretech.auth.authentication.component.ValidateCodeManage;
@@ -42,6 +43,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     @Autowired
     AccAuthenticationManagerConfig accAuthenticationManagerConfig;
 
+    @Autowired
+    AppLoginAuthenticationConfig appLoginAuthenticationConfig;
+
     /**
      * 用户注册过滤器
      * */
@@ -71,6 +75,8 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
             .apply(accAuthenticationManagerConfig)
             .and()
             .apply(smsAuthenticationManagerConfig)
+            .and()
+            .apply(appLoginAuthenticationConfig)
             .and()
             .apply(appRegisterAuthenticationConfig)
             .and()

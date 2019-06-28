@@ -53,7 +53,7 @@ public class UserDetailAccountService extends UserDetailAccountAbstract {
         UserDetails userDetails;
         if (clientId.equals(ClientTypeEnum.PERSONAL.getCode())) {
             AppUser appUser = appUserRepository.getByMobile(username);
-            userDetails = appUserComponent.getUserDetail(appUser);
+            userDetails = appUserComponent.getUserDetail(appUser, false);
         } else {
             User user = userRepository.getUserByClientIdAndUserName(clientId, username);
             userDetails = accountComponent.getUserDetail(user);

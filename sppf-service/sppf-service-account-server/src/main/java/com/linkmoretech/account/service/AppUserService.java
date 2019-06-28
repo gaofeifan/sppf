@@ -34,5 +34,10 @@ public interface AppUserService {
      * */
     void setPassword(Long userId, String password) throws CommonException;
 
+    /**
+     * 获取用户
+     * @return 返回用户信息
+     * */
+    AppUser getUser(String mobile);
 
 }

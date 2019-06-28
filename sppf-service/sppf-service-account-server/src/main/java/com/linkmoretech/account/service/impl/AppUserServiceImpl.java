@@ -88,4 +88,10 @@ public class AppUserServiceImpl implements AppUserService {
 
         appUserRepository.save(appUser);
     }
+
+    @Override
+    public AppUser getUser(String mobile) {
+        AppUser appUser = appUserRepository.getByMobile(mobile);
+        return appUser;
+    }
 }
