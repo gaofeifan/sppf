@@ -29,6 +29,8 @@ import com.linkmoretech.parking.vo.request.CarPlaceEditRequest;
 import com.linkmoretech.parking.vo.request.CarPlaceListRequest;
 import com.linkmoretech.parking.vo.response.*;
 import lombok.extern.slf4j.Slf4j;
+
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -419,6 +421,7 @@ public class CarPlaceServiceImpl implements CarPlaceService {
             } catch (CommonException e) {
                 e.printStackTrace();
             }
+        }
 
             List<CarPlace> list = this.carPlaceRepository.findAll(new Specification<CarPlace>() {
                 @Override
@@ -430,8 +433,9 @@ public class CarPlaceServiceImpl implements CarPlaceService {
                             list.add(cb.or(cb.between(root.get("id"), input.getHeadId().get(i), input.getEndId().get(i))));
                         }
                     }
-                    Predicate[] predicates = new Predicate[list.size()];
-                    return cb.and(list.toArray(predicates));
+                    Predicate[] p = new Predicate[list.size()];
+                    query.where(cb.and(list.toArray(p)));
+                    return query.getRestriction();
                 }
             });
             for (CarPlace place: list ) {
@@ -442,8 +446,6 @@ public class CarPlaceServiceImpl implements CarPlaceService {
                 output.setParkName(place.getParkName());
                 outputs.add(output);
             }
-            return outputs;
-        }
         return outputs;
     }
 }
