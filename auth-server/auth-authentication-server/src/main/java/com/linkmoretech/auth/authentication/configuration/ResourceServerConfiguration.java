@@ -7,20 +7,16 @@ import com.linkmoretech.auth.authentication.authentication.sms.mobile.SmsCodeFil
 import com.linkmoretech.auth.authentication.authentication.sms.personal.SmsAuthenticationPersonalConfig;
 import com.linkmoretech.auth.authentication.authentication.sms.manager.SmsAuthenticationManagerConfig;
 import com.linkmoretech.auth.authentication.component.ValidateCodeManage;
-import com.linkmoretech.auth.authentication.construct.ParamsConstruct;
+import com.linkmoretech.auth.common.construct.ParamsConstruct;
 import com.linkmoretech.auth.common.configuration.OauthResourceConfig;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @Author: alec
@@ -81,7 +77,11 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 ParamsConstruct.LOGIN_MANAGE_MOBILE,
                 ParamsConstruct.SEND_SMS,
                 ParamsConstruct.NO_LOGIN_TIP_INFO,
-                ParamsConstruct.LOGIN_MOBILE_PERSONAL
+                ParamsConstruct.LOGIN_MOBILE_PERSONAL,
+                ParamsConstruct.CSS,
+                ParamsConstruct.JS,
+                ParamsConstruct.DOC,
+                ParamsConstruct.SWAGGER_URL
             ).permitAll()    //对此链接不拦截
             .anyRequest() // 所有请求
             .authenticated() //需要身份认证

@@ -3,12 +3,11 @@ package com.linkmoretech.auth.authentication.authentication.sms.mobile;
 import com.linkmoretech.auth.authentication.authentication.MultiReadHttpServletRequest;
 import com.linkmoretech.auth.authentication.authentication.ValidateFailureHandler;
 import com.linkmoretech.auth.authentication.component.ValidateCodeManage;
-import com.linkmoretech.auth.authentication.construct.ParamsConstruct;
+import com.linkmoretech.auth.common.construct.ParamsConstruct;
 import com.linkmoretech.auth.common.util.HttpRequestBodyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 

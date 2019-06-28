@@ -22,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "plate")
-@Api(tags = "用户车牌号API", value = "LicensePlate" )
+@Api(tags = "用户车牌", value = "LicensePlate" )
 public class LicensePlateController {
 
     @Autowired

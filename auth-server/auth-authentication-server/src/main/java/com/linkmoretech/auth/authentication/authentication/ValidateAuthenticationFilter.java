@@ -1,6 +1,6 @@
 package com.linkmoretech.auth.authentication.authentication;
 
-import com.linkmoretech.auth.authentication.construct.ParamsConstruct;
+import com.linkmoretech.auth.common.construct.ParamsConstruct;
 import com.linkmoretech.auth.common.util.HttpRequestBodyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AbstractAuthenticationToken;

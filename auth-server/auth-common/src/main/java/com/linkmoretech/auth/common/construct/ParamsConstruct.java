@@ -1,4 +1,4 @@
-package com.linkmoretech.auth.authentication.construct;
+package com.linkmoretech.auth.common.construct;
 
 /**
  * @Author: alec
