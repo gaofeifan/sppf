@@ -11,6 +11,19 @@
 
     <groupId>com.linkmoretech</groupId>
     <artifactId>sppf-service-order-client</artifactId>
-
+	
+	<dependencies>
+        <dependency>
+            <groupId>com.linkmoretech</groupId>
+            <artifactId>sppf-service-order-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-openfeign-core</artifactId>
+        </dependency>
+    </dependencies>
+	
 
 </project>
