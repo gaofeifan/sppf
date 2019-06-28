@@ -2,6 +2,7 @@ package com.linkmoretech.auth.authentication.authentication.sms.manager;
 
 import com.linkmoretech.auth.authentication.authentication.ValidateAuthenticationFilter;
 import com.linkmoretech.auth.common.construct.ParamsConstruct;
+import com.linkmoretech.auth.common.token.SmsAuthenticationManagerToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -22,11 +23,9 @@ import java.io.IOException;
 @Slf4j
 public class SmsAuthenticationManagerFilter extends ValidateAuthenticationFilter {
 
-
-
     public SmsAuthenticationManagerFilter() {
         super(new AntPathRequestMatcher(ParamsConstruct.LOGIN_MANAGE_MOBILE, HttpMethod.POST.name()));
-        log.info("管理版手机号登录过滤器 拦截 {}", ParamsConstruct.LOGIN_MANAGE_MOBILE);
+        log.info("管理版 手机短信验证码登录过滤器 拦截 {}", ParamsConstruct.LOGIN_MANAGE_MOBILE);
     }
 
     @Override

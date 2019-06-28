@@ -74,16 +74,15 @@ public class SmsCodeFilter extends OncePerRequestFilter implements InitializingB
 
     @Override
     public void afterPropertiesSet()  {
-        log.info("初始化需要拦截请求URL");
         urls.add(ParamsConstruct.LOGIN_MANAGE_MOBILE);
         urls.add(ParamsConstruct.LOGIN_MOBILE_PERSONAL);
     }
 
     private void redisValidate( MultiReadHttpServletRequest multiReadHttpServletRequest) throws  ValidateCodeException {
-        Map<String, String> loginParams = HttpRequestBodyUtil.getHttpBody(multiReadHttpServletRequest);
-        String clientId = loginParams.get(ParamsConstruct.CLIENT_ID);
-        String mobile = loginParams.get(ParamsConstruct.MOBILE_PARAMS);
-        String code = loginParams.get(CODE_FIELD);
+        Map<String, Object> loginParams = HttpRequestBodyUtil.getHttpBody(multiReadHttpServletRequest);
+        String clientId = (String)loginParams.get(ParamsConstruct.CLIENT_ID);
+        String mobile = (String)loginParams.get(ParamsConstruct.MOBILE_PARAMS);
+        String code = (String)loginParams.get(CODE_FIELD);
         String validateCode =  validateCodeManage.findValidateCode(clientId, mobile);
         log.info("code {} - validate {} ", code, validateCode);
         if (StringUtils.isEmpty(validateCode)) {

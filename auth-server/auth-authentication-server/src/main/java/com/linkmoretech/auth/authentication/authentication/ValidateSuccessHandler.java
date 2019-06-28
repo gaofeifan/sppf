@@ -1,6 +1,7 @@
 package com.linkmoretech.auth.authentication.authentication;
 
 import com.alibaba.fastjson.JSONObject;
+import com.linkmoretech.auth.common.util.AuthenticationTokenAnalysis;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -83,6 +84,8 @@ public class ValidateSuccessHandler implements AuthenticationSuccessHandler {
         data.put("access_token", oAuth2AccessToken.getValue());
         data.put("refresh_token", oAuth2AccessToken.getRefreshToken());
         data.put("expiration", oAuth2AccessToken.getExpiration());
+        AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(oAuth2Authentication);
+        data.put("info", authenticationTokenAnalysis);
         loginResponse.setData(data);
         httpServletResponse.setStatus(HttpStatus.OK.value());
         httpServletResponse.setContentType("application/json;charset=utf-8");

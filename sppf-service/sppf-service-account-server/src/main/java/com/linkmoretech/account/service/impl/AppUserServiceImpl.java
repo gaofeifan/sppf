@@ -8,7 +8,9 @@ import com.linkmoretech.account.service.AppUserService;
 import com.linkmoretech.account.vo.request.AppUserRegisterRequest;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -27,8 +29,11 @@ public class AppUserServiceImpl implements AppUserService {
     @Autowired
     AppUserComponent appUserComponent;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Override
-    public void register(AppUserRegisterRequest appUserRegisterRequest) throws CommonException {
+    public AppUser register(AppUserRegisterRequest appUserRegisterRequest) throws CommonException {
 
         UserSourceEnum userSourceEnum = UserSourceEnum.getStatus(appUserRegisterRequest.getUserSource());
 
@@ -47,16 +52,19 @@ public class AppUserServiceImpl implements AppUserService {
         /**
          * 创建用户
          * */
-
         AppUser appUser = new AppUser();
         appUser.setMobile(appUserRegisterRequest.getMobile());
         appUser.setUserId(appUserComponent.createUserId());
+        appUser.setUsername(appUserRegisterRequest.getMobile());
         appUser.setUserSource(userSourceEnum.getCode());
+        int len = 10;
+        appUser.setPassword(RandomStringUtils.randomNumeric(len));
         appUser.setCreateTime(new Date());
-        appUserRepository.save(appUser);
+        AppUser resultUser =  appUserRepository.save(appUser);
         /**
          * 创建完成用户后调用用户服务将帐号信息同步至用户服务
          * */
+        return resultUser;
     }
 
     @Override
@@ -70,7 +78,14 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public void setPassword() {
+    public void setPassword(Long userId, String password) {
 
+        AppUser appUser = appUserComponent.getAppUserById(userId);
+
+        String newPassword = passwordEncoder.encode(password);
+
+        appUser.setPassword(newPassword);
+
+        appUserRepository.save(appUser);
     }
 }

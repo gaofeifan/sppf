@@ -17,4 +17,6 @@ public class AppUserRegisterRequest {
     private String mobile;
 
     private Integer userSource;
+
+    private String validateCode;
 }

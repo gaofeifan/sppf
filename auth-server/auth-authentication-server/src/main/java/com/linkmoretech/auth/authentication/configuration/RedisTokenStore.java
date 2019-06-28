@@ -42,18 +42,6 @@ public class RedisTokenStore implements TokenStore {
     private RedisTokenStoreSerializationStrategy serializationStrategy = new JdkSerializationStrategy();
 
 
-    public void setAuthenticationKeyGenerator(AuthenticationKeyGenerator authenticationKeyGenerator) {
-        this.authenticationKeyGenerator = authenticationKeyGenerator;
-    }
-
-    public void setSerializationStrategy(RedisTokenStoreSerializationStrategy serializationStrategy) {
-        this.serializationStrategy = serializationStrategy;
-    }
-
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
-    }
-
     private RedisConnection getConnection() {
         return this.connectionFactory.getConnection();
     }
@@ -67,15 +55,15 @@ public class RedisTokenStore implements TokenStore {
     }
 
     private OAuth2AccessToken deserializeAccessToken(byte[] bytes) {
-        return (OAuth2AccessToken)this.serializationStrategy.deserialize(bytes, OAuth2AccessToken.class);
+        return this.serializationStrategy.deserialize(bytes, OAuth2AccessToken.class);
     }
 
     private OAuth2Authentication deserializeAuthentication(byte[] bytes) {
-        return (OAuth2Authentication)this.serializationStrategy.deserialize(bytes, OAuth2Authentication.class);
+        return this.serializationStrategy.deserialize(bytes, OAuth2Authentication.class);
     }
 
     private OAuth2RefreshToken deserializeRefreshToken(byte[] bytes) {
-        return (OAuth2RefreshToken)this.serializationStrategy.deserialize(bytes, OAuth2RefreshToken.class);
+        return this.serializationStrategy.deserialize(bytes, OAuth2RefreshToken.class);
     }
 
     private byte[] serialize(String string) {
@@ -90,7 +78,7 @@ public class RedisTokenStore implements TokenStore {
     public OAuth2AccessToken getAccessToken(OAuth2Authentication authentication) {
         String key = this.authenticationKeyGenerator.extractKey(authentication);
         byte[] serializedKey = this.serializeKey(AUTH_TO_ACCESS + key);
-        byte[] bytes = null;
+        byte[] bytes;
         RedisConnection conn = this.getConnection();
         try {
             bytes = conn.get(serializedKey);
@@ -114,7 +102,7 @@ public class RedisTokenStore implements TokenStore {
 
     @Override
     public OAuth2Authentication readAuthentication(String token) {
-        byte[] bytes = null;
+        byte[] bytes;
         RedisConnection conn = this.getConnection();
         try {
             bytes = conn.get(this.serializeKey("auth:" + token));

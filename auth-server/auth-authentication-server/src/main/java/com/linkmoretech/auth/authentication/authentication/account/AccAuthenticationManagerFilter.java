@@ -2,6 +2,7 @@ package com.linkmoretech.auth.authentication.authentication.account;
 
 import com.linkmoretech.auth.authentication.authentication.ValidateAuthenticationFilter;
 import com.linkmoretech.auth.common.construct.ParamsConstruct;
+import com.linkmoretech.auth.common.token.AccAuthenticationManagerToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -30,6 +31,7 @@ public class AccAuthenticationManagerFilter extends ValidateAuthenticationFilter
 
     protected AccAuthenticationManagerFilter() {
         super(new AntPathRequestMatcher(ParamsConstruct.LOGIN_CUSTOMER, HttpMethod.POST.name()));
+        log.info("大后台，小后台，管理版 帐号密码登录过滤器  拦截 {}", ParamsConstruct.LOGIN_CUSTOMER);
     }
 
     @Override
@@ -38,7 +40,7 @@ public class AccAuthenticationManagerFilter extends ValidateAuthenticationFilter
         if (this.postOnly && !request.getMethod().equals("POST")) {
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         }
-        Map<String, String> loginParams = getLoginParams(request);
+        Map<String, Object> loginParams = getLoginParams(request);
         String clientId = getTokenValue(loginParams, ParamsConstruct.CLIENT_ID);
         String username = getTokenValue(loginParams, usernameParams);
         String password = getTokenValue(loginParams, passwordParams);

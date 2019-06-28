@@ -1,8 +1,18 @@
 package com.linkmoretech.account.component;
 
+import com.linkmoretech.account.entity.AppUser;
+import com.linkmoretech.account.enums.ClientTypeEnum;
+import com.linkmoretech.account.resposity.AppUserRepository;
+import com.linkmoretech.auth.common.bean.AccountUserDetail;
+import com.linkmoretech.auth.common.bean.AppUserDetail;
+import com.linkmoretech.common.enums.ResponseCodeEnum;
+import com.linkmoretech.common.exception.CommonException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * @Author: alec
@@ -12,15 +22,42 @@ import org.springframework.stereotype.Component;
 @Component
 public class AppUserComponent {
 
-    private final Integer STEP = 3;
-
-    private final String USER_KEY = "app_user_id";
-
     @Autowired
     StringRedisTemplate stringRedisTemplate;
 
+    @Autowired
+    AppUserRepository appUserRepository;
+
     public Long createUserId() {
-        Long id = stringRedisTemplate.opsForValue().increment(USER_KEY, STEP);
+        String userKey = "app_user_id";
+        int step = 3;
+        Long id = stringRedisTemplate.opsForValue().increment(userKey, step);
         return id;
+    }
+
+
+    public AppUser getAppUserById(Long userId) {
+
+        Optional<AppUser> optional = appUserRepository.findById(userId);
+
+        if (!optional.isPresent()) {
+            try {
+                throw new CommonException(ResponseCodeEnum.ERROR, "用户不存在");
+            } catch (CommonException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return optional.get();
+    }
+    public AppUserDetail getUserDetail (AppUser appUser) {
+        if (appUser == null) {
+            return null;
+        }
+        AppUserDetail appUserDetail = new AppUserDetail(appUser.getUsername(),
+                appUser.getPassword(),
+                appUser.getUserId(),
+                ClientTypeEnum.PERSONAL.getCode(), true);
+        return appUserDetail;
     }
 }

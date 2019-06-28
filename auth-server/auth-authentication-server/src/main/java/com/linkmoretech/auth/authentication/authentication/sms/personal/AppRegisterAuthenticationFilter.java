@@ -2,6 +2,7 @@ package com.linkmoretech.auth.authentication.authentication.sms.personal;
 
 import com.linkmoretech.auth.authentication.authentication.ValidateAuthenticationFilter;
 import com.linkmoretech.auth.common.construct.ParamsConstruct;
+import com.linkmoretech.auth.common.token.AppAuthenticationToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
@@ -16,16 +17,16 @@ import java.io.IOException;
 
 /**
  * @Author: alec
- * Description: 管理版短信登录过滤器
- * @date: 15:28 2019-06-17
+ * Description: APP 用户注册拦截过滤器
+ * @date: 10:41 2019-06-28
  */
 @Slf4j
-public class SmsAuthenticationPersonalFilter extends ValidateAuthenticationFilter {
+public class AppRegisterAuthenticationFilter extends ValidateAuthenticationFilter {
 
 
-    protected SmsAuthenticationPersonalFilter() {
-        super(new AntPathRequestMatcher(ParamsConstruct.LOGIN_MOBILE_PERSONAL, HttpMethod.POST.name()));
-        log.info("个人版短信登录过滤器", ParamsConstruct.LOGIN_MOBILE_PERSONAL);
+    protected AppRegisterAuthenticationFilter() {
+        super(new AntPathRequestMatcher(ParamsConstruct.REGISTER_APP, HttpMethod.POST.name()));
+        log.info("个人版手机号注册过滤器 拦截 {}", ParamsConstruct.REGISTER_APP);
     }
 
     @Override
@@ -35,8 +36,8 @@ public class SmsAuthenticationPersonalFilter extends ValidateAuthenticationFilte
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse httpServletResponse) throws AuthenticationException, IOException, ServletException {
-        String[] params = this.attempt(request);
-        SmsAuthenticationPersonalToken authRequest = new SmsAuthenticationPersonalToken(params[1], params[0]);
+        Object[] params = this.attemptApp(request);
+        AppAuthenticationToken authRequest = new AppAuthenticationToken(params[1], params[0]);
         this.setDetails(request, authRequest);
         return this.getAuthenticationManager().authenticate(authRequest);
     }

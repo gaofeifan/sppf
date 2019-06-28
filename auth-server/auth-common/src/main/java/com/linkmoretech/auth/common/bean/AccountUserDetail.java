@@ -25,6 +25,9 @@ public class AccountUserDetail extends User implements UserDetails {
     @Setter
     private String clientId;
 
+    @Getter
+    private Boolean register;
+
     public AccountUserDetail (String username, String password, boolean enable,
                               Collection<? extends GrantedAuthority> authorities,
                               Long userId, String clientId) {

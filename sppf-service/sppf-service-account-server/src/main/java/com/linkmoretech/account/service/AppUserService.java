@@ -1,5 +1,6 @@
 package com.linkmoretech.account.service;
 
+import com.linkmoretech.account.entity.AppUser;
 import com.linkmoretech.account.vo.request.AppUserRegisterRequest;
 import com.linkmoretech.common.exception.CommonException;
 
@@ -15,8 +16,9 @@ public interface AppUserService {
      * 用户注册
      * @param appUserRegisterRequest 用户注册参数
      * @throws CommonException 验证用户异常
+     * @return 返回已注册用户
      * */
-    void register(AppUserRegisterRequest appUserRegisterRequest) throws CommonException;
+    AppUser register(AppUserRegisterRequest appUserRegisterRequest) throws CommonException;
 
     /**
      * 验证注册用户手机号
@@ -27,8 +29,10 @@ public interface AppUserService {
 
     /**
      * 设置用户密码
+     * @param userId 用户ID
+     * @param password 用户密码
      * */
-    void setPassword();
+    void setPassword(Long userId, String password) throws CommonException;
 
 
 }

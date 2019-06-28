@@ -2,13 +2,13 @@ package com.linkmoretech.auth.authentication.authentication.account;
 
 import com.linkmoretech.auth.common.bean.AccountUserDetail;
 import com.linkmoretech.auth.common.service.UserDetailAccountAbstract;
+import com.linkmoretech.auth.common.token.AccAuthenticationManagerToken;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -33,7 +33,7 @@ public class AccAuthenticationManagerProvider implements AuthenticationProvider 
         String password = (String) token.getCredentials();
         AccountUserDetail userDetails = (AccountUserDetail)userDetailService.loadUserBy(clientId, username);
         if (userDetails == null) {
-            throw new InternalAuthenticationServiceException("无法获取用户登录信息");
+            throw new InternalAuthenticationServiceException("用户不存在");
         }
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new InternalAuthenticationServiceException("密码不正确");

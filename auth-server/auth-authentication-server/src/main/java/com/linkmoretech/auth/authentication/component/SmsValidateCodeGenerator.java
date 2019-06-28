@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 public class SmsValidateCodeGenerator implements ValidateCodeGenerator {
     private final Integer LEN = 4;
     private final Integer SECOND = 120;
+
     @Override
     public ValidateCode createValidateCode() {
         String code = RandomStringUtils.randomNumeric(LEN);

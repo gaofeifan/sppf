@@ -16,7 +16,7 @@ import java.util.Map;
 @Slf4j
 public class HttpRequestBodyUtil {
 
-    public static Map<String, String> getHttpBody(HttpServletRequest request) {
+    public static Map<String, Object> getHttpBody(HttpServletRequest request) {
         Map returnMap = new HashMap<>();
         try {
             BufferedReader br = request.getReader();

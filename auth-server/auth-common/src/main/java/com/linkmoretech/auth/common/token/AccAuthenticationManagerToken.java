@@ -1,15 +1,13 @@
-package com.linkmoretech.auth.authentication.authentication.account;
+package com.linkmoretech.auth.common.token;
 
-import com.linkmoretech.auth.common.configuration.SmsAuthenticationToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
-import java.util.Set;
 
 /**
  * @Author: alec
- * Description: 基于短信验证码登录验证token 重写
+ * Description: 基于帐号密码登录Token
  * @date: 15:28 2019-06-17
  */
 @Slf4j
