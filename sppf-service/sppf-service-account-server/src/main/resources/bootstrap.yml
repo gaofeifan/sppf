@@ -24,6 +24,7 @@ resource:
   ignores:
     - /account/auth-user/getParkData
     - /account/auth-user/getPlaceData
+    -
 
 swagger:
   contact:

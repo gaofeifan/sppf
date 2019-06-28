@@ -23,8 +23,8 @@ public class DocumentationConfig implements SwaggerResourcesProvider {
         /**
          * 添加下游服务doc
          * */
-        resources.add(swaggerResource("", "", ""));
-        return null;
+        resources.add(swaggerResource("账户服务", "/account/v2/api-docs", "1.0"));
+        return resources;
     }
 
     private SwaggerResource swaggerResource(String name, String location, String version) {

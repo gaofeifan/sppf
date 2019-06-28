@@ -6,7 +6,7 @@ import com.linkmoretech.account.service.SmsCodeService;
 import com.linkmoretech.auth.authentication.authentication.sms.mobile.ValidateCode;
 import com.linkmoretech.auth.authentication.component.SmsValidateCodeGenerator;
 import com.linkmoretech.auth.authentication.component.ValidateCodeManage;
-import com.linkmoretech.auth.authentication.construct.ParamsConstruct;
+import com.linkmoretech.auth.common.construct.ParamsConstruct;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
 import lombok.extern.slf4j.Slf4j;
