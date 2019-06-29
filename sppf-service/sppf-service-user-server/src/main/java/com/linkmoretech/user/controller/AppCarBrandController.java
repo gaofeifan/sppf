@@ -1,5 +1,6 @@
 package com.linkmoretech.user.controller;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,9 @@ import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,6 +41,7 @@ public class AppCarBrandController {
 	private  Logger log = LoggerFactory.getLogger(getClass());
 	@Resource
 	private RedisService redisService;
+	
 	//API域名
     private final static String HOST = "http://jisucxdq.market.alicloudapi.com";
 	//阿里云市场里，购买服务后的code
@@ -77,7 +82,9 @@ public class AppCarBrandController {
  	    Map<String, String> headers = new HashMap<String, String>();
  	    headers.put("Authorization", "APPCODE " + APP_CODE);
  	    Map<String, String> querys = new HashMap<String, String>();
-
+ 	    /*redisService.set("sppf:user", "{fullname: 奥迪A6L,id: 222,parentid:219}");
+ 	    Object obj = redisService.get("sppf:user");
+ 	    System.out.println(obj);*/
  	    /*try {
  	    	HttpResponse response = HttpUtils.doGet(HOST, CarBrandPath, Method, headers, querys);
  	    	String jsonString = EntityUtils.toString(response.getEntity());

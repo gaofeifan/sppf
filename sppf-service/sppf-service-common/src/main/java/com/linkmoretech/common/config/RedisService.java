@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * Service - Redis操作
- * @author liwenlong
+ * @author jiaohanbin
  * @version 2.0
  *
  */
