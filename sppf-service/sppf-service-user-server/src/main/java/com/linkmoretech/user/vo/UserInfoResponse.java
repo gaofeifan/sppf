@@ -52,6 +52,12 @@ public class UserInfoResponse {
 
     @ApiModelProperty(value = "OpenID")
     private String openId;
+    
+    @ApiModelProperty(value = "微信昵称")
+    private String wechatName;
+    
+    @ApiModelProperty(value = "微信头像")
+    private String wechatIcon;
 
     @ApiModelProperty(value = "车辆型号")
     private String vehicleType;

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.linkmoretech.common.annation.IgnoreResponseAdvice;
 import com.linkmoretech.order.common.response.ResFans;
 import com.linkmoretech.order.service.AppWechatService;
 
@@ -32,7 +34,8 @@ public class AppWechatController {
 	 * @return
 	 */
 	@GetMapping(value = "fans")
-	@ResponseBody
+	//@ResponseBody
+	@IgnoreResponseAdvice
 	public ResFans getFans(@RequestParam(value = "code") String code) {
 		log.info("code = {}",code);
 		return this.appWechatService.getWechatFans(code);

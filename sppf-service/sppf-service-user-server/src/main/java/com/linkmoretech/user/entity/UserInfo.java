@@ -33,18 +33,10 @@ public class UserInfo {
     private Integer userSex;
     /**用户来源*/
     private Integer userSource;
-    /**用户状态*/
+    /**用户状态1正常 2冻结*/
     private Integer userStatus;
     /**用户类型*/
     private Integer userType;
-    /**微信绑定状态*/
-    private Integer weChatBindState;
-    /**微信绑定账号*/
-    private String openId;
-    /**微信绑定时间*/
-    private Date weChatBindTime;
-    /**用户头像*/
-    private String userIcon;
     /**车辆型号*/
     private String vehicleType;
     /**车辆品牌*/
@@ -55,6 +47,16 @@ public class UserInfo {
     private Date createTime;
     /**修改时间*/
     private Date updateTime;
-
+    /**微信绑定状态*/
+    private Integer weChatBindState;
+    /**微信绑定账号*/
+    private String openId;
+    /**微信绑定时间*/
+    private Date weChatBindTime;
+    /**微信用户头像*/
+    private String wechatIcon;
+    /**微信昵称*/
+    private String wechatName;
+    
     private String updateBy;
 }
