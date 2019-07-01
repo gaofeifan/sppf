@@ -21,6 +21,17 @@ public interface ParamsConstruct {
     * */
    String LOGIN_MANAGE_MOBILE = "/login-mobile";
 
+
+   /**
+    * 个人版APP注册
+    * */
+   String REGISTER_APP = "/app/register";
+
+   /**
+    * 个人版登录
+    * */
+   String LOGIN_PERSION = "/app/login";
+
    /**
     * json登录不需要跳转至登录界面，需要提示未登录信息，默认提示地址
     * */
@@ -45,4 +56,6 @@ public interface ParamsConstruct {
    String CLIENT_ID = "clientId";
 
    String MOBILE_PARAMS = "mobile";
+
+   String SOURCE = "type";
 }

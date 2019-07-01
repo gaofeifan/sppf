@@ -1,5 +1,21 @@
 package com.linkmoretech.user.service.impl;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
 import com.linkmoretech.common.config.SnowflakeIdGenerator;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
@@ -17,19 +33,8 @@ import com.linkmoretech.user.service.UserInfoService;
 import com.linkmoretech.user.vo.UserEditRequest;
 import com.linkmoretech.user.vo.UserInfoResponse;
 import com.linkmoretech.user.vo.UserListResponse;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import javax.transaction.Transactional;
-import java.util.*;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @Author: alec
@@ -48,7 +53,11 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Autowired
     SnowflakeIdGenerator snowflakeIdGenerator;
-
+    
+    /*@Autowired
+    AppWechatClient appWechatClient;*/
+    /*@Autowired
+    AreaCityClient areaCityClient;*/
     @Override
     public UserInfoResponse findDetailByUserId(String userId) {
         UserInfo userInfo = userInfoRepository.getOne(userId);
@@ -148,15 +157,21 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public void bindWeChat(UserInfoInput userInfoInput) throws CommonException {
-        UserInfo userInfo = userInfoRepository.getOne(userInfoInput.getUserId());
+    public void bindWeChat(String userId, String code) throws CommonException {
+        UserInfo userInfo = userInfoRepository.getOne(userId);
         if (userInfo == null) {
             throw new CommonException(ResponseCodeEnum.ERROR, "用户数据未找到");
         }
+       /* ResFans fans = appWechatClient.getFans(code);
+        if(fans==null) {
+        	throw new CommonException(ResponseCodeEnum.ERROR, "微信已被绑定");
+		}
         userInfo.setWeChatBindState(1);
-        userInfo.setOpenId(userInfoInput.getOpenId());
+        userInfo.setOpenId(fans.getId());
         userInfo.setWeChatBindTime(new Date());
-        UserInfo returnUser = userInfoRepository.save(userInfo);
+        userInfo.setWechatName(fans.getNickname());
+        userInfo.setWechatIcon(fans.getHeadurl());*/
+        UserInfo returnUser = userInfoRepository.saveAndFlush(userInfo);
         log.info("bind weChat success openId {}, updateTime {}", returnUser.getOpenId(),returnUser.getUpdateTime());
     }
 
@@ -172,7 +187,9 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfo.setWeChatBindState(0);
         userInfo.setOpenId(null);
         userInfo.setWeChatBindTime(null);
-        UserInfo returnUser = userInfoRepository.save(userInfo);
+        userInfo.setWechatName(null);
+        userInfo.setWechatIcon(null);
+        UserInfo returnUser = userInfoRepository.saveAndFlush(userInfo);
         log.info("unbind weChat success openId {}, updateTime {}", returnUser.getOpenId(),returnUser.getUpdateTime());
     }
 

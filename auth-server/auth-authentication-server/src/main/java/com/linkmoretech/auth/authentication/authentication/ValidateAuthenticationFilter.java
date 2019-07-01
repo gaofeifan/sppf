@@ -27,12 +27,12 @@ public  abstract class ValidateAuthenticationFilter extends AbstractAuthenticati
 
     protected abstract void setDetails(HttpServletRequest request, AbstractAuthenticationToken authRequest);
 
-    protected Map<String, String> getLoginParams(HttpServletRequest request) {
+    protected Map<String, Object> getLoginParams(HttpServletRequest request) {
         return HttpRequestBodyUtil.getHttpBody(request);
     }
 
-    protected String getTokenValue(Map<String, String> paramsMap, String clientKey) {
-        String params =  paramsMap.get(clientKey);
+    protected String getTokenValue(Map<String, Object> paramsMap, String clientKey) {
+        String params =  (String) paramsMap.get(clientKey);
         if (params == null) {
             params = "";
         }
@@ -44,12 +44,24 @@ public  abstract class ValidateAuthenticationFilter extends AbstractAuthenticati
     }
 
     public String[] attempt (HttpServletRequest request){
+        Map<String, Object> loginParams = getLoginParamsMap(request);
+        String clientId = (String)loginParams.get(ParamsConstruct.CLIENT_ID);
+        String mobile = (String)loginParams.get(ParamsConstruct.MOBILE_PARAMS);
+        return new String[]{clientId, mobile};
+    }
+
+    public Object[] attemptApp (HttpServletRequest request){
+        Map<String, Object> loginParams = getLoginParamsMap(request);
+        String mobile = (String)loginParams.get(ParamsConstruct.MOBILE_PARAMS);
+        Integer type = (Integer) loginParams.get(ParamsConstruct.SOURCE);
+        return new Object[]{type, mobile};
+    }
+
+    public Map<String, Object> getLoginParamsMap (HttpServletRequest request) {
         if (this.postOnly && !request.getMethod().equals("POST")) {
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
         }
-        Map<String, String> loginParams = getLoginParams(request);
-        String clientId = loginParams.get(ParamsConstruct.CLIENT_ID);
-        String mobile = loginParams.get(ParamsConstruct.MOBILE_PARAMS);
-        return new String[]{clientId, mobile};
+        Map<String, Object> loginParams = getLoginParams(request);
+        return loginParams;
     }
 }

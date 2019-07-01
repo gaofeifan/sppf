@@ -14,7 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @EnableDiscoveryClient
 @SpringBootApplication
-@EnableFeignClients(basePackages = "com.linkmoretech.client")
+@EnableFeignClients(basePackages = "com.linkmoretech")
 @EnableCircuitBreaker
 @ComponentScan(value = "com.linkmoretech")
 public class UserServerApplication {

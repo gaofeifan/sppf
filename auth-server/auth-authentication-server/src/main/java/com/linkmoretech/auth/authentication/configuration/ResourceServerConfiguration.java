@@ -4,7 +4,8 @@ import com.linkmoretech.auth.authentication.authentication.ValidateFailureHandle
 import com.linkmoretech.auth.authentication.authentication.ValidateSuccessHandler;
 import com.linkmoretech.auth.authentication.authentication.account.AccAuthenticationManagerConfig;
 import com.linkmoretech.auth.authentication.authentication.sms.mobile.SmsCodeFilter;
-import com.linkmoretech.auth.authentication.authentication.sms.personal.SmsAuthenticationPersonalConfig;
+import com.linkmoretech.auth.authentication.authentication.sms.personal.AppLoginAuthenticationConfig;
+import com.linkmoretech.auth.authentication.authentication.sms.personal.AppRegisterAuthenticationConfig;
 import com.linkmoretech.auth.authentication.authentication.sms.manager.SmsAuthenticationManagerConfig;
 import com.linkmoretech.auth.authentication.component.ValidateCodeManage;
 import com.linkmoretech.auth.common.construct.ParamsConstruct;
@@ -40,10 +41,16 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     SmsAuthenticationManagerConfig smsAuthenticationManagerConfig;
 
     @Autowired
-    SmsAuthenticationPersonalConfig msAuthenticationPersonalConfig;
+    AccAuthenticationManagerConfig accAuthenticationManagerConfig;
 
     @Autowired
-    AccAuthenticationManagerConfig accAuthenticationManagerConfig;
+    AppLoginAuthenticationConfig appLoginAuthenticationConfig;
+
+    /**
+     * 用户注册过滤器
+     * */
+    @Autowired
+    AppRegisterAuthenticationConfig appRegisterAuthenticationConfig;
 
     @Autowired
     ValidateCodeManage validateCodeManage;
@@ -67,9 +74,11 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         http
             .apply(accAuthenticationManagerConfig)
             .and()
-            .apply(msAuthenticationPersonalConfig)
-            .and()
             .apply(smsAuthenticationManagerConfig)
+            .and()
+            .apply(appLoginAuthenticationConfig)
+            .and()
+            .apply(appRegisterAuthenticationConfig)
             .and()
             .authorizeRequests() // 授权设定
             .antMatchers(
@@ -77,7 +86,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 ParamsConstruct.LOGIN_MANAGE_MOBILE,
                 ParamsConstruct.SEND_SMS,
                 ParamsConstruct.NO_LOGIN_TIP_INFO,
-                ParamsConstruct.LOGIN_MOBILE_PERSONAL,
+                ParamsConstruct.REGISTER_APP,
                 ParamsConstruct.CSS,
                 ParamsConstruct.JS,
                 ParamsConstruct.DOC,

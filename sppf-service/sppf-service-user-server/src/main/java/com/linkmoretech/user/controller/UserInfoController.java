@@ -61,15 +61,30 @@ public class UserInfoController {
         userInfoService.editUser(userEditRequest);
     }
 
+    @ApiOperation(value = "启用用户信息", notes = "启用用户信息")
     @PutMapping(value = "enable")
     public void enable(@RequestParam(value = "userId") String userId, @RequestParam(value = "username") String username)
             throws CommonException {
         userInfoService.updateUserState(userId, username, UserStatusEnum.NORMAL.getCode());
     }
 
+    @ApiOperation(value = "冻结用户信息", notes = "冻结用户信息")
     @PutMapping(value = "disabled")
     public void disabled(@RequestParam(value = "userId") String userId, @RequestParam(value = "username") String username)
             throws CommonException {
         userInfoService.updateUserState(userId, username, UserStatusEnum.FREEZE.getCode());
     }
+    
+	@ApiOperation(value="解绑微信号",notes="解绑微信号")
+	@DeleteMapping(value = "remove-wechat")
+	public void removeWechat(@RequestParam(value = "userId") String userId) throws CommonException { 
+		this.userInfoService.unbindWeChat(userId);
+	}
+	
+	@ApiOperation(value="绑定微信号",notes="绑定微信号")
+	@PutMapping(value = "bind-wechat")
+	public void bindWechat(@RequestParam(value = "userId") String userId, @RequestParam("code")String code) throws CommonException{ 
+		this.userInfoService.bindWeChat(userId,code);
+	}
+    
 }

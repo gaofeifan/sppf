@@ -2,6 +2,7 @@ package com.linkmoretech.auth.authentication.authentication.sms.manager;
 
 import com.linkmoretech.auth.common.bean.AccountUserDetail;
 import com.linkmoretech.auth.common.service.UserDetailMobileAbstract;
+import com.linkmoretech.auth.common.token.SmsAuthenticationManagerToken;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;

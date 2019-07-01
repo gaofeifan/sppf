@@ -2,11 +2,7 @@ package com.linkmoretech.account.service.impl;
 
 import com.linkmoretech.account.component.AccountComponent;
 import com.linkmoretech.account.entity.User;
-import com.linkmoretech.account.resposity.ResourcesRepository;
-import com.linkmoretech.account.resposity.RolesResourcesRepository;
-import com.linkmoretech.account.resposity.UserRepository;
-import com.linkmoretech.account.resposity.UserRolesRepository;
-import com.linkmoretech.auth.common.bean.AccountUserDetail;
+import com.linkmoretech.account.resposity.*;
 import com.linkmoretech.auth.common.service.UserDetailMobileAbstract;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +46,7 @@ public class UserDetailMobileService extends UserDetailMobileAbstract {
     @Override
     public UserDetails loadUserBy(String clientId, String username) {
         User user = userRepository.getUserByClientIdAndMobile(clientId, username);
-        AccountUserDetail userDetails = accountComponent.getUserDetail(user);
+        UserDetails userDetails = accountComponent.getUserDetail(user);
         return userDetails;
     }
 }

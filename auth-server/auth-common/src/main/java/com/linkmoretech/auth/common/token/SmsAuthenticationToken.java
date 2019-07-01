@@ -1,4 +1,4 @@
-package com.linkmoretech.auth.common.configuration;
+package com.linkmoretech.auth.common.token;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;

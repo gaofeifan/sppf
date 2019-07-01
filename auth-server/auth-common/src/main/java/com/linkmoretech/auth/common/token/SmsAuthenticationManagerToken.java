@@ -1,11 +1,9 @@
-package com.linkmoretech.auth.authentication.authentication.sms.manager;
+package com.linkmoretech.auth.common.token;
 
-import com.linkmoretech.auth.common.configuration.SmsAuthenticationToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
-import java.util.Set;
 
 /**
  * @Author: alec

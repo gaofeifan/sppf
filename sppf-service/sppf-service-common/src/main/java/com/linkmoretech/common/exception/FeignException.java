@@ -8,5 +8,4 @@ package com.linkmoretech.common.exception;
  */
 public class FeignException extends Exception {
 
-
 }

@@ -28,15 +28,6 @@ public class AuthenticationServerConfiguration extends AuthorizationServerConfig
     @Autowired
     private RedisTokenStore redisTokenStore;
 
-   /* @Autowired
-    private TokenStore jwtTokenStore;*/
-
-   /* @Autowired
-    private JwtAccessTokenConverter jwtAccessTokenConverter;*/
-
-   /* @Autowired
-    TokenEnhancer jwtTokenEnchcer;*/
-
     @Autowired
     UserDetailAccountAbstract userDetailAccountAbstract;
 
@@ -50,18 +41,6 @@ public class AuthenticationServerConfiguration extends AuthorizationServerConfig
         endpoints.tokenStore(redisTokenStore)
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailAccountAbstract);
-
-        /*TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-        List<TokenEnhancer> tokenEnhancerList = new ArrayList<>();
-        tokenEnhancerList.add(jwtTokenEnchcer);
-        tokenEnhancerList.add(jwtAccessTokenConverter);
-        tokenEnhancerChain.setTokenEnhancers(tokenEnhancerList);
-
-        endpoints.tokenStore(jwtTokenStore)
-                .authenticationManager(authenticationManager)
-                .userDetailsService(userDetailsService)
-                .tokenEnhancer(tokenEnhancerChain)
-                .accessTokenConverter(jwtAccessTokenConverter);*/
     }
 
     /**
@@ -73,7 +52,7 @@ public class AuthenticationServerConfiguration extends AuthorizationServerConfig
     }
 
     /**
-     * 客户端配置
+     * 配置Oauth2 客户端认证
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
@@ -82,7 +61,7 @@ public class AuthenticationServerConfiguration extends AuthorizationServerConfig
                 .secret("linkmore2018")
                 .authorizedGrantTypes("refresh_token", "authorization_code", "password")
                 .accessTokenValiditySeconds(10000)
-                .refreshTokenValiditySeconds(2592000)
+                .refreshTokenValiditySeconds(10000)
                 .scopes("all");
     }
 }

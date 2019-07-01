@@ -55,7 +55,7 @@ public interface UserInfoService {
      * 绑定微信号
      * @param userInfoInput 绑定微信号参数
      * */
-    void bindWeChat(UserInfoInput userInfoInput) throws CommonException;
+    void bindWeChat(String code, String userId) throws CommonException;
 
     /**
      * 解绑微信
