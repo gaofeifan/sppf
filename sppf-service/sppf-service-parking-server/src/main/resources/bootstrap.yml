@@ -25,6 +25,10 @@ resource:
   ignores:
     - /account/auth-user/getParkData
     - /account/auth-user/getPlaceData
+    - /swagger-ui.html
+    - /swagger-resources/**
+    - /webjars/**
+    - /v2/**
 
 lock:
   app-secret: b36441d95239bc919eac75aa18c0c54b
