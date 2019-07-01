@@ -35,7 +35,6 @@ public class LockOperateServiceImpl implements LockOperateService {
     @Resource
     private CarPlaceService carPlaceService;
     private LockFactory lockFactory = LockFactory.getInstance();
-    private LockService lockService = lockFactory.getLockService();
     @Override
     public Boolean operate(HttpServletRequest request, LockOperateRequest lockOperate) {
         // TODO server 客户端传递的版本
@@ -56,12 +55,12 @@ public class LockOperateServiceImpl implements LockOperateService {
         } catch (CommonException e) {
             e.printStackTrace();
         }
-        return lockService.bindGroup(detail1.getLockGroupCode(), serialNumber);
+        return lockFactory.getLockService().bindGroup(detail1.getLockGroupCode(), serialNumber);
     }
 
     @Override
     public Boolean unBindGroup(String groupCode, String serialNumber, HttpServletRequest request) {
-        return lockService.unbindGroup(groupCode, serialNumber);
+        return lockFactory.getLockService().unbindGroup(groupCode, serialNumber);
     }
 
     @Override
@@ -72,7 +71,7 @@ public class LockOperateServiceImpl implements LockOperateService {
         } catch (CommonException e) {
             e.printStackTrace();
         }
-        List<ResGatewayGroup> group = lockService.getGatewayGroup(detail.getLockGroupCode());
+        List<ResGatewayGroup> group = lockFactory.getLockService().getGatewayGroup(detail.getLockGroupCode());
         List<ResGateway> gatewayList = new ArrayList<>();
         if(group != null) {
             for (ResGatewayGroup resGatewayGroup : group) {
@@ -84,7 +83,7 @@ public class LockOperateServiceImpl implements LockOperateService {
 
     @Override
     public com.linkmoretech.parking.vo.response.ResGatewayDetails getGatewayDetails(String serialNumber, HttpServletRequest request) {
-        ResGatewayDetails gatewayDetails = lockService.getGatewayDetails(serialNumber);
+        ResGatewayDetails gatewayDetails = lockFactory.getLockService().getGatewayDetails(serialNumber);
         com.linkmoretech.parking.vo.response.ResGatewayDetails details = new com.linkmoretech.parking.vo.response.ResGatewayDetails();
         details.setAgentName(gatewayDetails.getAgentName());
         details.setGroupCode(gatewayDetails.getGroupCode());
@@ -93,7 +92,7 @@ public class LockOperateServiceImpl implements LockOperateService {
         details.setVersion(gatewayDetails.getGatewayVersion());
         details.setGatewayState(gatewayDetails.getGatewayState());
         details.setSignal(gatewayDetails.getSignal());
-        List<ResLocksGateway> gateways = this.lockService.getLocksGateway(serialNumber);
+        List<ResLocksGateway> gateways = lockFactory.getLockService().getLocksGateway(serialNumber);
         if(StringUtils.isNotBlank(gatewayDetails.getGroupCode())) {
             CarPark carPark = this.carParkService.findByGateway(gatewayDetails.getGroupCode());
             if(carPark != null) {
@@ -133,26 +132,26 @@ public class LockOperateServiceImpl implements LockOperateService {
 
     @Override
     public Boolean loadLock(HttpServletRequest request, String serialNumber) {
-        return lockService.loadAllLock(serialNumber);
+        return lockFactory.getLockService().loadAllLock(serialNumber);
     }
 
     @Override
     public Boolean restartGateway(HttpServletRequest request, String serialNumber) {
-        return lockService.restart(serialNumber);
+        return lockFactory.getLockService().restart(serialNumber);
     }
 
     @Override
     public Boolean unBindLock(String lockSn, String serialNumber, HttpServletRequest request) {
-        return lockService.unBindLock(serialNumber, lockSn);
+        return lockFactory.getLockService().unBindLock(serialNumber, lockSn);
     }
 
     @Override
     public Boolean removeLock(String serialNumber, HttpServletRequest request) {
-        return lockService.removeLock(serialNumber);
+        return lockFactory.getLockService().removeLock(serialNumber);
     }
     @Override
     public Boolean confirm(String serialNumber, HttpServletRequest request) {
-        return lockService.confirm(serialNumber);
+        return lockFactory.getLockService().confirm(serialNumber);
     }
 
     @Override
@@ -161,7 +160,7 @@ public class LockOperateServiceImpl implements LockOperateService {
         List<ResLockGatewayList> list =new ArrayList<>();
         try {
             CarParkInfoResponse detail = this.carParkService.findDetail(preId);
-            List<com.linkmoretech.parking.entity.ResLockGatewayList> gatewayList = lockService.getLockGatewayList(lockSn,detail.getLockGroupCode());
+            List<com.linkmoretech.parking.entity.ResLockGatewayList> gatewayList = lockFactory.getLockService().getLockGatewayList(lockSn,detail.getLockGroupCode());
             ResLockGatewayList gateway = null;
             for (com.linkmoretech.parking.entity.ResLockGatewayList resLockGatewayList : gatewayList) {
                 gateway = new ResLockGatewayList(resLockGatewayList.getGatewaySerialNumber());
@@ -176,7 +175,7 @@ public class LockOperateServiceImpl implements LockOperateService {
 
     @Override
     public Boolean editLockBindGateway(HttpServletRequest request, String serialNumbers, String lockSn) {
-        Boolean gateway = this.lockService.batchBindGateway(lockSn, serialNumbers);
+        Boolean gateway = lockFactory.getLockService().batchBindGateway(lockSn, serialNumbers);
         return gateway;
     }
 
@@ -209,7 +208,7 @@ public class LockOperateServiceImpl implements LockOperateService {
         Map<String, Object> map = new TreeMap<>();
         map.put("serialNumber", reqLockIntall.getLockSn());
         map.put("name", reqLockIntall.getStallName());
-        lockService.setLockName(map);
+        lockFactory.getLockService().setLockName(map);
     }
     private CarPlace insertLock(CarPlace stall, ReqLockIntall reqLockIntall) {
         if(stall != null){
@@ -261,7 +260,7 @@ public class LockOperateServiceImpl implements LockOperateService {
         if(sn.contains("0000")) {
             sn = sn.substring(4).toUpperCase();
         }
-        return this.lockService.lockSignalHistory(sn);
+        return lockFactory.getLockService().lockSignalHistory(sn);
     }
 
     private Object getUser(HttpServletRequest request){

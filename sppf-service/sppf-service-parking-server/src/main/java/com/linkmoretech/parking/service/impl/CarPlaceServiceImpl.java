@@ -32,6 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.criterion.Example;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -448,4 +449,18 @@ public class CarPlaceServiceImpl implements CarPlaceService {
             }
         return outputs;
     }
+
+	@Override
+	public void updateLockStatusAndPlaceStatus(String lockCode, Integer lockStatus, Integer placeStatus) {
+		this.carPlaceRepository.updateLockStatusAndPlaceStatus(lockCode,lockStatus,placeStatus);
+	}
+
+	@Override
+	public CarPlace findByLockCode(String lockCode) {
+		return this.carPlaceRepository.findByLockCode(lockCode);
+	}
+	
+	
+    
+    
 }
