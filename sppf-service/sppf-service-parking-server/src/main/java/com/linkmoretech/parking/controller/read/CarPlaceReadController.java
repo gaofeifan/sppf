@@ -26,7 +26,7 @@ import java.util.List;
  * @Description:
  */
 @RestController
-@RequestMapping(value = "car/palce/read")
+@RequestMapping(value = "car/place/read")
 @Slf4j
 @Api(tags = "车位读操作API", value = "CarPlaceController" )
 public class CarPlaceReadController {

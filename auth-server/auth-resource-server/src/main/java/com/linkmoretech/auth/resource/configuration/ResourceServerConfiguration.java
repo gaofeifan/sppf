@@ -36,20 +36,25 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     @Override
     public void configure(HttpSecurity http) throws Exception {
 
-        String matchers = StringUtils.join(Arrays.asList(oauthResourceConfig.getIgnores().toArray()), ",");
-        if (StringUtil.isNullOrEmpty(matchers)) {
-            matchers = OAUTH_URL;
-        }
+        oauthResourceConfig.getIgnores().add(OAUTH_URL);
+        String[] matchers = new String[oauthResourceConfig.getIgnores().size()];
+        matchers = oauthResourceConfig.getIgnores().toArray(matchers);
+       /* String[] matchers = (String[])oauthResourceConfig.getIgnores().toArray();*//*
+        String[] matchers = new String[oauthResourceConfig.getIgnores().size()];
+        for (int i = 0; i < matchers.length; i ++) {
+            matchers[i] = String.valueOf(oauthResourceConfig.getIgnores().get(i));
+        }*/
         log.info("过滤URL {}", matchers);
         http
               .authorizeRequests()
-              .antMatchers(matchers).permitAll()
-              /*  .authorizeRequests() // 授权设定
+              .antMatchers(matchers)
+              /* .authorizeRequests() // 授权设定
                 .antMatchers("/oauth/**", ParamsConstruct.LOGIN_CUSTOMER,
                         ParamsConstruct.LOGIN_MANAGE_PASSWORD,
                         ParamsConstruct.LOGIN_MANAGE_MOBILE,
                         ParamsConstruct.NO_LOGIN_TIP_INFO,
                         ParamsConstruct.LOGIN_PLATFORM).permitAll()    //对此链接不拦截*/
+                .permitAll()
                 .anyRequest() // 所有请求
                 .authenticated() //需要身份认证
                 .and()

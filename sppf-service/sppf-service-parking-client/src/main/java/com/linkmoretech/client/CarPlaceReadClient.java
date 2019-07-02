@@ -21,7 +21,7 @@ public interface CarPlaceReadClient {
      * @Description  根据车场id与车位区间查询
      * @Date 2019/6/25
      */
-    @PostMapping(value = "car/palce/read/park-id-and-id-range")
+    @PostMapping(value = "car/place/read/park-id-and-id-range")
     public List<PlaceParkIdAndRangeOutput> findByParkIdAndIdRange(@RequestBody PlaceParkIdAndRangeInput input);
 
 }
