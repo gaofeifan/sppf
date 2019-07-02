@@ -1,4 +1,4 @@
-package com.linkmore.account.common.request;
+package com.linkmoretech.account.client.fallback.common.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,11 +12,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountParkRequest {
+public class AccountPlaceRequest extends  AccountParkRequest{
 
-    /**
-     * 用户ID
-     * 从token中获取
-     * */
-    private Long userId;
+    private Long parkId;
+
 }
