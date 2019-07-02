@@ -21,16 +21,3 @@ security:
       user-info-uri: http://192.168.2.2:8086/principal
       prefer-token-info: false
 
-resource:
-  ignores:
-    - /account/auth-user/getParkData
-    - /account/auth-user/getPlaceData
-    - /swagger-ui.html
-    - /swagger-resources/**
-    - /webjars/**
-    - /v2/**
-
-lock:
-  app-secret: b36441d95239bc919eac75aa18c0c54b
-  app-id: 95b94e076c8546db9f329bbd8c0f2030
-  linkemore-lock-url: http://open-api.linkmoreparking.cn

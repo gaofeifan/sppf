@@ -1,5 +1,6 @@
 package com.linkmoretech.client;
 
+import com.linkmoretech.auth.common.configuration.FeignConfiguration;
 import com.linkmoretech.parking.common.PlaceParkIdAndRangeInput;
 import com.linkmoretech.parking.common.PlaceParkIdAndRangeOutput;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -13,7 +14,7 @@ import java.util.List;
  * @Description: 内部调用--车位服务接口
  * @Date: 2019/6/25
  */
-@FeignClient(name = "parking")
+@FeignClient(name = "parking", configuration = FeignConfiguration.class)
 public interface CarPlaceReadClient {
 
     /**
@@ -22,6 +23,6 @@ public interface CarPlaceReadClient {
      * @Date 2019/6/25
      */
     @PostMapping(value = "car/palce/read/park-id-and-id-range")
-    public List<PlaceParkIdAndRangeOutput> findByParkIdAndIdRange(@RequestBody PlaceParkIdAndRangeInput input);
+    List<PlaceParkIdAndRangeOutput> findByParkIdAndIdRange(@RequestBody PlaceParkIdAndRangeInput input);
 
 }

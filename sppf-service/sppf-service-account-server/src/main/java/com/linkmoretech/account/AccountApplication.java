@@ -29,6 +29,4 @@ public class AccountApplication {
         SpringApplication.run(AccountApplication.class, args);
         log.info("账户服务已启动... {}" , DateTimeUtil.getLocalDateTime(DateTimeUtil.FULL_FORMAT));
     }
-
-
 }

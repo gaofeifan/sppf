@@ -9,6 +9,7 @@ import lombok.Data;
  */
 @Data
 public class PlaceParkIdAndRangeOutput {
+
     private Long parkId;
 
     private String parkName;

@@ -1,5 +1,6 @@
 package com.linkmoretech.client;
 
+import com.linkmoretech.auth.common.configuration.FeignConfiguration;
 import com.linkmoretech.parking.common.LeaseInput;
 import com.linkmoretech.parking.common.LeaseOutput;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * Description: 定义长租车位服务接口
  * @date: 13:40 2019-05-22
  */
-@FeignClient(name = "parking")
+@FeignClient(name = "parking", configuration = FeignConfiguration.class)
 public interface LeasePlaceClient {
 
     /**
