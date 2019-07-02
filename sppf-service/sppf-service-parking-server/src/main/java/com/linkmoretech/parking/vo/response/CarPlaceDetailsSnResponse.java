@@ -61,6 +61,8 @@ public class CarPlaceDetailsSnResponse {
     private int bindStata = 1;
     @ApiModelProperty(value="车位所属层级")
     private String floor;
+    @ApiModelProperty(value="车位所属层级Id")
+    private Long floorId;
 
     @ApiModelProperty(value="车位锁绑定的网关")
     private List<ResLockGatewayList> gatewayList = new ArrayList<>();

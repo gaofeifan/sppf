@@ -93,7 +93,7 @@ public interface CarPlaceService {
 
     public CarPlaceDetailsSnResponse detailsSn(HttpServletRequest request, String sn, Long parkId);
 
-    CarPlace findByPlaceNoAndParkId(String stallName, Long preId);
+    CarPlace findByPlaceNoAndParkIdAndFloorPlanId(String stallName, Long preId, Long floorId);
 
     void insert(CarPlace stall);
 
@@ -107,5 +107,7 @@ public interface CarPlaceService {
 	void updateLockStatusAndPlaceStatus(String lockCode, Integer lockStatus, Integer placeStatus);
 
 	CarPlace findByLockCode(String lockCode);
+
+
 
 }

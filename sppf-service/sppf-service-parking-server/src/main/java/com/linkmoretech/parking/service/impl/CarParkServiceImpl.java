@@ -1,5 +1,6 @@
 package com.linkmoretech.parking.service.impl;
 
+import com.linkmoretech.account.client.AccountDataClient;
 import com.linkmoretech.auth.common.util.AuthenticationTokenAnalysis;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
@@ -47,8 +48,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CarParkServiceImpl implements CarParkService {
 
-    //@Autowired
-	//AccountDataClient accountDataClient;
+    @Autowired
+	AccountDataClient accountDataClient;
 	@Autowired
     CarPlaceService carPlaceService;
     @Autowired
@@ -292,17 +293,20 @@ public class CarParkServiceImpl implements CarParkService {
     @Override
     public List<CityParkListResponse> carParkList(Authentication authentication) {
         AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
-        //List<Long> accountParkIds = accountDataClient.getParkDataAccount(authenticationTokenAnalysis.getUserId());
-        List<Long> accountParkIds = new ArrayList<>();
+        List<Long> accountParkIds = accountDataClient.getParkDataAccount(authenticationTokenAnalysis.getUserId());
+        List<CityParkListResponse> citys = new ArrayList<>();
         List<CarPark> carParks = null;
         if(accountParkIds == null){
             carParks = carParkRepository.findAll();
 
+        }else {
+        	carParks = carParkRepository.findAllById(accountParkIds);
+        }
+        if(carParks == null || carParks.size() == 0) {
+        	 return citys;
         }
         List<Long> parkIds = carParks.stream().map(car -> car.getId()).collect(Collectors.toList());
         List<CarPlace> carPlaces = carPlaceService.findCarPlaceByParkIds(parkIds);
-
-        List<CityParkListResponse> citys = new ArrayList<>();
         CityParkListResponse city = null;
         if (carParks == null || carParks.size() == 0) {
             return citys;
@@ -339,7 +343,7 @@ public class CarParkServiceImpl implements CarParkService {
                 if (car.getLockStatus() == null || car.getLockStatus().intValue() == 3) {
                     faultAmount++;
                 }
-                switch (car.getPlaceType().intValue()) {
+                switch (car.getPlaceType() != null ? car.getPlaceType() : 0) {
                     case 1:
                         carAmount++;
                         ownerAmount++;

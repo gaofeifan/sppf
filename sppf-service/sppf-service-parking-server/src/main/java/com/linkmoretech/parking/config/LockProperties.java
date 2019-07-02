@@ -1,11 +1,11 @@
 package com.linkmoretech.parking.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "lock")
 public class LockProperties {
 	
 	private static final String lockInfo = "/api/v1/lock-info";
@@ -30,9 +30,11 @@ public class LockProperties {
 	private static final String restart = "/api/v1/gateway/option/restart";
 	private static final String batchBindGateway = "/api/v1/lock/config/batch-bind-gateway";
 	private static final String confirm = "/api/v1//gateway/config/confirm";
-	
+	@Value("${lock.appId}")
 	private String appId;
+	@Value("${lock.secret}")
 	private String appSecret;
+	@Value("${lock.url}")
 	private String linkemoreLockUrl;
 	
 	public String getAppId() {

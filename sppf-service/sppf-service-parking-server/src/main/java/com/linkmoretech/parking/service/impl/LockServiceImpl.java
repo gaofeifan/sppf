@@ -3,6 +3,7 @@ package com.linkmoretech.parking.service.impl;
 import com.linkmoretech.common.util.HttpUtil;
 import com.linkmoretech.common.util.JsonUtil;
 import com.linkmoretech.common.util.ObjectUtils;
+import com.linkmoretech.common.util.SpringUtil;
 import com.linkmoretech.parking.config.LockProperties;
 import com.linkmoretech.parking.entity.*;
 import com.linkmoretech.parking.service.LockService;
@@ -27,16 +28,13 @@ import java.util.Map.Entry;
 @Slf4j
 public class LockServiceImpl implements LockService {
 
-	private static final LockServiceImpl lockService = new LockServiceImpl();
+	private static LockProperties lockProperties = null;
+	private static LockService lockService = null;
 	private LockServiceImpl() {
-		proToTypeMap.put("appId", lockProperties.getAppId());
-		lockProperties = new LockProperties();
-		lockProperties.setAppId("95b94e076c8546db9f329bbd8c0f2030");
-		lockProperties.setAppSecret("b36441d95239bc919eac75aa18c0c54b");
-		lockProperties.setLinkemoreLockUrl("http://open-api.linkmoreparking.cn");
+		lockProperties = SpringUtil.getBean(LockProperties.class);
+//		lockProperties.setAppSecret("b36441d95239bc919eac75aa18c0c54b");
+//		lockProperties.setLinkemoreLockUrl("http://open-api.linkmoreparking.cn");
 	}
-
-	private static LockProperties lockProperties  = null;
 //	private LockProperties lockProperties  = SpringUtil.getBean(LockProperties.class);
 	/*{
 		InputStream inputStream = this.getClass().getResourceAsStream("bootstrap.yml");
@@ -60,10 +58,16 @@ public class LockServiceImpl implements LockService {
 //	private static class LockServiceImplLazy{
 //		private static LockServiceImpl lockService = new LockServiceImpl();
 //	}
-	private Map<String,Object> proToTypeMap = new TreeMap<String,Object>();
+	private Map<String,Object> map = null;
 	
-	private void init(){
-		proToTypeMap.put("timestamp",getTime());
+	private Map<String,Object> init(){
+		map =new TreeMap<>();
+		return init(map);
+	}
+	private Map<String,Object> init(Map<String,Object> map){
+		map.put("appId", lockProperties.getAppId());
+		map.put("timestamp",getTime());
+		return map;
 	}
 
 	/**
@@ -72,7 +76,7 @@ public class LockServiceImpl implements LockService {
 	 * @Version  v2.0
 	 */
 	public ResLockInfo lockInfo(String lockSn){
-		init();
+		Map<String, Object> proToTypeMap = init();
 		proToTypeMap.put("serialNumber", lockSn);
 		ResLockMessage data = getDataMes(proToTypeMap,getUrl(lockProperties.getLockInfo()));
 		if(data != null && data.getCode() == 200) {
@@ -107,7 +111,7 @@ public class LockServiceImpl implements LockService {
 			}else {
 				Object object = map.get("message");
 				log.info("===================查询锁服务失败======================url");
-				throw new RuntimeException(object.toString());
+//				throw new RuntimeException(object.toString());
 			}
 		}
 		return null;
@@ -153,7 +157,7 @@ public class LockServiceImpl implements LockService {
 	 */ 
 	@SuppressWarnings("unchecked")
 	public ResSignalHistory lockSignalHistory(String sn) {
-		init();
+		Map<String, Object> proToTypeMap = init();
 		proToTypeMap.put("serialNumber", sn);
 		ResLockMessage lockMessage = getDataMes(proToTypeMap,getUrl(lockProperties.getLockSignalHistory().trim()));
 		log.info(JsonUtil.toJson(lockMessage));
@@ -236,7 +240,7 @@ public class LockServiceImpl implements LockService {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<ResLockInfo> lockListByGroupCode(String groupCode) {
-		init();
+		Map<String, Object> proToTypeMap = init();
 		proToTypeMap.put("groupCode", groupCode);
 		ResLockMessage resLockMessage = getDataMes(proToTypeMap,getUrl(lockProperties.getLocklist()));
 		List<Map<String,Object>> lockInfos = (List<Map<String, Object>>)resLockMessage.getData();
@@ -269,7 +273,7 @@ public class LockServiceImpl implements LockService {
 	 * @Version  v2.0
 	 */
 	private ResLockMessage optionLock(String sn,int optionType) {
-		init();
+		Map<String, Object> proToTypeMap = init();
 		proToTypeMap.put("action", optionType);
 		proToTypeMap.put("serialNumber", sn);
 		return getDataMes(proToTypeMap,getUrl(lockProperties.getLockoption()));
@@ -280,6 +284,7 @@ public class LockServiceImpl implements LockService {
 	 * @Author   cl 
 	 */
 	public void setLockName(Map<String, Object> map ) {
+		Map<String, Object> proToTypeMap = init(map);
 		proToTypeMap.put("appId", lockProperties.getAppId());
 		Object object = getData(proToTypeMap,getUrl(LockProperties.getSetparkingname()));
 	}
@@ -296,7 +301,7 @@ public class LockServiceImpl implements LockService {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		init();
+		Map<String, Object> proToTypeMap = init();
 		proToTypeMap.put("groupName", groupName);
 		proToTypeMap.put("cityCode", cityCode);
 		proToTypeMap.put("cityName", cityName);
@@ -321,7 +326,7 @@ public class LockServiceImpl implements LockService {
 	 */
 	@Override
 	public Boolean removeGroupCode(String groupCode) {
-		init();
+		Map<String, Object> proToTypeMap = init();
 		proToTypeMap.put("groupCode", groupCode);
 		ResLockMes lockMes = get(proToTypeMap, getUrl(LockProperties.getRemoveGroupCode()));
 		return lockMes.getStatus();
@@ -334,7 +339,7 @@ public class LockServiceImpl implements LockService {
 	 */
 	@Override
 	public Boolean bindGroup(String groupCode,String serialNumber) {
-		init();
+		Map<String, Object> proToTypeMap = init();
 		proToTypeMap.put("serialNumber", serialNumber);
 		proToTypeMap.put("groupCode", groupCode);
 		ResLockMes lockMes = get(proToTypeMap, getUrl(LockProperties.getBindGroup()));
@@ -351,7 +356,7 @@ public class LockServiceImpl implements LockService {
 	 */
 	@Override
 	public Boolean unbindGroup(String groupCode,String serialNumber) {
-		init();
+		Map<String, Object> proToTypeMap = init();
 		proToTypeMap.put("serialNumber", serialNumber);
 		proToTypeMap.put("groupCode", groupCode);
 		ResLockMes lockMes = get(proToTypeMap, getUrl(LockProperties.unBindGroup()));
@@ -368,7 +373,7 @@ public class LockServiceImpl implements LockService {
 	 */
 	@Override
 	public Boolean loadAllLock(String serialNumber) {
-		init();
+		Map<String, Object> proToTypeMap = init();
 		proToTypeMap.put("serialNumber", serialNumber);
 		ResLockMes lockMes = get(proToTypeMap, getUrl(LockProperties.loadAllLocks()));
 		return lockMes.getStatus();
@@ -382,7 +387,7 @@ public class LockServiceImpl implements LockService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public ResGatewayDetails getGatewayDetails(String serialNumber) {
-		init();
+		Map<String, Object> proToTypeMap = init();
 		proToTypeMap.put("serialNumber", serialNumber);
 		Object data = getData(proToTypeMap, getUrl(LockProperties.getSerialNumber()));
 		ResGatewayDetails resGatewayDetails = ObjectUtils.mapToBean(ResGatewayDetails.class, (Map<String,Object>)data);
@@ -391,7 +396,7 @@ public class LockServiceImpl implements LockService {
 	
 	@Override
 	public List<ResGatewayGroup> getGatewayGroup(String groupCode) {
-		init();
+		Map<String, Object> proToTypeMap = init();
 		proToTypeMap.put("groupCode", groupCode);
 		Object data = getData(proToTypeMap, getUrl(LockProperties.getGatewayGroup()));
 		List<Map<String,Object>> list = (List<Map<String,Object>>)data;
@@ -408,7 +413,7 @@ public class LockServiceImpl implements LockService {
 
 	@Override
 	public List<ResUnBindLock> unBindLockList(String serialNumber) {
-		init();
+		Map<String, Object> proToTypeMap = init();
 		proToTypeMap.put("serialNumber", serialNumber);
 		Object data = getData(proToTypeMap, getUrl(LockProperties.getUnbindLockList()));
 		List<Map<String,Object>> list = (List<Map<String,Object>>)data;
@@ -418,7 +423,7 @@ public class LockServiceImpl implements LockService {
 
 	@Override
 	public List<ResUnBindLock> bindLockList(String serialNumber) {
-		init();
+		Map<String, Object> proToTypeMap = init();
 		proToTypeMap.put("serialNumber", serialNumber);
 		Object data = getData(proToTypeMap, getUrl(LockProperties.getBindLockList()));
 		List<Map<String,Object>> list = (List<Map<String,Object>>)data;
@@ -428,7 +433,7 @@ public class LockServiceImpl implements LockService {
 
 	@Override
 	public Boolean bindLock(String gatewaySerialNumbe, String lockSerialNumber) {
-		init();
+		Map<String, Object> proToTypeMap = init();
 		proToTypeMap.put("gatewaySerialNumbe", gatewaySerialNumbe);
 		proToTypeMap.put("lockSerialNumber", lockSerialNumber);
 		ResLockMes lockMes = get(proToTypeMap, getUrl(LockProperties.getBindLock()));
@@ -437,7 +442,7 @@ public class LockServiceImpl implements LockService {
 
 	@Override
 	public Boolean unBindLock(String gatewaySerialNumbe, String lockSerialNumber) {
-		init();
+		Map<String, Object> proToTypeMap = init();
 		proToTypeMap.put("gatewaySerialNumbe", gatewaySerialNumbe);
 		proToTypeMap.put("lockSerialNumber", lockSerialNumber);
 		ResLockMes lockMes = get(proToTypeMap, getUrl(LockProperties.getUnBindLock()));
@@ -446,7 +451,7 @@ public class LockServiceImpl implements LockService {
 
 	@Override
 	public List<ResLocksGateway> getLocksGateway(String SerialNumber) {
-		init();
+		Map<String, Object> proToTypeMap = init();
 		proToTypeMap.put("gatewaySerialNumber", SerialNumber);
 		Object data = getData(proToTypeMap, getUrl(LockProperties.getLockGateway()));
 		List<Map<String,Object>> list = (List<Map<String,Object>>)data;
@@ -456,7 +461,7 @@ public class LockServiceImpl implements LockService {
 
 	@Override
 	public List<ResLockGatewayList> getLockGatewayList(String SerialNumber,String groupCode) {
-		init();
+		Map<String, Object> proToTypeMap = init();
 		proToTypeMap.put("serialNumber", SerialNumber);
 		proToTypeMap.put("groupCode", groupCode);
 		Object data = getData(proToTypeMap, getUrl(LockProperties.getLockGatewayList()));
@@ -470,7 +475,7 @@ public class LockServiceImpl implements LockService {
 
 	@Override
 	public Boolean restart(String serialNumber) {
-		init();
+		Map<String, Object> proToTypeMap = init();
 		proToTypeMap.put("serialNumber", serialNumber);
 		ResLockMes lockMes = get(proToTypeMap, getUrl(LockProperties.getRestart()));
 		return lockMes.getStatus();
@@ -478,7 +483,7 @@ public class LockServiceImpl implements LockService {
 
 	@Override
 	public Boolean batchBindGateway(String lockSerialNumber, String gatewaySerials) {
-		init();
+		Map<String, Object> proToTypeMap = init();
 		proToTypeMap.put("lockSerialNumber", lockSerialNumber);
 		proToTypeMap.put("gatewaySerials", gatewaySerials);
 		ResLockMes lockMes = get(proToTypeMap, getUrl(LockProperties.getBatchBindGateway()));
@@ -487,7 +492,7 @@ public class LockServiceImpl implements LockService {
 
 	@Override
 	public Boolean removeLock(String serialNumber) {
-		init();
+		Map<String, Object> proToTypeMap = init();
 		proToTypeMap.put("serialNumber", serialNumber);
 		ResLockMes lockMes = get(proToTypeMap, getUrl(LockProperties.getRemoveLock()));
 		return lockMes.getStatus();
@@ -495,13 +500,20 @@ public class LockServiceImpl implements LockService {
 
 	@Override
 	public Boolean confirm(String serialNumber) {
-		init();
+		Map<String, Object> proToTypeMap = init();
 		proToTypeMap.put("serialNumber", serialNumber);
 		ResLockMes lockMes = get(proToTypeMap, getUrl(LockProperties.getConfirm()));
 		return lockMes.getStatus();
 	}
 	
 	public static LockService getInstance() {
+		if(lockService == null) {
+			synchronized (LockServiceImpl.class) {
+				if(lockService == null) {
+					lockService = new LockServiceImpl();
+				}
+			}
+		}
 		return lockService;
 	}
 }

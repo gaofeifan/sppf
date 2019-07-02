@@ -66,15 +66,15 @@ public interface CarPlaceRepository extends JpaRepository<CarPlace, Long>, JpaSp
 
     List<CarPlace> getAllByParkIdIn(List<Long> parkIds);
 
-    CarPlace findByPlaceNoAndParkId(String placeNo, Long parkId);
+    CarPlace findByPlaceNoAndParkIdAndFloorPlanId(String stallName, Long preId, Long floorId);
 
     @Query(value = "update p_car_place set lock_code=?2 where id in (?1)", nativeQuery = true)
     void updateLockCode(Long id, String lockCode);
 
     CarPlace getOneByLockCodeAndParkId(String sn, Long parkId);
 
-    @Query(value = "SELECT * FROM p_car_place WHERE park_id = ?1 and type = ?3 and if(?2 = null ,1=1, id in(?2)) and if(?4= null,1=1,place_no like ?4)", nativeQuery = true)
-    List<CarPlace> findParkIdAndIdInAndTypeAndPlaceNo(Long carParkId, String placeIds, Integer type, String carPlaceName);
+//    @Query(value = "SELECT * FROM p_car_place WHERE park_id = ?1 and place_type = ?3 and if(?2 = null ,1=1, id in(?2)) and if(?4= null,1=1,place_no like ?4)", nativeQuery = true)
+//    List<CarPlace> findParkIdAndIdInAndTypeAndPlaceNo(Long carParkId, String placeIds, Integer type, String carPlaceName);
     @Query(value = "update p_car_place set lock_status=?2,place_status=?3 where lock_code=?1", nativeQuery = true)
     void updateLockStatusAndPlaceStatus(String lockCode, Integer lockStatus, Integer placeStatus);
     

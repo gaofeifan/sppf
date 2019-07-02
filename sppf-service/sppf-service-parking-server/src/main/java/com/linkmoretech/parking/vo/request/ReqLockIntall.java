@@ -2,9 +2,12 @@ package com.linkmoretech.parking.vo.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 @ApiModel("地锁安装")
+@Data
 public class ReqLockIntall {
 
 	@ApiModelProperty("车区Id")
@@ -12,13 +15,13 @@ public class ReqLockIntall {
 	@ApiModelProperty("分区名称")
 	String  areaName;
 	@ApiModelProperty("车位号")
-	@NotBlank(message="车位号不能为空")
 	String stallName;
 	@ApiModelProperty("序列号")
-	@NotBlank(message="车位锁编号不能为空")
 	String lockSn;
 	@ApiModelProperty("所在楼层")
 	String floor;
+	@ApiModelProperty("所在楼层Id")
+	Long floorId;
 
 	public String getFloor() {
 		return floor;
@@ -58,7 +61,6 @@ public class ReqLockIntall {
 	public void setStallName(String stallName) {
 		this.stallName = stallName;
 	}
-	
 	
 	
 	

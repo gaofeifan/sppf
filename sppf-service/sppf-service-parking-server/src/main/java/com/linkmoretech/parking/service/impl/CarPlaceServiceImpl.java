@@ -41,6 +41,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -243,8 +244,8 @@ public class CarPlaceServiceImpl implements CarPlaceService {
     }
 
     @Override
-    public CarPlace findByPlaceNoAndParkId(String stallName, Long preId) {
-        return this.carPlaceRepository.findByPlaceNoAndParkId(stallName,preId);
+    public CarPlace findByPlaceNoAndParkIdAndFloorPlanId(String stallName, Long preId, Long floorId) {
+        return this.carPlaceRepository.findByPlaceNoAndParkIdAndFloorPlanId(stallName,preId,floorId);
     }
 
     @Override
@@ -261,15 +262,29 @@ public class CarPlaceServiceImpl implements CarPlaceService {
     public List<CarPalceListResponse> findCarPlaceListByParkId(HttpServletRequest request, CarPlaceListRequest carPlaceListRequest, Authentication authentication) {
         AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
         List<Long> placeIds = accountDataClient.getPlaceDataAccount(authenticationTokenAnalysis.getUserId(), carPlaceListRequest.getCarParkId());
-        String placeId = null;
-        if(placeIds == null){
-
-        }else if( placeIds.size() == 0){
-            return null;
-        }else{
-            placeId = StringUtils.join(placeIds, ",");
-        }
-        List<CarPlace> carPlaceList = this.carPlaceRepository.findParkIdAndIdInAndTypeAndPlaceNo(carPlaceListRequest.getCarParkId(),placeId,carPlaceListRequest.getType(),StringUtils.isNotBlank(carPlaceListRequest.getCarPlaceName()) ? carPlaceListRequest.getCarPlaceName()+"%": null);
+        List<CarPlace> carPlaceList = this.carPlaceRepository.findAll(new Specification<CarPlace>() {
+			@Override
+			public Predicate toPredicate(Root<CarPlace> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				List<Predicate> list = new ArrayList<>();
+				list.add(cb.equal(root.get("parkId"), carPlaceListRequest.getCarParkId()));
+				if(carPlaceListRequest.getType() != null) {
+					list.add(cb.equal(root.get("placeType"), carPlaceListRequest.getType()));
+				}
+				if(placeIds != null) {
+					In<Object> in = cb.in(root.get("id"));
+					for (Long long1 : placeIds) {
+						in.value(long1);
+					}
+					list.add(cb.and(in));
+				}
+				if(org.apache.commons.lang3.StringUtils.isNotBlank(carPlaceListRequest.getCarPlaceName())) {
+					cb.like(root.get("placeNo"), carPlaceListRequest.getCarPlaceName());
+				}
+				  Predicate[] p = new Predicate[list.size()];
+                  query.where(cb.and(list.toArray(p)));
+                  return query.getRestriction();
+			}
+		});
 //        this.carPlaceRepository.findByIdInAndParkIdAndPlaceNoLikeAndType(,carPlaceListRequest.getCarParkId(),)
         List<CarPalceListResponse> carPalceListResponses = new ArrayList<>();
         CarPalceListResponse carPalceListResponse;
@@ -361,9 +376,9 @@ public class CarPlaceServiceImpl implements CarPlaceService {
 
     @Override
     public CarPlaceDetailsSnResponse detailsSn(HttpServletRequest request, String sn, Long parkId) {
-        if(sn.contains("0000")) {
-            sn = sn.substring(4).toUpperCase();
-        }
+//        if(sn.contains("0000")) {
+//            sn = sn.substring(4).toUpperCase();
+//        }
         CarPlace carPlace = this.carPlaceRepository.getOneByLockCodeAndParkId(sn,parkId);
         CarPlaceDetailsSnResponse carPlaceRes = new CarPlaceDetailsSnResponse();
         carPlaceRes.setCarPlaceLockSn(sn);
@@ -376,6 +391,7 @@ public class CarPlaceServiceImpl implements CarPlaceService {
             carPlaceRes.setCarPlaceStatus(carPlace.getPlaceStatus());
             carPlaceRes.setLockStatus(carPlace.getLockStatus());
             carPlaceRes.setFloor(carPlace.getFloorPlanName());
+//            carPlaceRes.setflor
             carPlaceRes.setCarPlaceLockSn(sn);
         }
         if(lockInfo != null){
@@ -389,7 +405,7 @@ public class CarPlaceServiceImpl implements CarPlaceService {
             carPlaceRes.setModel(lockInfo.getModel());
             carPlaceRes.setVersion(lockInfo.getVersion());
             if(carPlace != null) {
-            	CarPark park = this.carParkRepository.findById(carPlace.getId()).get();
+            	CarPark park = this.carParkRepository.findById(carPlace.getParkId()).get();
            
             if(park != null){
                 carPlaceRes.setCityCode(park.getCityCode());

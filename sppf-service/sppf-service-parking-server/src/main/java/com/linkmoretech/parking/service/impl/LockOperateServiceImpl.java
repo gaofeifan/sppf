@@ -182,8 +182,8 @@ public class LockOperateServiceImpl implements LockOperateService {
     @Override
     @Transactional
     public Boolean installLock(ReqLockIntall reqLockIntall, HttpServletRequest request) {
-        Long userId = getUserId(getUser(request));
-        CarPlace stall = this.carPlaceService.findByPlaceNoAndParkId(reqLockIntall.getStallName(),reqLockIntall.getPreId());
+//        Long userId = getUserId(getUser(request));
+        CarPlace stall = this.carPlaceService.findByPlaceNoAndParkIdAndFloorPlanId(reqLockIntall.getStallName(),reqLockIntall.getPreId(),reqLockIntall.getFloorId());
         if(stall != null) {
             try {
                 if(stall.getLineStatus().intValue() != 2){
@@ -225,6 +225,7 @@ public class LockOperateServiceImpl implements LockOperateService {
             stall = new CarPlace();
             stall.setLockCode(reqLockIntall.getLockSn());
             stall.setParkId(reqLockIntall.getPreId());
+            stall.setFloorPlanId(reqLockIntall.getFloorId());
             stall.setFloorPlanName(reqLockIntall.getFloor());
             this.carPlaceService.insert(stall);
         }

@@ -29,6 +29,6 @@ public class CarPlaceListRequest {
     @ApiModelProperty(value="车位名称模糊查询(非必填 )",required=false)
     private String carPlaceName;
     @ApiModelProperty(value="车位类型(2临停,1固定)",required=true)
-    private Integer type;
+    private Integer type = 1;
 
 }
