@@ -20,6 +20,7 @@ import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
 import com.linkmoretech.order.client.AppWechatClient;
+import com.linkmoretech.order.common.response.ResFans;
 import com.linkmoretech.user.common.vo.UserInfoInput;
 import com.linkmoretech.user.entity.LicensePlate;
 import com.linkmoretech.user.entity.UserInfo;
@@ -159,7 +160,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (userInfo == null) {
             throw new CommonException(ResponseCodeEnum.ERROR, "用户数据未找到");
         }
-       /* ResFans fans = appWechatClient.getFans(code);
+        ResFans fans = appWechatClient.getFans(code);
         if(fans==null) {
         	throw new CommonException(ResponseCodeEnum.ERROR, "微信已被绑定");
 		}
@@ -167,7 +168,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfo.setOpenId(fans.getId());
         userInfo.setWeChatBindTime(new Date());
         userInfo.setWechatName(fans.getNickname());
-        userInfo.setWechatIcon(fans.getHeadurl());*/
+        userInfo.setWechatIcon(fans.getHeadurl());
         UserInfo returnUser = userInfoRepository.saveAndFlush(userInfo);
         log.info("bind weChat success openId {}, updateTime {}", returnUser.getOpenId(),returnUser.getUpdateTime());
     }
