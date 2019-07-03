@@ -262,6 +262,7 @@ public class LockOperateServiceImpl implements LockOperateService {
             }
             detail.setLockCode(null);
             this.carPlaceService.updateLockCode(detail.getId(),detail.getLockCode());
+        	lockFactory.getLockService().removeLock(detail.getLockCode());
         } catch (CommonException e) {
                 e.printStackTrace();
                 return false;

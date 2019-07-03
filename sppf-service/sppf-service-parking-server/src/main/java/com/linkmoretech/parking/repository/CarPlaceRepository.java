@@ -68,7 +68,7 @@ public interface CarPlaceRepository extends JpaRepository<CarPlace, Long>, JpaSp
 
     CarPlace findByPlaceNoAndParkIdAndFloorPlanId(String stallName, Long preId, Long floorId);
 
-    @Query(value = "update p_car_place set lock_code=?2 where id in (?1)", nativeQuery = true)
+    @Query(value = "update p_car_place set lock_code=?2 where id = (?1)", nativeQuery = true)
     void updateLockCode(Long id, String lockCode);
 
     CarPlace getOneByLockCodeAndParkId(String sn, Long parkId);
