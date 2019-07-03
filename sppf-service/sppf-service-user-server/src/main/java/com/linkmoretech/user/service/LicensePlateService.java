@@ -25,14 +25,8 @@ public interface LicensePlateService {
      * @param userId 用户ID
      * @return 车牌号列表
      * */
-    List<LicensePlateResponse> findPlateByUserId(String userId);
+    List<LicensePlateResponse> findPlateByUserId(Long userId);
 
-    /**
-     * 删除车牌号
-     * @param userId 用户ID
-     * @param plateNo 车牌号
-     * */
-    void removePlate(String userId, String plateNo) throws CommonException;
     /**
      * 删除车牌号
      * @param id

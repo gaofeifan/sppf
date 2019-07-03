@@ -21,7 +21,7 @@ import java.util.Date;
 @ApiModel(value = "用户详情信息")
 public class UserInfoResponse {
     @ApiModelProperty(value = "用户ID")
-    private String id;
+    private Long id;
 
     @ApiModelProperty(value = "用户账号")
     @JsonProperty(value = "name")

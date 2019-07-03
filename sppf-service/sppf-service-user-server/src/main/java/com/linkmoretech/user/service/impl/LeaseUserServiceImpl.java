@@ -57,7 +57,7 @@ public class LeaseUserServiceImpl implements LeaseUserService {
          * 拼装发起调用的参数
          * leaseCode 用户的车牌号
          * */
-        List<String> userIds = leaseUserList.stream().map(LeaseUser::getUserId).collect(Collectors.toList());
+        List<Long> userIds = leaseUserList.stream().map(LeaseUser::getUserId).collect(Collectors.toList());
         /**
          * 查询用户添加的车牌号
          * */
@@ -65,7 +65,7 @@ public class LeaseUserServiceImpl implements LeaseUserService {
         /**
          * 车牌号 对应 的用户信息
          * */
-        Map<String, List<String>> licenseMap = licensePlateList.stream().collect(Collectors.groupingBy(LicensePlate::getUserId,
+        Map<Long, List<String>> licenseMap = licensePlateList.stream().collect(Collectors.groupingBy(LicensePlate::getUserId,
                 Collectors.mapping(LicensePlate::getPlateNo,Collectors.toList())));
 
         List<LeaseUserListResponse> leaseUserListResponseList = new ArrayList<>();

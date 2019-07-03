@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 public class LeaseUserListResponse {
 
-    private String userId;
+    private Long userId;
 
     private String linkMobile;
 

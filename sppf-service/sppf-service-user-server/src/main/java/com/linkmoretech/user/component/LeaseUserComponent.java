@@ -61,11 +61,11 @@ public class LeaseUserComponent {
                  * */
                 List<LicensePlate> licensePlateList = licensePlateRepository.findAllByPlateNoIn(licensePlateOutput.getLicensePlateNoList());
 
-                List<String> userIdList = licensePlateList.stream().map(LicensePlate::getUserId).collect(Collectors.toList());
+                List<Long> userIdList = licensePlateList.stream().map(LicensePlate::getUserId).collect(Collectors.toList());
                 /**
                  * 从系统中查询到绑定的用户ID
                  * */
-                List<UserInfo> userInfos = userInfoRepository.findAllById(userIdList);
+                List<UserInfo> userInfos = userInfoRepository.findAllByIdIn(userIdList);
 
                 /**
                  * 将用户ID， 用户授权码， 用户手机号存储

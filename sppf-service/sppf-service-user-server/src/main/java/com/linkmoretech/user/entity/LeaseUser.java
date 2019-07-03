@@ -22,8 +22,8 @@ import java.util.Date;
 public class LeaseUser {
 
     @Id
-    @Column(length = 50)
-    private String userId;
+    @Column(length = 20)
+    private Long userId;
 
     @Id
     @Column(length = 50)

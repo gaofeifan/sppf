@@ -11,6 +11,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface UserVersionRepository extends JpaRepository<UserVersion, Long> {
 
-	UserVersion findByUserIdAndSystem(String userId, String string);
+	UserVersion findByUserIdAndSystem(Long userId, Integer system);
 
 }

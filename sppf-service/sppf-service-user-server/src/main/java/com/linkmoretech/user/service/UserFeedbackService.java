@@ -8,5 +8,5 @@ package com.linkmoretech.user.service;
  */
 public interface UserFeedbackService {
 
-	void save(String content,String userId);
+	void save(String content,Long userId);
 }

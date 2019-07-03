@@ -27,22 +27,11 @@ public class UserGuideController {
     @Autowired
     UserGuideService userGuideService;
     
-  
-    
     @ApiOperation(value = "列表", notes = "列表", consumes = "application/json")
 	@GetMapping(value = "list")
 	public List<UserGuideResponse> list(HttpServletRequest request) {
 		String language = request.getHeader("lan");
 		List<UserGuideResponse> list = userGuideService.find(language);
-		/*List<ResUserGuide> result = new ArrayList<>();
-		for (cn.linkmore.account.response.ResUserGuide resUserGuide : list.get(0).getChildren()) {
-			ResUserGuide guide = ObjectUtils.copyObject(resUserGuide, new ResUserGuide());
-			if(resUserGuide.getChildren() != null && resUserGuide.getChildren().size() != 0) {
-				guide.setChildren(resUserGuide.getChildren());
-			}
-			result.add(guide);
-		}*/
 		return list;
 	}
-
 }
