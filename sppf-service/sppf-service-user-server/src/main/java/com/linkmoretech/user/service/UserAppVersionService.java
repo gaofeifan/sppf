@@ -1,7 +1,12 @@
 package com.linkmoretech.user.service;
 
+import java.util.List;
+import com.linkmoretech.common.vo.PageDataResponse;
+import com.linkmoretech.common.vo.PageSearchRequest;
 import com.linkmoretech.user.entity.UserAppVersion;
 import com.linkmoretech.user.vo.UserVersionRequest;
+import com.linkmoretech.user.vo.request.UserAppVersionRequest;
+import com.linkmoretech.user.vo.response.UserAppVersionPageResponse;
 
 /**
  * 个人版版本管理
@@ -10,9 +15,40 @@ import com.linkmoretech.user.vo.UserVersionRequest;
  * @Version 1.0
  */
 public interface UserAppVersionService {
-
+	/**
+	 * 查询最新版本
+	 * @param source
+	 * @return
+	 */
 	UserAppVersion currentAppVersion(Integer source);
-
-	void report(UserVersionRequest uvr, String userId);
+	
+	/**
+	 * 上报用户版本
+	 * @param uvr
+	 * @param userId
+	 */
+	void report(UserVersionRequest uvr, Long userId);
+	/**
+	 * 新增个人版版本
+	 * @param version
+	 */
+	void saveApp(UserAppVersionRequest version);
+	
+	/**
+	 * 更新个人版版本
+	 * @param version
+	 */
+	void updateApp(UserAppVersionRequest version);
+	/**
+	 * 删除个人版APP
+	 * @param ids
+	 */
+	void deleteAppById(List<Long> ids);
+	/**
+	 * 列表
+	 * @param searchRequest
+	 * @return
+	 */
+	PageDataResponse<UserAppVersionPageResponse> searchPage(PageSearchRequest searchRequest);
    
 }

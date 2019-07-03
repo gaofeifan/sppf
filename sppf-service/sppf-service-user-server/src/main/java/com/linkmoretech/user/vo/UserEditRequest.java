@@ -20,9 +20,8 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value = "编辑用户参数")
 public class UserEditRequest {
 
-    @ApiModelProperty(value = "用户ID", required = true)
-    @NotNull
-    private String id;
+    @ApiModelProperty(value = "用户ID")
+    private Long id;
 
     @ApiModelProperty(value = "用户昵称")
     private String userNick;

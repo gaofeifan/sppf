@@ -25,7 +25,7 @@ public class UserFeedback {
     @GeneratedValue
     private Long id;
     //用户ID
-    private String userId;
+    private Long userId;
     //反馈内容
     private String content;
     //创建时间

@@ -22,7 +22,7 @@ public class UserFeedbackServiceImpl implements UserFeedbackService {
     UserFeedbackRepository userFeedbackRepository;
 
 	@Override
-	public void save(String content, String userId) {
+	public void save(String content, Long userId) {
 		UserFeedback feed = new UserFeedback();
 		feed.setContent(content);
 		feed.setUserId(userId);

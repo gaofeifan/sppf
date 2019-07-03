@@ -14,7 +14,7 @@ import java.util.List;
  * @Description:
  * @date: 下午3:20 2019/4/10
  */
-public interface UserInfoRepository extends JpaRepository<UserInfo, String>, JpaSpecificationExecutor {
+public interface UserInfoRepository extends JpaRepository<UserInfo, Long>, JpaSpecificationExecutor {
 
     /**
      * 根据用户手机号查询用户信息
@@ -37,4 +37,12 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, String>, Jpa
     @Query(value = "update t_user_info set user_type=?2 where id in ?1", nativeQuery = true)
     @Modifying
     Integer updateUserType(List<String> userIds, Integer type);
+
+    /**
+     * 批量查询数据
+     * @param userIdList
+     * @return
+     */
+	List<UserInfo> findAllByIdIn(List<Long> userIdList);
+
 }

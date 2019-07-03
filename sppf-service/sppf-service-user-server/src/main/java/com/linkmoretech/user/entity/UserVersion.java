@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "t_user_version")
 public class UserVersion {
 	@Id
-    private String userId;
+    private Long userId;
     //1.安卓2.ios
     private Short client;
     //手机型号

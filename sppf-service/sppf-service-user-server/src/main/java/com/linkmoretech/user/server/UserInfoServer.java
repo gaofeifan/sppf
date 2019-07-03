@@ -26,8 +26,8 @@ public class UserInfoServer {
 
     @PostMapping(value = "create")
     @IgnoreResponseAdvice
-    public String createUser(@RequestBody UserInfoInput userInfoInput) throws FeignException {
-        String userId = userInfoService.createUser(userInfoInput);
+    public Long createUser(@RequestBody UserInfoInput userInfoInput) throws FeignException {
+        Long userId = userInfoService.createUser(userInfoInput);
         return userId;
     }
 }

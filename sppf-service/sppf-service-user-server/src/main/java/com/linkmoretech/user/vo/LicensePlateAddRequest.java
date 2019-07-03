@@ -27,9 +27,8 @@ public class LicensePlateAddRequest {
     @ApiModelProperty(value = "车牌号")
     private String plateNo;
 
-    @NotEmpty(message = "账号不能为空")
     @ApiModelProperty(value = "用户ID")
-    private String userId;
+    private Long userId;
 
     @NotNull(message = "车牌类型不能为空")
     @ApiModelProperty(value = "车牌类型 0 燃油 1 新能源")

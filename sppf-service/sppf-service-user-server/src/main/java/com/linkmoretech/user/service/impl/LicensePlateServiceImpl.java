@@ -71,7 +71,7 @@ public class LicensePlateServiceImpl implements LicensePlateService {
         LicensePlate resultLicensePlate = licensePlateRepository.save(licensePlateEntity);
         Set<String> leaseCodeSet = leaseUserComponent.getLeaseCode(licensePlateAddRequest.getPlateNo());
         if (leaseCodeSet != null && leaseCodeSet.size() > 0) {
-            UserInfo userInfo = userInfoRepository.findById(resultLicensePlate.getUserId()).get();
+            UserInfo userInfo = userInfoRepository.getOne(resultLicensePlate.getUserId());
             /**
              * 创建长租记录
              * */
@@ -88,7 +88,7 @@ public class LicensePlateServiceImpl implements LicensePlateService {
     }
 
     @Override
-    public List<LicensePlateResponse> findPlateByUserId(String userId) {
+    public List<LicensePlateResponse> findPlateByUserId(Long userId) {
         List<LicensePlate> userLicensePlate = licensePlateRepository.findAllByUserId(userId);
         List<LicensePlateResponse> plateList = new ArrayList<>();
         userLicensePlate.forEach(licensePlate -> {
@@ -99,42 +99,12 @@ public class LicensePlateServiceImpl implements LicensePlateService {
         return plateList;
     }
 
-    @Override
-    public void removePlate(String userId, String plateNo) throws CommonException {
-        List<LicensePlate> plateList = licensePlateRepository.findByPlateNoAndUserId(plateNo, userId);
-        if (plateList.size() == 0) {
-            throw new CommonException(ResponseCodeEnum.ERROR, "未找到对应记录");
-        }
-        /**
-         * 删除长租用户对应车牌信息
-         * */
-        Set<String> leaseCodeSet = leaseUserComponent.getLeaseCode(plateNo);
-        if (leaseCodeSet != null && leaseCodeSet.size() > 0) {
-            /**
-             * 删除长租用户记录
-             * */
-            log.warn("需要删除长租记录 {}" , leaseCodeSet);
-        }
-        licensePlateRepository.flush();
-    }
-
 	@Override
 	public void removePlate(Long id) throws CommonException {
 		LicensePlate plate = licensePlateRepository.findById(id).get();
 		if(plate == null) {
 	        throw new CommonException(ResponseCodeEnum.ERROR, "未找到对应记录");
 		}
-		
-		/**
-         * 删除长租用户对应车牌信息
-         * */
-        Set<String> leaseCodeSet = leaseUserComponent.getLeaseCode(plate.getPlateNo());
-        if (leaseCodeSet != null && leaseCodeSet.size() > 0) {
-            /**
-             * 删除长租用户记录
-             * */
-            log.warn("需要删除长租记录 {}" , leaseCodeSet);
-        }
 		licensePlateRepository.deleteById(id);
 	}
 }

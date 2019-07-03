@@ -30,7 +30,7 @@ public class LicensePlate {
     private String plateNo;
 
     /**用户ID*/
-    private String userId;
+    private Long userId;
 
     /**车牌类型*/
     private Integer plateType;

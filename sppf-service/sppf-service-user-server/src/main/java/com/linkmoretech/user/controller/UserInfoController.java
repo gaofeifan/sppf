@@ -14,7 +14,6 @@ import com.linkmoretech.user.vo.UserInfoResponse;
 import com.linkmoretech.user.vo.UserListResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -52,54 +51,61 @@ public class UserInfoController {
     @GetMapping(value = "find")
     public UserInfoResponse detail(Authentication authentication) {
     	AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
-        UserInfoResponse userInfoResponse = userInfoService.findDetailByUserId(authenticationTokenAnalysis.getUserId().toString());
+        UserInfoResponse userInfoResponse = userInfoService.findDetailByUserId(authenticationTokenAnalysis.getUserId());
         return userInfoResponse;
     }
 
     @ApiOperation(value = "编辑用户信息", notes = "编辑用户的性别、车辆等信息")
     @PostMapping(value = "edit")
-    public void edit(@RequestBody @Valid UserEditRequest userEditRequest, BindingResult bindingResult) throws CommonException {
+    public void edit(Authentication authentication, @RequestBody @Valid UserEditRequest userEditRequest, BindingResult bindingResult) throws CommonException {
         if (bindingResult.hasErrors()) {
             throw new CommonException(ResponseCodeEnum.PARAMS_ERROR);
         }
+        AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
+        userEditRequest.setId(authenticationTokenAnalysis.getUserId());
         userInfoService.editUser(userEditRequest);
     }
     
     @ApiOperation(value = "创建用户信息", notes = "创建用户信息")
     @PostMapping(value = "create")
-    public void create(@RequestBody @Valid UserInfoInput userInfoInput, BindingResult bindingResult) throws CommonException {
+    public void create(Authentication authentication, @RequestBody @Valid UserInfoInput userInfoInput, BindingResult bindingResult) throws CommonException {
         log.info("create user param = {}",JSON.toJSON(userInfoInput));
     	if (bindingResult.hasErrors()) {
             throw new CommonException(ResponseCodeEnum.PARAMS_ERROR);
         }
+		AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
+		userInfoInput.setUserId(authenticationTokenAnalysis.getUserId());
         userInfoService.createUser(userInfoInput);
     }
 
     @ApiOperation(value = "启用用户信息", notes = "启用用户信息")
     @PutMapping(value = "enable")
-    public void enable(@RequestParam(value = "userId") String userId, @RequestParam(value = "username") String username)
+    public void enable(Authentication authentication, @RequestParam(value = "username") String username)
             throws CommonException {
-        userInfoService.updateUserState(userId, username, UserStatusEnum.NORMAL.getCode());
+		AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
+        userInfoService.updateUserState(authenticationTokenAnalysis.getUserId(), username, UserStatusEnum.NORMAL.getCode());
     }
 
     @ApiOperation(value = "冻结用户信息", notes = "冻结用户信息")
     @PutMapping(value = "disabled")
-    public void disabled(@RequestParam(value = "userId") String userId, @RequestParam(value = "username") String username)
+    public void disabled(Authentication authentication, @RequestParam(value = "username") String username)
             throws CommonException {
-        userInfoService.updateUserState(userId, username, UserStatusEnum.FREEZE.getCode());
+		AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
+        userInfoService.updateUserState(authenticationTokenAnalysis.getUserId(), username, UserStatusEnum.FREEZE.getCode());
     }
     
 	@ApiOperation(value="解绑微信号",notes="解绑微信号")
 	@GetMapping(value = "remove-wechat")
 	public void removeWechat(Authentication authentication) throws CommonException { 
 		AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
-		this.userInfoService.unbindWeChat(authenticationTokenAnalysis.getUserId().toString());
+		this.userInfoService.unbindWeChat(authenticationTokenAnalysis.getUserId());
 	}
 	
 	@ApiOperation(value="绑定微信号",notes="绑定微信号")
 	@PutMapping(value = "bind-wechat")
-	public void bindWechat(@RequestParam(value = "userId") String userId, @RequestParam("code")String code) throws CommonException{ 
-		this.userInfoService.bindWeChat(userId,code);
+	public void bindWechat(Authentication authentication, @RequestParam("code")String code) throws CommonException{ 
+		AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
+		this.userInfoService.bindWeChat(authenticationTokenAnalysis.getUserId(),code);
 	}
     
 }

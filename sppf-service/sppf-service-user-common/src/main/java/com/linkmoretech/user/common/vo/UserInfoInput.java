@@ -17,7 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class UserInfoInput {
 
-    private String userId;
+    private Long userId;
 
     private String userName;
 

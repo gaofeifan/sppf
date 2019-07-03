@@ -25,14 +25,14 @@ public interface LicensePlateRepository extends JpaRepository<LicensePlate, Long
      * @param userIds 用户集合
      * @return 车牌集合
      * */
-    List<LicensePlate> findAllByUserIdIn(List<String> userIds);
+    List<LicensePlate> findAllByUserIdIn(List<Long> userIds);
 
     /**
      * 根据用户ID查询车牌号
      * @param userId 用户ID
      * @return 返回车牌号列表
      * */
-    List<LicensePlate> findAllByUserId(String userId);
+    List<LicensePlate> findAllByUserId(Long userId);
 
     /**
      * 根据车牌号集合查询车牌所属用户
