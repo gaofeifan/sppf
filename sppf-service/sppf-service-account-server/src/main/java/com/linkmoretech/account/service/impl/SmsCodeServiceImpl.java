@@ -68,25 +68,6 @@ public class SmsCodeServiceImpl implements SmsCodeService {
        sendMessage(mobile, smsTypeEnum.getCode(), validateCode.getCode());
    }
 
-    @Override
-    public void createSmsCode(String mobile, SmsTypeEnum smsTypeEnum) {
-        /**
-         * 生成随机验证码
-         * */
-        ValidateCode validateCode = smsValidateCodeGenerator.createValidateCode();
-        /**
-         * 存储验证码
-         * */
-        validateCodeManage.saveValidateCode(validateCode, smsTypeEnum.getCode(), mobile);
-        log.info("向手机 {} 发送 登录 客户端{} 的验证码 {}", mobile, smsTypeEnum.getCode(), validateCode.getCode());
-
-        /**
-         * 调用短信服务， 发送短信验证码
-         * */
-        sendMessage(mobile, smsTypeEnum.getCode(), validateCode.getCode());
-
-    }
-
     private void validateUser(String mobile, String clientId) throws CommonException {
        User user = userRepository.getUserByClientIdAndMobile(clientId, mobile);
        if (user == null) {

@@ -17,13 +17,13 @@ public interface SmsSendClient {
     /**
      * 发送通知类验证码
      * */
-    @GetMapping(value = "send/notify")
+    @GetMapping(value = "sms/send/notify")
     void sendNotifyMessage(@RequestParam(value = "mobile") String mobile,
                                   @RequestParam (value = "code") String code);
     /**
      * 发送验证码
      * */
-    @GetMapping(value = "send/validate")
+    @GetMapping(value = "sms/send/validate")
     void sendValidateMessage(@RequestParam (value = "mobile") String mobile,
                                     @RequestParam (value = "code") String code,
                                     @RequestParam (value = "value") String value);

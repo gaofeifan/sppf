@@ -1,6 +1,6 @@
 package com.linkmoretech.versatile.controller;
 
-import com.alibaba.fastjson.JSONObject;
+import com.linkmoretech.common.annation.IgnoreResponseAdvice;
 import com.linkmoretech.versatile.sms.client.SmsSendClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +46,7 @@ public class SmsController {
     /**
      * 发送验证码
      * */
+    @IgnoreResponseAdvice
     @GetMapping(value = "send/validate")
     public void sendValidateMessage(@RequestParam (value = "mobile") String mobile,
                                     @RequestParam (value = "code") String code,

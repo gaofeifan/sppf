@@ -19,11 +19,4 @@ public interface SmsCodeService {
     void createSmsCode(String mobile, String clientId, SmsTypeEnum smsTypeEnum) throws CommonException;
 
 
-    /**
-     * 生成验证码
-     * @param mobile 手机号
-     * @param smsTypeEnum 验证码类型
-     * */
-    void createSmsCode(String mobile, SmsTypeEnum smsTypeEnum) throws CommonException;
-
 }

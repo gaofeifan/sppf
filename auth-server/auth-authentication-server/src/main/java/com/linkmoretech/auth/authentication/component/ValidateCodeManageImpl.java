@@ -27,12 +27,12 @@ public class ValidateCodeManageImpl implements ValidateCodeManage {
     @Override
     public void saveValidateCode(ValidateCode validateCode, String clientId, Integer type, String mobile) {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        String key = REDIS_VALIDATE_CODE + mobile + ":" + type + ":";
+        String key = REDIS_VALIDATE_CODE + mobile + ":" + type;
         if (!StringUtils.isEmpty(clientId)) {
-            key = key + clientId + ":";
+            key = key + clientId;
         }
         valueOperations.set(key, validateCode.getCode());
-        redisTemplate.expire(key, validateCode.getExpire(), TimeUnit.SECONDS);
+        redisTemplate.expire(key, validateCode.getExpire(), TimeUnit.MINUTES);
 
     }
 
@@ -44,9 +44,9 @@ public class ValidateCodeManageImpl implements ValidateCodeManage {
     @Override
     public String findValidateCode(String clientId, Integer type, String mobile) {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        String key = REDIS_VALIDATE_CODE + mobile + ":" + type + ":";
+        String key = REDIS_VALIDATE_CODE + mobile + ":" + type;
         if (!StringUtils.isEmpty(clientId)) {
-            key = key + clientId + ":";
+            key = key + clientId;
         }
         String code = valueOperations.get(key);
         return code;
@@ -59,9 +59,9 @@ public class ValidateCodeManageImpl implements ValidateCodeManage {
 
     @Override
     public void deleteValidateCode(Integer type, String clientId, String mobile) {
-        String key = REDIS_VALIDATE_CODE + mobile + ":" + type + ":";
+        String key = REDIS_VALIDATE_CODE + mobile + ":" + type;
         if (!StringUtils.isEmpty(clientId)) {
-            key = key + clientId + ":";
+            key = key + clientId;
         }
         if(redisTemplate.hasKey(key)){
             redisTemplate.delete(key);

@@ -10,21 +10,9 @@ eureka:
   client:
     service-url:
       defaultZone: http://192.168.1.239:8761/eureka
+      ##defaultZone: http://192.168.1.140:8761/eureka,http://192.168.1.140:8762/eureka,http://192.168.1.140:8763/eureka
       ##defaultZone:  http://eureka1:8761/eureka,http://eureka2:8762/eureka,http://eureka3:8763/eureka
   instance:
     prefer-ip-address: true
 
-security:
-  oauth2:
-    client:
-      client-id: linkmoretech
-      client-secret: linkmore2018
-
-resource:
-  ignores:
-    - /account/auth-user/getParkData
-    - /account/auth-user/getPlaceData
-feign:
-  hystrix:
-    enabled: true
 
