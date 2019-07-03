@@ -20,6 +20,6 @@ public interface UserInfoClient {
      * @param userInfoInput 创建用户参数
      * @return 用户ID
      * */
-    @PostMapping(value = "user/create")
+    @PostMapping(value = "user-info/create")
     String createUser(@RequestBody UserInfoInput userInfoInput);
 }

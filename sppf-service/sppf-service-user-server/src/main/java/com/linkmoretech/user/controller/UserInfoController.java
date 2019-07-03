@@ -1,6 +1,7 @@
 package com.linkmoretech.user.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.linkmoretech.auth.common.util.AuthenticationTokenAnalysis;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.common.vo.PageDataResponse;
@@ -16,9 +17,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 
 /**
@@ -28,7 +29,7 @@ import javax.validation.Valid;
  * @date: 下午5:00 2019/4/10
  */
 @RestController
-@RequestMapping(value = "user")
+@RequestMapping(value = "user-info")
 @Api(tags = "用户信息", value = "User" )
 @Slf4j
 public class UserInfoController {
@@ -49,8 +50,9 @@ public class UserInfoController {
 
     @ApiOperation(value = "获取用户详情", notes = "根据用户ID查询用户详情")
     @GetMapping(value = "find")
-    public UserInfoResponse detail(@ApiParam("用户ID")  @RequestParam(value = "userId", required = true) String userId) {
-        UserInfoResponse userInfoResponse = userInfoService.findDetailByUserId(userId);
+    public UserInfoResponse detail(Authentication authentication) {
+    	AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
+        UserInfoResponse userInfoResponse = userInfoService.findDetailByUserId(authenticationTokenAnalysis.getUserId().toString());
         return userInfoResponse;
     }
 
@@ -88,9 +90,10 @@ public class UserInfoController {
     }
     
 	@ApiOperation(value="解绑微信号",notes="解绑微信号")
-	@DeleteMapping(value = "remove-wechat")
-	public void removeWechat(@RequestParam(value = "userId") String userId) throws CommonException { 
-		this.userInfoService.unbindWeChat(userId);
+	@GetMapping(value = "remove-wechat")
+	public void removeWechat(Authentication authentication) throws CommonException { 
+		AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
+		this.userInfoService.unbindWeChat(authenticationTokenAnalysis.getUserId().toString());
 	}
 	
 	@ApiOperation(value="绑定微信号",notes="绑定微信号")
