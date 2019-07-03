@@ -38,15 +38,20 @@ public class SmsController {
      * 发送通知类验证码
      * */
     @GetMapping(value = "send/notify")
-    public void sendNotifyMessage() {
+    public void sendNotifyMessage(@RequestParam (value = "mobile") String mobile,
+                                  @RequestParam (value = "code") String code) {
+        sendClientMap.get(client).sendNotifyMessage(mobile, code);
 
     }
     /**
      * 发送验证码
      * */
     @GetMapping(value = "send/validate")
-    public void sendValidateMessage() {
+    public void sendValidateMessage(@RequestParam (value = "mobile") String mobile,
+                                    @RequestParam (value = "code") String code,
+                                    @RequestParam (value = "value") String value) {
 
+        sendClientMap.get(client).sendValidateMessage(mobile, code, value);
     }
 
 

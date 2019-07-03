@@ -29,7 +29,7 @@ import java.util.Set;
 @Slf4j
 public class SmsCodeFilter extends OncePerRequestFilter implements InitializingBean {
 
-    ValidateFailureHandler validateFailureHandler;
+    private ValidateFailureHandler validateFailureHandler;
     /**
      * 定义需要拦截到请求
      * */
@@ -83,7 +83,8 @@ public class SmsCodeFilter extends OncePerRequestFilter implements InitializingB
         String clientId = (String)loginParams.get(ParamsConstruct.CLIENT_ID);
         String mobile = (String)loginParams.get(ParamsConstruct.MOBILE_PARAMS);
         String code = (String)loginParams.get(CODE_FIELD);
-        String validateCode =  validateCodeManage.findValidateCode(clientId, mobile);
+        Integer type = (Integer) loginParams.get(ParamsConstruct.SOURCE);
+        String validateCode =  validateCodeManage.findValidateCode(clientId, type, mobile);
         log.info("code {} - validate {} ", code, validateCode);
         if (StringUtils.isEmpty(validateCode)) {
             throw new ValidateCodeException("验证码不存在");
@@ -91,7 +92,7 @@ public class SmsCodeFilter extends OncePerRequestFilter implements InitializingB
         if (!validateCode.equals(code)) {
             throw new ValidateCodeException("验证码不正确");
         }
-        validateCodeManage.deleteValidateCode(clientId, mobile);
+        validateCodeManage.deleteValidateCode(type, clientId, mobile);
         log.info("login params {}" ,loginParams);
     }
 }

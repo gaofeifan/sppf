@@ -7,6 +7,7 @@ package com.linkmoretech.account.controller;
  */
 
 import com.linkmoretech.account.enums.LoginTypeEnum;
+import com.linkmoretech.account.enums.SmsTypeEnum;
 import com.linkmoretech.account.service.AccountService;
 import com.linkmoretech.account.service.SmsCodeService;
 import com.linkmoretech.account.vo.request.PasswordEditRequest;
@@ -90,12 +91,27 @@ public class AccountController {
     }
 
     /**
-     * 生成短信验证码
+     * 生成验证码
+     *
      * */
     @GetMapping(value = "sms/code")
     @ApiOperation(value="发送登录验证码", notes="手机号登录时发送认证验证码",produces = "application/json")
     public void createSmsCode(@RequestParam (value = "clientId") String clientId,
+                              @RequestParam (value = "type", required = false, defaultValue = "0") Integer type,
                               @RequestParam (value = "mobile") String mobile) throws CommonException {
+
+        /**
+         * 默认类型为登录验证码
+         * */
+
+        SmsTypeEnum smsTypeEnum = SmsTypeEnum.getStatus(type);
+
+        if (smsTypeEnum == null) {
+            throw new CommonException(ResponseCodeEnum.ERROR);
+        }
+
+
+
         smsCodeService.createSmsCode(mobile, clientId);
     }
 }

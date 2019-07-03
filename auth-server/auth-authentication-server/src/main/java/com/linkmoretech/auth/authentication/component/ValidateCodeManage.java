@@ -15,20 +15,33 @@ public interface ValidateCodeManage {
      * @param mobile 手机号
      * @param clientId 客户端
      * */
-    void saveValidateCode(ValidateCode validateCode, String clientId, String mobile);
+    void saveValidateCode(ValidateCode validateCode, String clientId, Integer type, String mobile);
+
+    /**
+     * 保存验证码
+     * @param validateCode 验证码
+     * @param mobile 手机号
+     * */
+    void saveValidateCode(ValidateCode validateCode, Integer type, String mobile);
 
     /**
      * 获取验证码
      * @param mobile 手机号
      * @param clientId 客户端
      * */
-    String findValidateCode(String clientId, String mobile);
+    String findValidateCode(String clientId, Integer type, String mobile);
 
+    /**
+     * 获取验证码
+     * @param mobile 手机号
+     * @param type 客户端
+     * */
+    String findValidateCode(Integer type, String mobile);
 
     /**
      * 删除验证码
      * @param mobile 手机号
      * @param clientId 客户端
      * */
-    void deleteValidateCode(String clientId, String mobile);
+    void deleteValidateCode(Integer type,String clientId, String mobile);
 }

@@ -32,7 +32,7 @@ public class SmsAuthenticationManagerConfig extends SecurityConfigurerAdapter<De
 
 
     @Override
-    public void configure(HttpSecurity http) throws Exception {
+    public void configure(HttpSecurity http) {
 
         SmsAuthenticationManagerFilter smsAuthenticationFilter = new SmsAuthenticationManagerFilter();
         smsAuthenticationFilter.setAuthenticationSuccessHandler(validateSuccessHandler);

@@ -1,4 +1,4 @@
-package com.linkmoretech.versatile.sms.enums;
+package com.linkmoretech.versatile.common.enums;
 
 import lombok.Getter;
 
