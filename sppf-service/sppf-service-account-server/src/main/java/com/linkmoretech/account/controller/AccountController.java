@@ -92,7 +92,7 @@ public class AccountController {
 
     /**
      * 生成验证码
-     *
+     * 管理版
      * */
     @GetMapping(value = "sms/code")
     @ApiOperation(value="发送登录验证码", notes="手机号登录时发送认证验证码",produces = "application/json")
@@ -103,15 +103,29 @@ public class AccountController {
         /**
          * 默认类型为登录验证码
          * */
-
         SmsTypeEnum smsTypeEnum = SmsTypeEnum.getStatus(type);
 
         if (smsTypeEnum == null) {
             throw new CommonException(ResponseCodeEnum.ERROR);
         }
+        smsCodeService.createSmsCode(mobile, clientId, smsTypeEnum);
+    }
 
-
-
-        smsCodeService.createSmsCode(mobile, clientId);
+    /**
+     * 生成验证码
+     * 管理版
+     * */
+    @GetMapping(value = "sms/code-personal")
+    @ApiOperation(value="发送登录验证码", notes="手机号登录时发送认证验证码",produces = "application/json")
+    public void createSmsMobileCode(@RequestParam (value = "type", required = false, defaultValue = "0") Integer type,
+                              @RequestParam (value = "mobile") String mobile) throws CommonException {
+        /**
+         * 默认类型为登录验证码
+         * */
+        SmsTypeEnum smsTypeEnum = SmsTypeEnum.getStatus(type);
+        if (smsTypeEnum == null) {
+            throw new CommonException(ResponseCodeEnum.ERROR);
+        }
+        smsCodeService.createSmsCode(mobile, smsTypeEnum);
     }
 }
