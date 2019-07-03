@@ -1,9 +1,10 @@
-package com.linkmoretch.order.client;
+package com.linkmoretech.order.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import com.linkmoretech.auth.common.configuration.FeignConfiguration;
+import com.linkmoretech.order.client.fallback.AppWechatFallBackFactory;
 import com.linkmoretech.order.common.response.ResFans;
 
 /**
@@ -12,7 +13,7 @@ import com.linkmoretech.order.common.response.ResFans;
  * @Date 2019年6月28日 上午11:13:52
  * @Version 1.0
  */
-@FeignClient(name = "app-wechat")
+@FeignClient(name = "order" , configuration = FeignConfiguration.class, fallbackFactory = AppWechatFallBackFactory.class)
 public interface AppWechatClient {
 
     /**
@@ -21,7 +22,6 @@ public interface AppWechatClient {
 	 * @return
 	 */
 	@GetMapping(value = "app-wechat/fans")
-	@ResponseBody
 	public ResFans getFans(@RequestParam(value = "code") String code);
     
 }
