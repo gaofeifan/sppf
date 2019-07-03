@@ -1,6 +1,7 @@
 package com.linkmoretech.auth.authentication.authentication.sms.manager;
 
 import com.linkmoretech.auth.common.bean.AccountUserDetail;
+import com.linkmoretech.auth.common.service.UserDetailAccountAbstract;
 import com.linkmoretech.auth.common.service.UserDetailMobileAbstract;
 import com.linkmoretech.auth.common.token.SmsAuthenticationManagerToken;
 import lombok.Setter;
@@ -19,7 +20,7 @@ import org.springframework.security.core.AuthenticationException;
 @Slf4j
 public class SmsAuthenticationManagerProvider implements AuthenticationProvider {
 
-    private UserDetailMobileAbstract userDetailService;
+    private UserDetailAccountAbstract userDetailService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {

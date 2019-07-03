@@ -29,31 +29,15 @@ public class AppUserDetailServiceImpl extends AppUserDetailAbstract {
     @Autowired
     AppUserComponent appUserComponent;
 
-    @Override
+   /* @Override
     public UserDetails register(String mobile, Integer type) throws RegisterException {
-        log.info("处理用户注册逻辑");
-        AppUserRegisterRequest registerRequest = new AppUserRegisterRequest();
-        registerRequest.setMobile(mobile);
-        registerRequest.setUserSource(type);
-        try {
-           AppUser appUser =  appUserService.register(registerRequest);
-           return appUserComponent.getUserDetail(appUser, true);
-        } catch (CommonException e) {
-           log.error("登录异常 {}", e.getMessage());
-            log.error("登录异常 {}", e.getCodeEnum().getCode());
-           throw new RegisterException(e.getCodeEnum().getCode(), e.getMessage());
-        }
-    }
 
-    @Override
-    public UserDetails login(String mobile, Integer type) throws RegisterException {
-        AppUser appUser = appUserService.getUser(mobile);
-        if (appUser == null) {
-            return register(mobile, type);
-        }
-        log.info("处理用户登录逻辑");
-        return appUserComponent.getUserDetail(appUser, false);
     }
+*/
+   /* @Override
+    public UserDetails login(String mobile, Integer type) throws RegisterException {
+
+    }*/
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {

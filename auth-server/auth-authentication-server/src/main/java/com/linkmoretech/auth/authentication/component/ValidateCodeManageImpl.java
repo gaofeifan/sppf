@@ -48,6 +48,7 @@ public class ValidateCodeManageImpl implements ValidateCodeManage {
         if (!StringUtils.isEmpty(clientId)) {
             key = key + clientId;
         }
+        log.info("redis key {}", key);
         String code = valueOperations.get(key);
         return code;
     }

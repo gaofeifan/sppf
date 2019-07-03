@@ -43,10 +43,8 @@ public class UserDetailMobileService extends UserDetailMobileAbstract {
         return null;
     }
 
-    @Override
+   /* @Override
     public UserDetails loadUserBy(String clientId, String username) {
-        User user = userRepository.getUserByClientIdAndMobile(clientId, username);
-        UserDetails userDetails = accountComponent.getUserDetail(user);
-        return userDetails;
-    }
+
+    }*/
 }

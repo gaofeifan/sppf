@@ -54,6 +54,7 @@ public class AppUserComponent {
         if (appUser == null) {
             return null;
         }
+
         AppUserDetail appUserDetail = new AppUserDetail(appUser.getUsername(),
                 appUser.getPassword(),
                 appUser.getUserId(),

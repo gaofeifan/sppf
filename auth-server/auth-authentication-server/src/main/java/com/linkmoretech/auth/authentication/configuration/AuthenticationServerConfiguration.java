@@ -31,12 +31,15 @@ public class AuthenticationServerConfiguration extends AuthorizationServerConfig
     @Autowired
     UserDetailAccountAbstract userDetailAccountAbstract;
 
+    @Autowired
+    AuthenticationClientConfig authenticationClientConfig;
+
     /**
      * 认证及token配置
      */
 
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints)  {
         log.info("token 认证");
         endpoints.tokenStore(redisTokenStore)
                 .authenticationManager(authenticationManager)
@@ -47,7 +50,7 @@ public class AuthenticationServerConfiguration extends AuthorizationServerConfig
      * tokenKey的访问权限表达式配置
      */
     @Override
-    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+    public void configure(AuthorizationServerSecurityConfigurer security) {
         security.tokenKeyAccess("permitAll()");
     }
 
@@ -57,11 +60,42 @@ public class AuthenticationServerConfiguration extends AuthorizationServerConfig
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         InMemoryClientDetailsServiceBuilder builder = clients.inMemory();
-        builder.withClient("linkmoretech")
+        /**
+         * 配置管理版认证密钥
+         * */
+       /* builder.withClient("linkmoretech")
                 .secret("linkmore2018")
                 .authorizedGrantTypes("refresh_token", "authorization_code", "password")
                 .accessTokenValiditySeconds(10000)
                 .refreshTokenValiditySeconds(10000)
-                .scopes("all");
+                .scopes("all");*/
+       log.info("初始化配置oauth2 认证密钥 {}", authenticationClientConfig);
+       builder.withClient(authenticationClientConfig.getManageClient())
+              .secret(authenticationClientConfig.getManageSecret())
+              .authorizedGrantTypes("refresh_token", "authorization_code", "password")
+              .accessTokenValiditySeconds(10000)
+              .refreshTokenValiditySeconds(10000)
+              .scopes("all")
+
+              .and()
+              .withClient(authenticationClientConfig.getPlatformClient())
+              .secret(authenticationClientConfig.getPlatformSecret())
+              .accessTokenValiditySeconds(10000)
+              .refreshTokenValiditySeconds(10000)
+              .scopes("all")
+
+              .and()
+              .withClient(authenticationClientConfig.getSystemClient())
+              .secret(authenticationClientConfig.getSystemSecret())
+              .accessTokenValiditySeconds(10000)
+              .refreshTokenValiditySeconds(10000)
+              .scopes("all")
+
+              .and()
+              .withClient(authenticationClientConfig.getPersonalClient())
+              .secret(authenticationClientConfig.getPersonalSecret())
+              .accessTokenValiditySeconds(10000)
+              .refreshTokenValiditySeconds(10000)
+              .scopes("all");
     }
 }

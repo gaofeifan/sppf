@@ -15,4 +15,13 @@ eureka:
   instance:
     prefer-ip-address: true
 
+auth-config:
+  manage-client: linkmoretech
+  manage-secret: linkmore2018
+  personal-client: linkmoretech
+  personal-secret: linkmore2018
+  system-client: linkmoretech
+  system-secret: linkmore2018
+  platform-client: linkmoretech
+  platform-secret: linkmore2018
 

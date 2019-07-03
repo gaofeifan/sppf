@@ -3,6 +3,7 @@ package com.linkmoretech.auth.authentication.authentication.sms.personal;
 import com.linkmoretech.auth.common.bean.AppUserDetail;
 import com.linkmoretech.auth.common.exception.RegisterException;
 import com.linkmoretech.auth.common.service.AppUserDetailAbstract;
+import com.linkmoretech.auth.common.service.UserDetailAccountAbstract;
 import com.linkmoretech.auth.common.token.AppAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
@@ -19,18 +20,18 @@ public class ProviderCommon {
         this.token = (AppAuthenticationToken) authentication;
     }
 
-    public AppAuthenticationToken getUserDetailForLogin ( AppUserDetailAbstract appUserDetailAbstract) {
+    public AppAuthenticationToken getUserDetailForLogin (UserDetailAccountAbstract userDetailService) {
         String mobile =getMobile();
         Integer type = getType();
-        AppUserDetail userDetails = (AppUserDetail) appUserDetailAbstract.login(mobile, type);
+        AppUserDetail userDetails = (AppUserDetail) userDetailService.login(mobile, type);
         return build(userDetails);
     }
 
 
-    public AppAuthenticationToken getUserDetailForRegister (AppUserDetailAbstract appUserDetailAbstract) throws RegisterException {
+    public AppAuthenticationToken getUserDetailForRegister (UserDetailAccountAbstract userDetailService) throws RegisterException {
         String mobile =getMobile();
         Integer type = getType();
-        AppUserDetail userDetails = (AppUserDetail) appUserDetailAbstract.register(mobile, type);
+        AppUserDetail userDetails = (AppUserDetail) userDetailService.register(mobile, type);
         return build(userDetails);
     }
 
