@@ -3,6 +3,7 @@ package com.linkmoretech.auth.authentication.authentication.sms.personal;
 import com.linkmoretech.auth.common.bean.AccountUserDetail;
 import com.linkmoretech.auth.common.bean.AppUserDetail;
 import com.linkmoretech.auth.common.service.AppUserDetailAbstract;
+import com.linkmoretech.auth.common.service.UserDetailAccountAbstract;
 import com.linkmoretech.auth.common.token.AppAuthenticationToken;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ import org.springframework.security.core.AuthenticationException;
 @Slf4j
 public class AppRegisterAuthenticationProvider implements AuthenticationProvider {
 
-    private AppUserDetailAbstract appUserDetailAbstract;
+    private UserDetailAccountAbstract userDetailService;
 
 
     @Override
@@ -34,7 +35,7 @@ public class AppRegisterAuthenticationProvider implements AuthenticationProvider
         appAuthenticationToken.setDetails(token.getDetails());
         return appAuthenticationToken;*/
         ProviderCommon providerCommon = new ProviderCommon(authentication);
-        return providerCommon.getUserDetailForRegister(appUserDetailAbstract);
+        return providerCommon.getUserDetailForRegister(userDetailService);
     }
 
     @Override

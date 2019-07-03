@@ -3,6 +3,7 @@ package com.linkmoretech.auth.authentication.authentication.sms.personal;
 import com.linkmoretech.auth.authentication.authentication.sms.manager.SmsAuthenticationManagerFilter;
 import com.linkmoretech.auth.authentication.authentication.sms.manager.SmsAuthenticationManagerProvider;
 import com.linkmoretech.auth.common.service.AppUserDetailAbstract;
+import com.linkmoretech.auth.common.service.UserDetailAccountAbstract;
 import com.linkmoretech.auth.common.service.UserDetailMobileAbstract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,7 +33,7 @@ public class AppRegisterAuthenticationConfig extends SecurityConfigurerAdapter<D
     AuthenticationFailureHandler validateFailureHandler;
 
     @Resource
-    AppUserDetailAbstract appUserDetailAbstract;
+    UserDetailAccountAbstract userDetailAccountService;
 
     @Override
     public void configure(HttpSecurity http){
@@ -43,8 +44,9 @@ public class AppRegisterAuthenticationConfig extends SecurityConfigurerAdapter<D
         appRegisterAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
 
         AppRegisterAuthenticationProvider appRegisterAuthenticationProvider = new AppRegisterAuthenticationProvider();
-        appRegisterAuthenticationProvider.setAppUserDetailAbstract(appUserDetailAbstract);
+        appRegisterAuthenticationProvider.setUserDetailService(userDetailAccountService);
         http.authenticationProvider(appRegisterAuthenticationProvider)
                 .addFilterAfter(appRegisterAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
     }
 }

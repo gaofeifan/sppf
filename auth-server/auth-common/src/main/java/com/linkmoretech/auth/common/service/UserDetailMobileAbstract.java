@@ -10,5 +10,5 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  */
 public abstract class UserDetailMobileAbstract implements UserDetailsService {
 
-    public abstract UserDetails loadUserBy(String clientId, String username);
+    //public abstract UserDetails loadUserBy(String clientId, String username);
 }

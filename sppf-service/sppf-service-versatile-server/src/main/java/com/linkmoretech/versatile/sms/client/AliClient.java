@@ -1,15 +1,10 @@
 package com.linkmoretech.versatile.sms.client;
 
-import com.aliyuncs.AcsResponse;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
 import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
-import com.aliyuncs.exceptions.ServerException;
-import com.aliyuncs.transform.UnmarshallerContext;
-import com.linkmoretech.versatile.sms.enums.SmsTempEnum;
 import com.linkmoretech.versatile.sms.template.AliSmsTemp;
-import com.linkmoretech.versatile.sms.template.SmsTemp;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,20 +25,21 @@ public class AliClient extends SmsSendClient {
     SendSmsRequest sendSmsRequest;
 
     @Override
-    public void sendMessage(SmsTemp smsTemp, String mobile) {
+    public void sendValidateMessage(String mobile, String code, String value) {
 
-        AliSmsTemp aliSmsTemp = (AliSmsTemp) smsTemp;
+        AliSmsTemp aliSmsTemp = new AliSmsTemp(code, value);
         sendSmsRequest.setPhoneNumbers(mobile);
         sendSmsRequest.setTemplateCode(aliSmsTemp.getCode());
-        sendSmsRequest.setTemplateParam(aliSmsTemp.getNotifyMessage());
+        sendSmsRequest.setTemplateParam(aliSmsTemp.getValidateMessage());
         execute();
     }
 
     @Override
-    public void sendMessage(SmsTempEnum smsTempEnum, String mobile) {
+    public void sendNotifyMessage(String mobile, String code) {
+        AliSmsTemp aliSmsTemp = new AliSmsTemp(code);
         sendSmsRequest.setPhoneNumbers(mobile);
-        sendSmsRequest.setTemplateCode(smsTempEnum.getCode());
-        sendSmsRequest.setTemplateParam(null);
+        sendSmsRequest.setTemplateCode(aliSmsTemp.getCode());
+        sendSmsRequest.setTemplateParam(aliSmsTemp.getNotifyMessage());
         execute();
     }
 

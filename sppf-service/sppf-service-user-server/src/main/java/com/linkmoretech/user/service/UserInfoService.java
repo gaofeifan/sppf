@@ -21,7 +21,7 @@ public interface UserInfoService {
      * @param userId 用户ID
      * @return 用户详情数据
      * */
-    UserInfoResponse findDetailByUserId(String userId);
+    UserInfoResponse findDetailByUserId(Long userId);
 
     /**
      * 用户列表
@@ -43,7 +43,7 @@ public interface UserInfoService {
      * @param userState 用户状态
      * @throws CommonException 自定义异常
      * */
-    void updateUserState(String userId, String username, Integer userState) throws CommonException;
+    void updateUserState(Long userId, String username, Integer userState) throws CommonException;
 
     /**
      * 变更手机号
@@ -55,19 +55,19 @@ public interface UserInfoService {
      * 绑定微信号
      * @param userInfoInput 绑定微信号参数
      * */
-    void bindWeChat(String code, String userId) throws CommonException;
+    void bindWeChat(Long userId, String code) throws CommonException;
 
     /**
      * 解绑微信
      * @param userId 用户Id
      * */
-    void unbindWeChat(String userId) throws CommonException;
+    void unbindWeChat(Long userId) throws CommonException;
 
     /**
      * 创建用户(由账户服务调用)
      * @param userInfoInput 创建用户参数
      * @return 返回用户ID
      * */
-    String createUser(UserInfoInput userInfoInput) throws CommonException;
+    Long createUser(UserInfoInput userInfoInput) throws CommonException;
 
 }

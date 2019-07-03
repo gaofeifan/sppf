@@ -22,7 +22,7 @@ import java.util.Date;
 @Table(name = "t_user_info")
 public class UserInfo {
     @Id
-    private String id;
+    private Long id;
     /**用户账号*/
     private String userName;
     /**手机号*/

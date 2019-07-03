@@ -1,6 +1,7 @@
 package com.linkmoretech.auth.authentication.authentication.sms.personal;
 
 import com.linkmoretech.auth.common.service.AppUserDetailAbstract;
+import com.linkmoretech.auth.common.service.UserDetailAccountAbstract;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,7 +32,7 @@ public class AppLoginAuthenticationConfig extends SecurityConfigurerAdapter<Defa
     AuthenticationFailureHandler validateFailureHandler;
 
     @Resource
-    AppUserDetailAbstract appUserDetailAbstract;
+    UserDetailAccountAbstract userDetailAccountService;
 
     @Override
     public void configure(HttpSecurity http){
@@ -43,7 +44,7 @@ public class AppLoginAuthenticationConfig extends SecurityConfigurerAdapter<Defa
         appLoginAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
 
         AppLoginAuthenticationProvider appLoginAuthenticationProvider = new AppLoginAuthenticationProvider();
-        appLoginAuthenticationProvider.setAppUserDetailAbstract(appUserDetailAbstract);
+        appLoginAuthenticationProvider.setUserDetailService(userDetailAccountService);
         http.authenticationProvider(appLoginAuthenticationProvider)
                 .addFilterAfter(appLoginAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }

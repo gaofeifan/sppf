@@ -11,8 +11,9 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SmsValidateCodeGenerator implements ValidateCodeGenerator {
+
     private final Integer LEN = 4;
-    private final Integer SECOND = 120;
+    private final Integer SECOND = 10;
 
     @Override
     public ValidateCode createValidateCode() {

@@ -27,24 +27,24 @@ import java.util.Set;
  * @date: 16:15 2019-06-19
  */
 @Slf4j
-public class SmsCodeFilter extends OncePerRequestFilter implements InitializingBean {
+public abstract class SmsCodeFilter extends OncePerRequestFilter implements InitializingBean {
 
-    ValidateFailureHandler validateFailureHandler;
+    private ValidateFailureHandler validateFailureHandler;
     /**
      * 定义需要拦截到请求
      * */
-    private Set<String> urls = new HashSet<>();
+    protected Set<String> urls = new HashSet<>();
 
     private ValidateCodeManage validateCodeManage;
 
     private AntPathMatcher pathMatcher = new AntPathMatcher();
 
-    private final String CODE_FIELD = "validateCode";
+    private Integer smsType;
 
-
-    public SmsCodeFilter (ValidateCodeManage validateCodeManage, ValidateFailureHandler validateFailureHandler) {
+    public SmsCodeFilter (ValidateCodeManage validateCodeManage, ValidateFailureHandler validateFailureHandler, Integer smsType) {
         this.validateCodeManage = validateCodeManage;
         this.validateFailureHandler = validateFailureHandler;
+        this.smsType = smsType;
     }
 
     @Override
@@ -71,19 +71,22 @@ public class SmsCodeFilter extends OncePerRequestFilter implements InitializingB
         }
 
     }
-
-    @Override
-    public void afterPropertiesSet()  {
+    /**
+     * 处理登录验证码过滤器
+     * */
+    /*@Override
+    public abstract void afterPropertiesSet()  {
         urls.add(ParamsConstruct.LOGIN_MANAGE_MOBILE);
         urls.add(ParamsConstruct.LOGIN_MOBILE_PERSONAL);
-    }
+    }*/
 
     private void redisValidate( MultiReadHttpServletRequest multiReadHttpServletRequest) throws  ValidateCodeException {
         Map<String, Object> loginParams = HttpRequestBodyUtil.getHttpBody(multiReadHttpServletRequest);
         String clientId = (String)loginParams.get(ParamsConstruct.CLIENT_ID);
         String mobile = (String)loginParams.get(ParamsConstruct.MOBILE_PARAMS);
+        String CODE_FIELD = "validateCode";
         String code = (String)loginParams.get(CODE_FIELD);
-        String validateCode =  validateCodeManage.findValidateCode(clientId, mobile);
+        String validateCode =  validateCodeManage.findValidateCode(clientId, this.smsType, mobile);
         log.info("code {} - validate {} ", code, validateCode);
         if (StringUtils.isEmpty(validateCode)) {
             throw new ValidateCodeException("验证码不存在");
@@ -91,7 +94,7 @@ public class SmsCodeFilter extends OncePerRequestFilter implements InitializingB
         if (!validateCode.equals(code)) {
             throw new ValidateCodeException("验证码不正确");
         }
-        validateCodeManage.deleteValidateCode(clientId, mobile);
+        validateCodeManage.deleteValidateCode(this.smsType, clientId, mobile);
         log.info("login params {}" ,loginParams);
     }
 }

@@ -13,10 +13,6 @@ public interface ParamsConstruct {
    String LOGIN_CUSTOMER = "/system/login";
 
    /**
-    * 短信验证码发送
-    * */
-   String SEND_SMS = "/sms/code";
-   /**
     * 管理版手机号登录
     * */
    String LOGIN_MANAGE_MOBILE = "/login-mobile";
@@ -35,17 +31,9 @@ public interface ParamsConstruct {
    /**
     * json登录不需要跳转至登录界面，需要提示未登录信息，默认提示地址
     * */
-   String NO_LOGIN_TIP_INFO = "/no-login";
 
    String LOGIN_MOBILE_PERSONAL = "/personal/login-mobile";
 
-   String SWAGGER_URL = "/swagger-ui.html";
-
-   String CSS = "/swagger-resources/**";
-
-   String JS = "/webjars/**";
-
-   String DOC = "/v2/**";
 
    /**
     * 管理版客户端标示
@@ -58,4 +46,19 @@ public interface ParamsConstruct {
    String MOBILE_PARAMS = "mobile";
 
    String SOURCE = "type";
+
+   /**
+    * 验证码类型 1 登录
+    * */
+   Integer SMS_TYPE_LOGIN = 0;
+
+   /**
+    * 验证码类型 2 注册
+    * */
+   Integer SMS_TYPE_REGISTER = 1;
+
+   /**
+    * 验证码类型 3 密码
+    * */
+   Integer SMS_TYPE_PASSWORD = 2;
 }

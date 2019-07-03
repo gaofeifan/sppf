@@ -1,7 +1,5 @@
 package com.linkmoretech.versatile.sms.client;
 
-import com.linkmoretech.versatile.sms.enums.SmsTempEnum;
-import com.linkmoretech.versatile.sms.template.SmsTemp;
 import org.springframework.stereotype.Component;
 
 
@@ -15,12 +13,12 @@ public class JiuClient extends SmsSendClient {
 
 
     @Override
-    public void sendMessage(SmsTemp smsTemp, String mobile) {
+    public void sendNotifyMessage(String mobile, String code) {
 
     }
 
     @Override
-    public void sendMessage(SmsTempEnum smsTempEnum, String mobile) {
+    public void sendValidateMessage(String mobile, String code, String value) {
 
     }
 }

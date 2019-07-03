@@ -24,8 +24,4 @@ public class ValidateCode implements Serializable {
         this.expireTime = LocalDateTime.now().plusSeconds(seconds);
         this.expire = seconds;
     }
-
-    public boolean isExpried() {
-        return LocalDateTime.now().isAfter(expireTime);
-    }
 }

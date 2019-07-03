@@ -26,4 +26,8 @@ public class LicensePlateResponse {
     @ApiModelProperty(value = "车牌类型 0 燃油 1 新能源")
     @JsonProperty(value = "type")
     private Integer plateType;
+    
+    @ApiModelProperty(value = "车牌主键ID")
+    private Long id;
+    
 }

@@ -1,5 +1,6 @@
 package com.linkmoretech.auth.authentication.authentication.sms.manager;
 
+import com.linkmoretech.auth.common.service.UserDetailAccountAbstract;
 import com.linkmoretech.auth.common.service.UserDetailMobileAbstract;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,11 +29,11 @@ public class SmsAuthenticationManagerConfig extends SecurityConfigurerAdapter<De
     AuthenticationFailureHandler validateFailureHandler;
 
     @Resource
-    UserDetailMobileAbstract userDetailMobileService;
+    UserDetailAccountAbstract userDetailAccountService;
 
 
     @Override
-    public void configure(HttpSecurity http) throws Exception {
+    public void configure(HttpSecurity http) {
 
         SmsAuthenticationManagerFilter smsAuthenticationFilter = new SmsAuthenticationManagerFilter();
         smsAuthenticationFilter.setAuthenticationSuccessHandler(validateSuccessHandler);
@@ -40,7 +41,7 @@ public class SmsAuthenticationManagerConfig extends SecurityConfigurerAdapter<De
         smsAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
 
         SmsAuthenticationManagerProvider smsAuthenticationProvider = new SmsAuthenticationManagerProvider();
-        smsAuthenticationProvider.setUserDetailService(userDetailMobileService);
+        smsAuthenticationProvider.setUserDetailService(userDetailAccountService);
         http.authenticationProvider(smsAuthenticationProvider)
                 .addFilterAfter(smsAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }

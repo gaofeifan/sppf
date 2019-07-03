@@ -16,6 +16,10 @@ public class AliSmsTemp extends SmsTemp {
         this.validate = validate;
     }
 
+    public AliSmsTemp(String code) {
+        super(code);
+    }
+
     @Override
     public String getNotifyMessage() {
         /**

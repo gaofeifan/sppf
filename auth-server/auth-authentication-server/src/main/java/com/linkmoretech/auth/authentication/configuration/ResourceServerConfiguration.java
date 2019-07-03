@@ -4,6 +4,7 @@ import com.linkmoretech.auth.authentication.authentication.ValidateFailureHandle
 import com.linkmoretech.auth.authentication.authentication.ValidateSuccessHandler;
 import com.linkmoretech.auth.authentication.authentication.account.AccAuthenticationManagerConfig;
 import com.linkmoretech.auth.authentication.authentication.sms.mobile.SmsCodeFilter;
+import com.linkmoretech.auth.authentication.authentication.sms.mobile.SmsLoginFilter;
 import com.linkmoretech.auth.authentication.authentication.sms.personal.AppLoginAuthenticationConfig;
 import com.linkmoretech.auth.authentication.authentication.sms.personal.AppRegisterAuthenticationConfig;
 import com.linkmoretech.auth.authentication.authentication.sms.manager.SmsAuthenticationManagerConfig;
@@ -70,7 +71,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         matchers = oauthResourceConfig.getIgnores().toArray(matchers);
 
 
-        SmsCodeFilter smsCodeFilter = new SmsCodeFilter(validateCodeManage, validateFailureHandler);
+        SmsLoginFilter smsCodeFilter = new SmsLoginFilter(validateCodeManage, validateFailureHandler);
         smsCodeFilter.afterPropertiesSet();
 
         http.addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class);

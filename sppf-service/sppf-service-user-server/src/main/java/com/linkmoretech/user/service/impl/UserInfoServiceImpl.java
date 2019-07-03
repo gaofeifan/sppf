@@ -57,7 +57,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     AppWechatClient appWechatClient;
     
     @Override
-    public UserInfoResponse findDetailByUserId(String userId) {
+    public UserInfoResponse findDetailByUserId(Long userId) {
         UserInfo userInfo = userInfoRepository.getOne(userId);
         UserInfoResponse userInfoResponse = new UserInfoResponse();
         BeanUtils.copyProperties(userInfo, userInfoResponse);
@@ -77,9 +77,9 @@ public class UserInfoServiceImpl implements UserInfoService {
         List<UserListResponse> userListResponseList = new ArrayList<>();
         List<UserInfo> userInfoList = userInfoPage.getContent();
         log.info("user data list length {}", userInfoList.size());
-        List<String> userId = userInfoList.stream().map(UserInfo::getId).collect(Collectors.toList());
+        List<Long> userId = userInfoList.stream().map(UserInfo::getId).collect(Collectors.toList());
         List<LicensePlate> licensePlates = licensePlateRepository.findAllByUserIdIn(userId);
-        Map<String, List<LicensePlate>> licensePlateMap = licensePlates.stream().collect(Collectors.groupingBy(LicensePlate:: getUserId));
+        Map<Long, List<LicensePlate>> licensePlateMap = licensePlates.stream().collect(Collectors.groupingBy(LicensePlate:: getUserId));
         userInfoList.forEach(userInfo -> {
             UserListResponse userListResponse = new UserListResponse();
             BeanUtils.copyProperties(userInfo, userListResponse);
@@ -116,7 +116,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public void updateUserState(String userId, String username, Integer userState) throws CommonException {
+    public void updateUserState(Long userId, String username, Integer userState) throws CommonException {
         UserInfo userInfo = userInfoRepository.getOne(userId);
         if (userInfo == null) {
             throw new CommonException(ResponseCodeEnum.ERROR, "用户数据未找到");
@@ -155,7 +155,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public void bindWeChat(String userId, String code) throws CommonException {
+    public void bindWeChat(Long userId, String code) throws CommonException {
         UserInfo userInfo = userInfoRepository.getOne(userId);
         if (userInfo == null) {
             throw new CommonException(ResponseCodeEnum.ERROR, "用户数据未找到");
@@ -174,7 +174,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public void unbindWeChat(String userId) throws CommonException {
+    public void unbindWeChat(Long userId) throws CommonException {
         UserInfo userInfo = userInfoRepository.getOne(userId);
         if (userInfo == null) {
             throw new CommonException(ResponseCodeEnum.ERROR, "用户数据未找到");
@@ -193,7 +193,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     @Transactional
-    public String createUser(UserInfoInput userInfoInput) throws CommonException {
+    public Long createUser(UserInfoInput userInfoInput) throws CommonException {
         /**
          * 根据手机号查询该手机号是否已有用户
          * */
@@ -206,11 +206,10 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (userInfo.getUserSource() == null) {
             userInfo.setUserSource(UserSourceEnum.APP.getCode());
         }
-        String id = String.valueOf(snowflakeIdGenerator.nextId());
-
+        //String id = String.valueOf(snowflakeIdGenerator.nextId());
         userInfo.setUserType(UserTypeEnum.TEMPORARY_USER.getCode());
         userInfo.setUserStatus(UserStatusEnum.NORMAL.getCode());
-        userInfo.setId(id);
+        userInfo.setId(userInfoInput.getUserId());
         userInfo.setRegisterTime(new Date());
         UserInfo returnUser = userInfoRepository.save(userInfo);
         log.info("create user success for userId {} ", returnUser.getId());
