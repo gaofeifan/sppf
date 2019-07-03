@@ -1,5 +1,6 @@
 package com.linkmoretech.parking.controller;
 
+import com.linkmoretech.auth.common.util.AuthenticationTokenAnalysis;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.common.vo.PageDataResponse;
@@ -17,6 +18,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,11 +41,13 @@ public class CarParkController {
 
     @ApiOperation(value = "添加车场", notes = "添加车场")
     @PostMapping(value = "create")
-    public void create(@RequestBody @Valid CarParkCreateRequest carParkCreateRequest, BindingResult bindingResult)
+    public void create(Authentication authentication , @RequestBody @Valid CarParkCreateRequest carParkCreateRequest, BindingResult bindingResult)
             throws CommonException {
         if (bindingResult.hasErrors()) {
             throw new CommonException(ResponseCodeEnum.PARAMS_ERROR, bindingResult.getFieldError().getDefaultMessage());
         }
+        AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
+        carParkCreateRequest.setUsername(authenticationTokenAnalysis.getUsername());
         carParkService.create(carParkCreateRequest);
     }
 

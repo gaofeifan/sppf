@@ -6,7 +6,7 @@ import com.linkmoretech.auth.authentication.component.ValidateCodeManage;
 import com.linkmoretech.auth.common.construct.ParamsConstruct;
 import com.linkmoretech.auth.common.util.HttpRequestBodyUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -86,7 +86,7 @@ public class SmsCodeFilter extends OncePerRequestFilter implements InitializingB
         String validateCode =  validateCodeManage.findValidateCode(clientId, mobile);
         log.info("code {} - validate {} ", code, validateCode);
         if (StringUtils.isEmpty(validateCode)) {
-            throw new ValidateCodeException("验证码已过期");
+            throw new ValidateCodeException("验证码不存在");
         }
         if (!validateCode.equals(code)) {
             throw new ValidateCodeException("验证码不正确");

@@ -1,7 +1,7 @@
 package com.linkmoretech.auth.authentication.component;
 
 import com.linkmoretech.auth.authentication.authentication.sms.mobile.ValidateCode;
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Component;
 
 /**

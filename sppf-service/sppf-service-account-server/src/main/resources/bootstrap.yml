@@ -24,7 +24,6 @@ resource:
   ignores:
     - /account/auth-user/getParkData
     - /account/auth-user/getPlaceData
-    -
 feign:
   hystrix:
     enabled: true

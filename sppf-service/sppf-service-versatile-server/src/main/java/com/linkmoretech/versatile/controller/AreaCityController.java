@@ -1,6 +1,5 @@
 package com.linkmoretech.versatile.controller;
 
-import com.linkmoretech.auth.common.util.AuthenticationTokenAnalysis;
 import com.linkmoretech.common.annation.IgnoreResponseAdvice;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
@@ -11,14 +10,10 @@ import com.linkmoretech.versatile.vo.response.AreaCityTreeResponse;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.List;
 
 /**
@@ -49,13 +44,13 @@ public class AreaCityController {
     @ApiOperation(value = "城市列表", notes = "城市列表")
     @GetMapping(value = "list")
    // @PreAuthorize(value = "hasAuthority('query-demo')")
-    public List<AreaCityListResponse> list(Authentication authentication,
+    public List<AreaCityListResponse> list(/*Authentication authentication,*/
                                            @RequestParam(value = "parentId", required = false) Long parentId) {
 
-        AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
+       /* AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
         log.info("登录用户 {}", authenticationTokenAnalysis.getUsername());
         log.info("客户端ID {}", authenticationTokenAnalysis.getClientId());
-        log.info("用户ID {}", authenticationTokenAnalysis.getUserId());
+        log.info("用户ID {}", authenticationTokenAnalysis.getUserId());*/
         return areaCityService.list(parentId);
     }
 

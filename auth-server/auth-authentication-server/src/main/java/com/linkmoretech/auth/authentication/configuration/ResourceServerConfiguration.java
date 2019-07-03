@@ -59,8 +59,16 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     OauthResourceConfig oauthResourceConfig;
 
 
+    private final String OAUTH_URL = "/oauth/**";
+
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
+
+        oauthResourceConfig.getIgnores().add(OAUTH_URL);
+        String[] matchers = new String[oauthResourceConfig.getIgnores().size()];
+        matchers = oauthResourceConfig.getIgnores().toArray(matchers);
+
 
         SmsCodeFilter smsCodeFilter = new SmsCodeFilter(validateCodeManage, validateFailureHandler);
         smsCodeFilter.afterPropertiesSet();
@@ -81,17 +89,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
             .apply(appRegisterAuthenticationConfig)
             .and()
             .authorizeRequests() // 授权设定
-            .antMatchers(
-                ParamsConstruct.LOGIN_CUSTOMER,
-                ParamsConstruct.LOGIN_MANAGE_MOBILE,
-                ParamsConstruct.SEND_SMS,
-                ParamsConstruct.NO_LOGIN_TIP_INFO,
-                ParamsConstruct.REGISTER_APP,
-                ParamsConstruct.CSS,
-                ParamsConstruct.JS,
-                ParamsConstruct.DOC,
-                ParamsConstruct.SWAGGER_URL
-            ).permitAll()    //对此链接不拦截
+            .antMatchers(matchers).permitAll()    //对此链接不拦截
             .anyRequest() // 所有请求
             .authenticated() //需要身份认证
             .and()

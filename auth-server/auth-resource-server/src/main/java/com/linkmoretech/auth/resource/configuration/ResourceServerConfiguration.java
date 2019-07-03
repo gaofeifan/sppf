@@ -28,8 +28,8 @@ import java.util.Arrays;
 @Configuration
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
-   @Autowired
-   OauthResourceConfig oauthResourceConfig;
+    @Autowired
+    OauthResourceConfig oauthResourceConfig;
 
     private final String OAUTH_URL = "/oauth/**";
 
