@@ -195,12 +195,9 @@ public class LockOperateServiceImpl implements LockOperateService {
             } catch (CommonException e) {
                 e.printStackTrace();
             }
-            stall = insertLock(stall,reqLockIntall);
-        }else {
-            stall = insertLock(stall,reqLockIntall);
-            // TODO 添加车位权限
-//            authUserStall(cu, stall.getId());
         }
+        stall = insertLock(stall,reqLockIntall);
+//            authUserStall(cu, stall.getId());
         notityLockTerrace(reqLockIntall);
         return true;
     }
@@ -215,8 +212,13 @@ public class LockOperateServiceImpl implements LockOperateService {
             stall.setLockCode(reqLockIntall.getLockSn());
             CarPlaceEditRequest carPlaceEditRequest = new CarPlaceEditRequest();
             carPlaceEditRequest.setId(stall.getId());
+            carPlaceEditRequest.setPlaceNo(reqLockIntall.getStallName());
             carPlaceEditRequest.setLockCode(stall.getLockCode());
             try {
+            	CarParkInfoResponse detail = this.carParkService.findDetail(stall.getParkId());
+				if(detail != null) {
+					stall.setParkName(detail.getParkName());
+				}
                 this.carPlaceService.edit(carPlaceEditRequest);
             } catch (CommonException e) {
                 e.printStackTrace();
@@ -227,7 +229,20 @@ public class LockOperateServiceImpl implements LockOperateService {
             stall.setParkId(reqLockIntall.getPreId());
             stall.setFloorPlanId(reqLockIntall.getFloorId());
             stall.setFloorPlanName(reqLockIntall.getFloor());
+            stall.setPlaceNo(reqLockIntall.getStallName());
+            stall.setLineStatus(2);
+            stall.setPlaceStatus(1);
+            stall.setPlaceType(1);
+            stall.setLockStatus(1);
+			try {
+				CarParkInfoResponse detail = this.carParkService.findDetail(stall.getParkId());
+				if(detail != null) {
+					stall.setParkName(detail.getParkName());
+				}
+			} catch (CommonException e) {
+			}
             this.carPlaceService.insert(stall);
+            
         }
         return stall;
 

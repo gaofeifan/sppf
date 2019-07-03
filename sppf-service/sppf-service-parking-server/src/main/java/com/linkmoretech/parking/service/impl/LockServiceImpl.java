@@ -31,7 +31,14 @@ public class LockServiceImpl implements LockService {
 	private static LockProperties lockProperties = null;
 	private static LockService lockService = null;
 	private LockServiceImpl() {
-		lockProperties = SpringUtil.getBean(LockProperties.class);
+		if(lockProperties == null) {
+			synchronized (this) {
+				if(lockProperties == null) {
+					lockProperties = SpringUtil.getBean(LockProperties.class);
+				}
+				
+			}
+		}
 //		lockProperties.setAppSecret("b36441d95239bc919eac75aa18c0c54b");
 //		lockProperties.setLinkemoreLockUrl("http://open-api.linkmoreparking.cn");
 	}
