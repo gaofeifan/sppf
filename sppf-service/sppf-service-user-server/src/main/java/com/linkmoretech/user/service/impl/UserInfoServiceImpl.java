@@ -5,9 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 import javax.transaction.Transactional;
-
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +19,8 @@ import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
+import com.linkmoretech.order.client.AppWechatClient;
+import com.linkmoretech.order.common.response.ResFans;
 import com.linkmoretech.user.common.vo.UserInfoInput;
 import com.linkmoretech.user.entity.LicensePlate;
 import com.linkmoretech.user.entity.UserInfo;
@@ -33,7 +33,6 @@ import com.linkmoretech.user.service.UserInfoService;
 import com.linkmoretech.user.vo.UserEditRequest;
 import com.linkmoretech.user.vo.UserInfoResponse;
 import com.linkmoretech.user.vo.UserListResponse;
-
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -54,10 +53,9 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Autowired
     SnowflakeIdGenerator snowflakeIdGenerator;
     
-    /*@Autowired
-    AppWechatClient appWechatClient;*/
-    /*@Autowired
-    AreaCityClient areaCityClient;*/
+    @Autowired
+    AppWechatClient appWechatClient;
+    
     @Override
     public UserInfoResponse findDetailByUserId(String userId) {
         UserInfo userInfo = userInfoRepository.getOne(userId);
@@ -162,7 +160,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         if (userInfo == null) {
             throw new CommonException(ResponseCodeEnum.ERROR, "用户数据未找到");
         }
-       /* ResFans fans = appWechatClient.getFans(code);
+        ResFans fans = appWechatClient.getFans(code);
         if(fans==null) {
         	throw new CommonException(ResponseCodeEnum.ERROR, "微信已被绑定");
 		}
@@ -170,7 +168,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfo.setOpenId(fans.getId());
         userInfo.setWeChatBindTime(new Date());
         userInfo.setWechatName(fans.getNickname());
-        userInfo.setWechatIcon(fans.getHeadurl());*/
+        userInfo.setWechatIcon(fans.getHeadurl());
         UserInfo returnUser = userInfoRepository.saveAndFlush(userInfo);
         log.info("bind weChat success openId {}, updateTime {}", returnUser.getOpenId(),returnUser.getUpdateTime());
     }

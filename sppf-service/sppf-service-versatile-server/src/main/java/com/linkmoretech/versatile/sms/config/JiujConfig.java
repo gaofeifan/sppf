@@ -4,6 +4,8 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
+
 /**
  * @Author: alec
  * Description:
@@ -12,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties("jiujia")
 @Data
-public class JiujaConfig {
+public class JiujConfig {
 
     private String account;
 
@@ -20,6 +22,5 @@ public class JiujaConfig {
 
     private String sendUrl;
 
-
-
+    private Map<String, String> template;
 }

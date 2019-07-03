@@ -1,11 +1,11 @@
 package com.linkmoretech.user.client;
 
-import com.linkmoretech.user.common.vo.UserInfoInput;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import com.linkmoretech.auth.common.configuration.FeignConfiguration;
+import com.linkmoretech.user.client.fallback.UserInfoFallBackFactory;
+import com.linkmoretech.user.common.vo.UserInfoInput;
 
 /**
  * 用户服务提供的服务接口
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @Description:
  * @date: 上午11:00 2019/4/16
  */
-@FeignClient(name = "user")
+@FeignClient(name = "user", configuration = FeignConfiguration.class, fallbackFactory = UserInfoFallBackFactory.class)
 public interface UserInfoClient {
     /**
      * 创建用户
@@ -22,14 +22,4 @@ public interface UserInfoClient {
      * */
     @PostMapping(value = "user/create")
     String createUser(@RequestBody UserInfoInput userInfoInput);
-
-    @Component
-    @Slf4j
-    class UserInfoFallBack implements UserInfoClient {
-        @Override
-        public String createUser(UserInfoInput userInfoInput) {
-          log.error("user server is error request params {} ", userInfoInput);
-          return null;
-        }
-    }
 }

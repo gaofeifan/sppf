@@ -1,9 +1,11 @@
 package com.linkmoretech.user.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
+import com.linkmoretech.user.common.vo.UserInfoInput;
 import com.linkmoretech.user.enums.UserStatusEnum;
 import com.linkmoretech.user.service.UserInfoService;
 import com.linkmoretech.user.vo.UserEditRequest;
@@ -59,6 +61,16 @@ public class UserInfoController {
             throw new CommonException(ResponseCodeEnum.PARAMS_ERROR);
         }
         userInfoService.editUser(userEditRequest);
+    }
+    
+    @ApiOperation(value = "创建用户信息", notes = "创建用户信息")
+    @PostMapping(value = "create")
+    public void create(@RequestBody @Valid UserInfoInput userInfoInput, BindingResult bindingResult) throws CommonException {
+        log.info("create user param = {}",JSON.toJSON(userInfoInput));
+    	if (bindingResult.hasErrors()) {
+            throw new CommonException(ResponseCodeEnum.PARAMS_ERROR);
+        }
+        userInfoService.createUser(userInfoInput);
     }
 
     @ApiOperation(value = "启用用户信息", notes = "启用用户信息")

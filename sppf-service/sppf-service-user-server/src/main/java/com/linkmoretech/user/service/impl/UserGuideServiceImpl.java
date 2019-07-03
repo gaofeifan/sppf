@@ -44,7 +44,10 @@ public class UserGuideServiceImpl implements UserGuideService {
 				ugm.put(ug.getParentId(), ugs);
 			}
 			ugs.add(ug);
-		}   
+		}
+		if(ugm.isEmpty()) {
+			return null;
+		}
 		return this.parse(ugm.get(0l), ugm,language);
 	}
 	

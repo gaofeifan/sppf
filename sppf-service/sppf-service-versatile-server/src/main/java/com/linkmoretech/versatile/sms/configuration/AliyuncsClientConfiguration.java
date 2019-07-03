@@ -7,6 +7,7 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 import com.linkmoretech.versatile.sms.config.AliyuncsConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +17,8 @@ import org.springframework.context.annotation.Configuration;
  * Description:
  * @date: 14:39 2019-06-21
  */
-//@Configuration
+@Configuration
+@Slf4j
 public class AliyuncsClientConfiguration {
 
     private final String CONNECT_TIMOUT = "sun.net.client.defaultConnectTimeout";
@@ -31,7 +33,7 @@ public class AliyuncsClientConfiguration {
 
         System.setProperty(CONNECT_TIMOUT, aliyuncsConfig.getDefaultConnectTimeout());
         System.setProperty(READ_TIME, aliyuncsConfig.getDefaultReadTimeout());
-
+        log.info("初始化阿里云短信发送客户端 {}", aliyuncsConfig);
         IAcsClient iAcsClient = new DefaultAcsClient(clientProfile());
         return iAcsClient;
     }
