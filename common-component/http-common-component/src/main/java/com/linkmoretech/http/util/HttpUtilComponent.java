@@ -59,7 +59,7 @@ public class HttpUtilComponent {
      */
 
     public String sendHttpPostRequest(String url, Map<String, String> params) {
-        FormBody.Builder builder = new FormBody.Builder();
+        FormBody.Builder   builder = new FormBody.Builder();
         //添加参数
         if (params != null && params.keySet().size() > 0) {
             for (String key : params.keySet()) {

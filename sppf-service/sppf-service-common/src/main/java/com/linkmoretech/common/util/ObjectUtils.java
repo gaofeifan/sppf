@@ -1,12 +1,14 @@
 package com.linkmoretech.common.util;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -280,10 +282,9 @@ public class ObjectUtils {
 	public static <T> T mapToBean(Class<T> t, Map<String,Object> map) {
 		try {
 			T instance = t.newInstance();
-//			org.apache.commons.beanutils.BeanUtils.populate(instance, map);
+				org.apache.commons.beanutils.BeanUtils.populate(instance, map);
 			return instance;
-		} catch (InstantiationException | IllegalAccessException /*| InvocationTargetException*/ e) {
-			// TODO Auto-generated catch block
+		} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
 		return null;
@@ -299,10 +300,10 @@ public class ObjectUtils {
 			try {
 			for (Map<String, Object> map : maps) {
 				T instance = t.newInstance();
-//				BeanUtils.populate(instance, map);
+					BeanUtils.populate(instance, map);
 				ts.add(instance);
 			}
-		} catch (InstantiationException | IllegalAccessException /*| InvocationTargetException*/ e) {
+		} catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
 		return ts;

@@ -47,6 +47,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 /**
  * @Author: alec
@@ -332,12 +333,21 @@ public class CarPlaceServiceImpl implements CarPlaceService {
 
     @Override
     public CarPlaceDetailsResponse details(HttpServletRequest request, Long carPlaceId) {
-        CarPlace carPlace = this.carPlaceRepository.findById(carPlaceId).get();
+    	CarPlace carPlace = null;
+		try {
+			carPlace = this.carPlaceRepository.findById(carPlaceId).get();
+		} catch (Exception e) {
+		}
         CarPlaceDetailsResponse details = new CarPlaceDetailsResponse();
         if(carPlace != null){
+        	if(org.apache.commons.lang3.StringUtils.isNotBlank(carPlace.getLockCode())) {
+        		ResLockInfo lockInfo = this.lockFactory.getLockService().lockInfo(carPlace.getLockCode());
+        		if(lockInfo != null) {
+		            details.setBetty(lockInfo.getElectricity());
+		            details.setCarStatus(lockInfo.getParkingState());
+        		}
+        	}
             details.setCarPlaceId(carPlace.getId());
-//            details.setBetty();
-//            details.setCarStatus();
             details.setFloor(carPlace.getFloorPlanName());
             details.setLockSn(carPlace.getLockCode());
             details.setCarPlaceName(carPlace.getPlaceNo());
@@ -376,9 +386,9 @@ public class CarPlaceServiceImpl implements CarPlaceService {
 
     @Override
     public CarPlaceDetailsSnResponse detailsSn(HttpServletRequest request, String sn, Long parkId) {
-//        if(sn.contains("0000")) {
-//            sn = sn.substring(4).toUpperCase();
-//        }
+        if(sn.contains("0000")) {
+            sn = sn.substring(4).toUpperCase();
+        }
         CarPlace carPlace = this.carPlaceRepository.getOneByLockCodeAndParkId(sn,parkId);
         CarPlaceDetailsSnResponse carPlaceRes = new CarPlaceDetailsSnResponse();
         carPlaceRes.setCarPlaceLockSn(sn);
