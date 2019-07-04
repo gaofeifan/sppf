@@ -17,8 +17,7 @@ public class PushMessageDecorator extends LockDecorator implements PushService {
     public PushMessageDecorator(LockService lockService) {
         super(lockService);
     }
-
-    private PushType pushType;
+    PushType[] values = PushType.values();
     private int type = 0;
     @Override
     public boolean upLock(String sn) {
@@ -61,7 +60,11 @@ public class PushMessageDecorator extends LockDecorator implements PushService {
         TaskPool.getInstance().task(new Runnable() {
             @Override
             public void run() {
-                Boolean aBoolean = pushType.get(type).push();
+                for (PushType p:values ) {
+                    if(type == p.getIndex()){
+                        p.get().push();
+                    }
+                }
             }
         });
         return true;

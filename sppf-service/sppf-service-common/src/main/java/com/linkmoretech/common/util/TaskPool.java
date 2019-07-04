@@ -2,6 +2,7 @@ package com.linkmoretech.common.util;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @Author GFF
@@ -11,6 +12,7 @@ import java.util.concurrent.Executors;
 public class TaskPool {
 
 	static ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+
 	
 	private static class LazyTaskPool {
         final static TaskPool INSTANCE = new TaskPool();
