@@ -1,13 +1,33 @@
 server:
   port: 8080
+  undertow:
+    max-http-post-size: 0
+    # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程,数量和CPU 内核数目一样即可
+    io-threads: 4
+    # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载  io-threads*8
+    worker-threads: 32
+    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
+    # 每块buffer的空间大小,越小的空间被利用越充分
+    buffer-size: 1024
+    # 每个区分配的buffer数量 , 所以pool的大小是buffer-size * buffers-per-region
+    #   buffers-per-region: 1024 # 这个参数不需要写了
+    # 是否分配的直接内存
+    direct-buffers: true
+
 eureka:
   client:
     service-url:
-      ##defaultZone:  http://eureka1:8761/eureka/,http://eureka2:8762/eureka/,http://eureka3:8763/eureka/
-      defaultZone:  http://localhost:8761/eureka/
+      defaultZone:  http://eureka1:8761/eureka/,http://eureka2:8762/eureka/,http://eureka3:8763/eureka/
+      ##defaultZone:  http://localhost:8761/eureka/
   instance:
+<<<<<<< HEAD
     hostname: config
     prefer-ip-address: false
+=======
+    prefer-ip-address: false
+    hostname: config
+
+>>>>>>> 9e2a7b4ba567011bde25d6282b3f3f94cbad6bc9
 spring:
   application:
     name: config
@@ -15,9 +35,12 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/linkmoretech/config-reposity.git
-          username: linkmoretech
-          password: 1lingmaokeji
+          ##uri: https://github.com/linkmoretech/config-reposity.git
+          url: http://gitlab.linkmoretech.cn:81/sppf/sppf-application.git
+          ##username: linkmoretech
+          ##password: 1lingmaokeji
+          username: huangwanming
+          password: asd123456
       label: master
   rabbitmq:
     username: guest
