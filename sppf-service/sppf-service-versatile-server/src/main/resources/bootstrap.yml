@@ -1,39 +1,17 @@
 eureka:
   client:
     service-url:
-      ##defaultZone: http://eureka1:8761/eureka,http://eureka2:8762/eureka,http://eureka3:8763/eureka
-      defaultZone:  http://192.168.1.239:8761/eureka/
+      defaultZone: http://eureka1:8761/eureka,http://eureka2:8762/eureka,http://eureka3:8763/eureka
+      ##defaultZone:  http://192.168.1.239:8761/eureka/
   instance:
-    prefer-ip-address: true
+    prefer-ip-address: false
+    hostname: versatile
+
 spring:
-  application:
-    name: versatile
   cloud:
     config:
       discovery:
         enabled: true
         service-id: CONFIG
-
-security:
-  oauth2:
-    resource:
-      id: resource
-      user-info-uri: http://localhost:8086/principal
-      prefer-token-info: false
-
-resource:
-  ignores:
-    - /account/auth-user/getParkData
-    - /account/auth-user/getPlaceData
-    - /sms/**
-
-aliyuncs:
-  accessKeyId: LTAIlCbJXIQWCNnl
-  accessKeySecret: bxwgOMs072cnOiZjsetF9cd740CD1e
-  sendUrl: dysmsapi.aliyuncs.com
-  area: cn-hangzhou
-  domain:
-  product: Dysmsapi
-  defaultConnectTimeout: 60000
-  defaultReadTimeout: 60000
-  sign: 凌猫停车
+  application:
+    name: versatile
