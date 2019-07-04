@@ -10,4 +10,6 @@ eureka:
   client:
     service-url:
       defaultZone:  http://eureka1:8761/eureka,http://eureka2:8762/eureka,http://eureka3:8763/eureka
-
+  instance:
+    prefer-ip-address: false
+    hostname: account
