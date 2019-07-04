@@ -1,44 +1,13 @@
 spring:
-  application:
-    name: account
   cloud:
     config:
       discovery:
         enabled: true
         service-id: CONFIG
+  application:
+    name: account
 eureka:
   client:
     service-url:
-      ##defaultZone: http://192.168.1.239:8761/eureka
-      ##defaultZone: http://192.168.1.140:8761/eureka,http://192.168.1.140:8762/eureka,http://192.168.1.140:8763/eureka
       defaultZone:  http://eureka1:8761/eureka,http://eureka2:8762/eureka,http://eureka3:8763/eureka
-  instance:
-    prefer-ip-address: false
-    hostname: account
-
-
-auth-config:
-  manage-client: linkmoretech
-  manage-secret: linkmore2018
-  personal-client: linkmoretech
-  personal-secret: linkmore2018
-  system-client: linkmoretech
-  system-secret: linkmore2018
-  platform-client: linkmoretech
-  platform-secret: linkmore2018
-
-feign:
-  hystrix:
-    enabled: true
-  compression:
-    request:
-      enabled: true
-      mime-types: application/json
-      min-request-size: 1024
-    response:
-      enabled: true
-  okhttp:
-    enabled: true
-  httpclient:
-    enabled: false
 

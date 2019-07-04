@@ -3,8 +3,8 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone:  http://eureka1:8761/eureka/,http://eureka2:8762/eureka/,http://eureka3:8763/eureka/
-      ##defaultZone:  http://localhost:8761/eureka/
+      ##defaultZone:  http://eureka1:8761/eureka/,http://eureka2:8762/eureka/,http://eureka3:8763/eureka/
+      defaultZone:  http://localhost:8761/eureka/
   instance:
     hostname: config
     prefer-ip-address: false

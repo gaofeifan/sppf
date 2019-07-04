@@ -1,8 +1,8 @@
 eureka:
   client:
     service-url:
-      defaultZone: http://eureka2:8762/eureka/,http://eureka3:8763/eureka/
-      ##defaultZone: http://192.168.1.239:8761/eureka/
+      ##defaultZone: http://eureka2:8762/eureka/,http://eureka3:8763/eureka/
+      defaultZone: http://192.168.1.239:8761/eureka/
       ##defaultZone: http://localhost:8761/eureka/
     register-with-eureka: false
   server:

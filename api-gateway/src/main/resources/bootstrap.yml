@@ -13,3 +13,7 @@ eureka:
       defaultZone:  http://eureka1:8761/eureka,http://eureka2:8762/eureka,http://eureka3:8763/eureka
   instance:
     prefer-ip-address: false
+<<<<<<< HEAD
+=======
+    hostname: api-gateway
+>>>>>>> 20d7caf0b21dae129146e49122661784724cb6bc
