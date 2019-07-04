@@ -33,7 +33,7 @@ public class RechargeRecord {
     private String code;
 
     /*用户ID*/
-    private String userId;
+    private Long userId;
     
     /*订单ID*/
     private String orderId;
