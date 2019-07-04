@@ -164,6 +164,13 @@
             <artifactId>sppf-service-user-client</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        
+        <dependency>
+            <groupId>com.linkmoretech</groupId>
+            <artifactId>auth-resource-server</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        
     </dependencies>
     <build>
         <plugins>

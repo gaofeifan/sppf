@@ -70,18 +70,20 @@ public class AppWechatServiceImpl implements AppWechatService {
 				String url = getOAuthUserinfoUrl(token, openid);
 				json =  HttpsRequest.parse(url,GET,null);
 			} catch (JSONException e) {
+				log.info(".... JSONException = {}",e.getMessage());
 				json = null;
 			}
 		}else {
 			try {
 				throw new CommonException(ResponseCodeEnum.ERROR,StatusEnum.ACCOUNT_WECHAT_LOGIN_ERROR.label);
 			} catch (CommonException e) {
+				log.info(".... CommonException = {}",e.getMessage());
 				e.printStackTrace();
 			}
 		} 
 		log.info("get wechat fans json:{}",JsonUtil.toJson(json));
 		ResFans rf = null;
-		if(json!=null) {
+		if(json!=null && json.get("errcode") == null) {
 			String openid = json.getString("openid"); 
 			String nickname = json.getString("nickname");
 			String headimgurl = json.getString("headimgurl"); 
