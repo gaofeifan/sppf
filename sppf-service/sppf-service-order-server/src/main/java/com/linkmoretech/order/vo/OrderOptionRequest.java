@@ -25,6 +25,5 @@ public class OrderOptionRequest {
     private String orderId;
 
     @ApiModelProperty(value = "用户ID", required = true)
-    @NotNull
-    private String userId;
+    private Long userId;
 }

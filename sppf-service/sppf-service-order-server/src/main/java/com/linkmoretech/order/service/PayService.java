@@ -23,7 +23,7 @@ public interface PayService {
 	 * @param request
 	 * @return
 	 */
-	ResPayCheckout checkout(String orderId, String userId) throws CommonException;
+	ResPayCheckout checkout(String orderId, Long userId) throws CommonException;
 
 	/**
 	 * 确认支付[生成第三支付订单]
@@ -38,7 +38,7 @@ public interface PayService {
 	 * @param request
 	 * @return
 	 */
-	ResOrderDetail verify(String orderId, String userId) throws CommonException;; 
+	ResOrderDetail verify(String orderId, Long userId) throws CommonException;; 
 	/**
 	 * 微信预约结账回调
 	 * @param response

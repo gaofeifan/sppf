@@ -28,7 +28,7 @@ public class Orders {
     private String id;
 
     /*用户ID*/
-    private String userId;
+    private Long userId;
 
     /*订单状态*/
     private Integer status;
