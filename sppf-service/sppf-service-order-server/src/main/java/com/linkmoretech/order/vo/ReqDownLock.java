@@ -25,10 +25,8 @@ public class ReqDownLock {
 	@Range(min=0, max=3,message="到达状态只能为0，1，2的数")
 	private Short parkingStatus;
 	
-	/**
-	 * 用户id
-	 */
-	private String userId;
+	@ApiModelProperty(value = "用户ID", required = true)
+	private Long userId;
 	
 	
 }

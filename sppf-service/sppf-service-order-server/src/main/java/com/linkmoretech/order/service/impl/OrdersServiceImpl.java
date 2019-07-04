@@ -88,7 +88,7 @@ public class OrdersServiceImpl implements OrdersService {
          * */
         Orders orders = new Orders();
         BeanUtils.copyProperties(orderRequest, orders);
-        orders.setId(generatedIdComponent.getOrderId(orderRequest.getUserId(), orderRequest.getOrderType()));
+        orders.setId(generatedIdComponent.getOrderId(orderRequest.getUserId().toString(), orderRequest.getOrderType()));
         orders.setStatus(OrderStatusEnum.BOOKED.getCode());
         orders.setCreateTime(new Date());
         orders.setUpdateTime(new Date());
@@ -97,7 +97,7 @@ public class OrdersServiceImpl implements OrdersService {
         OrderDetail orderDetail = new OrderDetail();
         BeanUtils.copyProperties(orderRequest, orderDetail);
         orderDetail.setOrderId(orders.getId());
-        orderDetail.setId(generatedIdComponent.getOrderDetailId(orderRequest.getUserId(), orderRequest.getOrderType()));
+        orderDetail.setId(generatedIdComponent.getOrderDetailId(orderRequest.getUserId().toString(), orderRequest.getOrderType()));
         orderDetailRepository.save(orderDetail);
 
         OrderEditResponse orderEditResponse = new OrderEditResponse();
@@ -114,7 +114,7 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public OrderDetailResponse findDetailByOrderId(String orderId, String userId) {
+    public OrderDetailResponse findDetailByOrderId(String orderId, Long userId) {
         OrderDetailResponse orderDetailResponse = null;
         Orders order = ordersRepository.getOne(orderId);
         OrderDetail orderDetail = orderDetailRepository.findOrderDetailByOrderId(orderId);
@@ -311,7 +311,7 @@ public class OrdersServiceImpl implements OrdersService {
         }
 
 	@Override
-	public ResCurrentOrder current(String userId) {
+	public ResCurrentOrder current(Long userId) {
 		ResCurrentOrder currentOrder = null;
 		List<Orders>  orderList = this.ordersRepository.findOrdersByUserIdAndStatusIn(userId,OrderStatusEnum.BOOKED.getCode(), OrderStatusEnum.SUSPENDED.getCode());
 		if(CollectionUtils.isNotEmpty(orderList)) {
@@ -560,7 +560,7 @@ public class OrdersServiceImpl implements OrdersService {
 	}
 
 	@Override
-	public List<ResCheckedOrder> list(Long start, String userId) {
+	public List<ResCheckedOrder> list(Long start, Long userId) {
 		List<Orders> orderList = this.ordersRepository.findFinishOrderList(userId,start);
 		log.info("已完成订单列表 = {}",JSON.toJSON(orderList));
 		List<ResCheckedOrder> res = new ArrayList<ResCheckedOrder>();

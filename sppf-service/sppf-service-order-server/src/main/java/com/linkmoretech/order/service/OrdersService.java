@@ -35,7 +35,7 @@ public interface OrdersService {
      * @param userId 用户ID
      * @return 订单详情
      * */
-    OrderDetailResponse findDetailByOrderId(String orderId, String userId);
+    OrderDetailResponse findDetailByOrderId(String orderId, Long userId);
 
     /**
      * 取消订单
@@ -79,7 +79,7 @@ public interface OrdersService {
      * @param userId
      * @return
      */
-	ResCurrentOrder current(String userId);
+	ResCurrentOrder current(Long userId);
 	/**
 	 * 当前订单页面控制降锁
 	 * @param ros
@@ -98,6 +98,6 @@ public interface OrdersService {
 	 * @param userId
 	 * @return
 	 */
-	List<ResCheckedOrder> list(Long start, String userId);
+	List<ResCheckedOrder> list(Long start, Long userId);
 
 }

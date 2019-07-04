@@ -20,9 +20,8 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value = "创建订单数据")
 public class OrderRequest {
 
-    @ApiModelProperty(value = "用户ID", required = true)
-    @NotNull(message="用户ID不能为空")
-    private String userId;
+    @ApiModelProperty(value = "用户ID", required = false)
+    private Long userId;
 
     @ApiModelProperty(value = "车场ID", required = true)
     @NotNull(message="车场ID不能为空")
