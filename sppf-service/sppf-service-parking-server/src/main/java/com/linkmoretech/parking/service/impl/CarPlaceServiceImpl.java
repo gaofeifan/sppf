@@ -256,7 +256,13 @@ public class CarPlaceServiceImpl implements CarPlaceService {
 
     @Override
     public void updateLockCode(Long id, String lockCode) {
-        this.carPlaceRepository.updateLockCode(id,lockCode);
+        try{
+            CarPlace carPlace = this.carPlaceRepository.findById(id).get();
+            carPlace.setLockCode(lockCode);
+            this.carPlaceRepository.save(carPlace);
+        }catch (RuntimeException e){}
+
+
     }
 
     @Override
@@ -478,7 +484,11 @@ public class CarPlaceServiceImpl implements CarPlaceService {
 
 	@Override
 	public void updateLockStatusAndPlaceStatus(String lockCode, Integer lockStatus, Integer placeStatus) {
-		this.carPlaceRepository.updateLockStatusAndPlaceStatus(lockCode,lockStatus,placeStatus);
+        CarPlace byLockCode = this.carPlaceRepository.findByLockCode(lockCode);
+        byLockCode.setLockStatus(lockStatus);
+        byLockCode.setPlaceStatus(placeStatus);
+        this.carPlaceRepository.save(byLockCode);
+//        this.carPlaceRepository.updateLockStatusAndPlaceStatus(lockCode,lockStatus,placeStatus);
 	}
 
 	@Override

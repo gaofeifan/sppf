@@ -63,8 +63,9 @@ public class ManageLockDecorator extends LockDecorator{
     		carPlace.setLockStatus(1);
     		carPlace.setPlaceStatus(1);
     	}else if(status == 2) {
-    		carPlace.setLockStatus(2);
-    	}
+			carPlace.setLockStatus(2);
+			carPlace.setPlaceStatus(1);
+		}
     	carPlaceService.updateLockStatusAndPlaceStatus(lockCode,carPlace.getLockStatus(),carPlace.getPlaceStatus());
     }
 
