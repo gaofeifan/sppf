@@ -20,14 +20,9 @@ eureka:
       defaultZone:  http://eureka1:8761/eureka/,http://eureka2:8762/eureka/,http://eureka3:8763/eureka/
       ##defaultZone:  http://localhost:8761/eureka/
   instance:
-<<<<<<< HEAD
     hostname: config
     prefer-ip-address: false
-=======
-    prefer-ip-address: false
-    hostname: config
 
->>>>>>> 9e2a7b4ba567011bde25d6282b3f3f94cbad6bc9
 spring:
   application:
     name: config
@@ -36,7 +31,7 @@ spring:
       server:
         git:
           ##uri: https://github.com/linkmoretech/config-reposity.git
-          url: http://gitlab.linkmoretech.cn:81/sppf/sppf-application.git
+          uri: http://gitlab.linkmoretech.cn:81/sppf/sppf-application.git
           ##username: linkmoretech
           ##password: 1lingmaokeji
           username: huangwanming
