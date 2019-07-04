@@ -36,6 +36,7 @@ spring:
           ##password: 1lingmaokeji
           username: huangwanming
           password: asd123456
+        bootstrap: true
       label: master
   rabbitmq:
     username: guest
