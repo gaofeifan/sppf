@@ -37,8 +37,22 @@ public class LockOperateServiceImpl implements LockOperateService {
     private LockFactory lockFactory = LockFactory.getInstance();
     @Override
     public Boolean operate(HttpServletRequest request, LockOperateRequest lockOperate) {
-        // TODO server 客户端传递的版本
-        LockService lockService = lockFactory.getLockService(0, lockOperate.getMsgStatus(), Boolean.TRUE);
+        LockService lockService = lockFactory.getLockService(LockFactory.MANAGE, lockOperate.getMsgStatus(), Boolean.TRUE);
+        if(lockOperate.getCarPlaceId() == null && lockOperate.getLockSn() == null){
+            throw new RuntimeException("参数输入有误");
+        }
+        if(lockOperate.getLockSn() == null){
+            try {
+                CarPlaceInfoResponse detail = this.carPlaceService.findDetail(lockOperate.getCarPlaceId());
+                if(detail == null || detail.getLockCode() == null){
+                    throw new RuntimeException("锁编号不存在");
+                }
+                lockOperate.setLockSn(detail.getLockCode());
+            } catch (CommonException e) {
+                e.printStackTrace();
+            }
+
+        }
         if(lockOperate.getState().intValue() == 1){
             return lockService.downLock(lockOperate.getLockSn());
         }{
@@ -262,6 +276,7 @@ public class LockOperateServiceImpl implements LockOperateService {
             }
             detail.setLockCode(null);
             this.carPlaceService.updateLockCode(detail.getId(),detail.getLockCode());
+        	lockFactory.getLockService().removeLock(detail.getLockCode());
         } catch (CommonException e) {
                 e.printStackTrace();
                 return false;

@@ -4,6 +4,7 @@ import com.linkmoretech.account.client.AccountDataClient;
 import com.linkmoretech.auth.common.util.AuthenticationTokenAnalysis;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
+import com.linkmoretech.common.util.JsonUtil;
 import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
 import com.linkmoretech.parking.component.BindLockPlatformComponent;
@@ -294,13 +295,17 @@ public class CarParkServiceImpl implements CarParkService {
     public List<CityParkListResponse> carParkList(Authentication authentication) {
         AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
         List<Long> accountParkIds = accountDataClient.getParkDataAccount(authenticationTokenAnalysis.getUserId());
+        log.info(JsonUtil.toJson(accountParkIds));
+//        List<Long> accountParkIds = null;//accountDataClient.getParkDataAccount(authenticationTokenAnalysis.getUserId());
         List<CityParkListResponse> citys = new ArrayList<>();
         List<CarPark> carParks = null;
         if(accountParkIds == null){
+            log.info("is null find park all");
             carParks = carParkRepository.findAll();
-
         }else {
-        	carParks = carParkRepository.findAllById(accountParkIds);
+            log.info("not null find park by ids");
+            carParks = carParkRepository.findAllById(accountParkIds);
+            log.info(JsonUtil.toJson(carParks));
         }
         if(carParks == null || carParks.size() == 0) {
         	 return citys;
@@ -327,9 +332,9 @@ public class CarParkServiceImpl implements CarParkService {
                 carParkList.setParkName(carPark.getParkName());
                 carParkList = computeCarPlaceStatus(carParkList, carPlaces);
                 city.getPrakList().add(carParkList);
-                citys.add(city);
                 i++;
             }
+            citys.add(city);
         }
         return citys;
     }
@@ -373,6 +378,7 @@ public class CarParkServiceImpl implements CarParkService {
         carPark.setParkUseNumber(carUseAmount);
         carPark.getCarPlaceType().put("固定",new CarParkListResponse.ParkCarPlaceTypeBuilder().type((short)1).typeName("固定").parkAmount(ownerAmount).parkUseAmount(ownerUseAmount).builder());
         carPark.getCarPlaceType().put("临停",new CarParkListResponse.ParkCarPlaceTypeBuilder().type((short)2).typeName("临停").parkAmount(tempAmount).parkUseAmount(tempUseAmount).builder());
+        carPark.getCarPlaceType().put("VIP",new CarParkListResponse.ParkCarPlaceTypeBuilder().type((short)3).typeName("VIP").parkAmount(0).parkUseAmount(0).builder());
         return carPark;
     }
 
