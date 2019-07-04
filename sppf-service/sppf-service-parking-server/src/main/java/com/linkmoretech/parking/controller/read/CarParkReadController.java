@@ -5,10 +5,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.linkmoretech.parking.service.CarParkService;
+import com.linkmoretech.parking.vo.request.UserParkListRequest;
 import com.linkmoretech.parking.vo.response.CityParkListResponse;
 
 import io.swagger.annotations.Api;
@@ -36,6 +39,13 @@ public class CarParkReadController {
         return parkListResponses;
     }
 
+//    @ApiOperation(value = "查询车场列表", notes = "获取用户具有权限的车场")
+//    @PostMapping(value = "car-park-list")
+//    public  List<CityParkListResponse> carParkList(@RequestBody UserParkListRequest parkListRequest){
+//        List<CityParkListResponse> parkListResponses = carParkService.carParkList(authentication);
+//        return parkListResponses;
+//    }
+    
 
 
 }

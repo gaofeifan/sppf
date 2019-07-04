@@ -30,6 +30,11 @@ public enum PushType {
 		return pushService;
 	}
 
+	public int getIndex(){
+		return index;
+	}
+
+
 	public PushService get(int index) {
 		for (PushType v : values()) {
 			if(v.index == index) {
