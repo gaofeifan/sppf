@@ -107,13 +107,7 @@
             <artifactId>sppf-service-parking-client</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        
-        <!-- <dependency>
-            <groupId>com.linkmoretech</groupId>
-            <artifactId>sppf-service-versatile-client</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency> -->
-        
+
         <dependency>
             <groupId>com.linkmoretech</groupId>
             <artifactId>sppf-service-order-client</artifactId>
