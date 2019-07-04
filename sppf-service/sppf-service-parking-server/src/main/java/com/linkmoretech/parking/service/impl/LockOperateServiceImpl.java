@@ -37,8 +37,7 @@ public class LockOperateServiceImpl implements LockOperateService {
     private LockFactory lockFactory = LockFactory.getInstance();
     @Override
     public Boolean operate(HttpServletRequest request, LockOperateRequest lockOperate) {
-        // TODO server 客户端传递的版本
-        LockService lockService = lockFactory.getLockService(0, lockOperate.getMsgStatus(), Boolean.TRUE);
+        LockService lockService = lockFactory.getLockService(LockFactory.MANAGE, lockOperate.getMsgStatus(), Boolean.TRUE);
         if(lockOperate.getState().intValue() == 1){
             return lockService.downLock(lockOperate.getLockSn());
         }{

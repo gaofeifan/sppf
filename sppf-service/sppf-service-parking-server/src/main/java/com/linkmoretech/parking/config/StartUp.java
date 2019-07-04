@@ -9,12 +9,13 @@ import com.linkmoretech.common.util.JsonUtil;
 import com.linkmoretech.common.util.SpringUtil;
 import com.linkmoretech.parking.service.CarPlaceService;
 import com.linkmoretech.parking.service.LockOperateService;
+import com.linkmoretech.parking.vo.request.LockOperateRequest;
 import com.linkmoretech.parking.vo.response.CarPlaceDetailsResponse;
 import com.linkmoretech.parking.vo.response.CarPlaceDetailsSnResponse;
 import com.linkmoretech.parking.vo.response.ResGateway;
-//@Component
-public class StartUp //implements CommandLineRunner{
-{
+@Component
+//public class StartUp //implements CommandLineRunner{
+public class StartUp implements CommandLineRunner{
 
 //	@Override
 	public void run(String... args) throws Exception {
@@ -37,7 +38,12 @@ public class StartUp //implements CommandLineRunner{
 //			System.out.println(JsonUtil.toJson(list));
 			
 			LockOperateService operateService = SpringUtil.getBean(LockOperateService.class);
-			List<ResGateway> list = operateService.findGatewayGroup(1026L, null);
+//			List<ResGateway> list = operateService.findGatewayGroup(1026L, null);
+			LockOperateRequest lockOperate = new LockOperateRequest();
+			lockOperate.setCarPlaceId(1040L);
+			lockOperate.setState(1);
+			operateService.operate(null, lockOperate );
+			Boolean removeLock = operateService.removeStallLock(1040L, null);
 //			ReqLockIntall reqLockIntall = new ReqLockIntall();
 //			reqLockIntall.setFloor("B");
 //			reqLockIntall.setFloorId(1028L);
