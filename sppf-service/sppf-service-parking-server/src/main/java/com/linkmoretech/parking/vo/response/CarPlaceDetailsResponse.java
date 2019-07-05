@@ -24,11 +24,11 @@ public class CarPlaceDetailsResponse {
     private String areaName;
     @ApiModelProperty("锁编号")
     private String lockSn;
-    @ApiModelProperty("锁状态(1:竖起状态 2：躺下 )")
+    @ApiModelProperty("锁状态(1:竖起状态 2：躺下 3, 故障")
     private Integer lockStatus;
-    @ApiModelProperty("车位状态 状态:1，空闲；2，使用中 ")
+    @ApiModelProperty("车位状态 状态:0，空闲；1，使用中 ")
     private Integer status;
-    @ApiModelProperty("上线状态;上线状态: 1: 上线，2:下线  ")
+    @ApiModelProperty("上线状态;上线状态: 1: 上线，0:下线  ")
     private Integer  lineStatus; /** 上线状态;上线状态: 1: 上线，2:下线 */
     @ApiModelProperty("锁电量")
     private int betty;
@@ -58,8 +58,6 @@ public class CarPlaceDetailsResponse {
     private Long excCode;
     @ApiModelProperty("复位状态  true可以复位 false不可以")
     private boolean resetStatus = true;
-    @ApiModelProperty("上下线状态true上线 false下线")
-    private boolean onoffStatus = false;
     @ApiModelProperty("故障原因Id")
     private Long faultId;
     @ApiModelProperty("地磁车状态 0无车  1有车  2其他")

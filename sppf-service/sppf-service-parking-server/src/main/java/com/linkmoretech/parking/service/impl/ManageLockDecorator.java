@@ -59,10 +59,10 @@ public class ManageLockDecorator extends LockDecorator{
 	// status 1升起  2 降下
     private void updateCarPlaceStatus(int status,String lockCode) {
     	CarPlace carPlace = this.carPlaceService.findByLockCode(lockCode);
-    	if(status == 1) {
+    	if(status == 0) {
     		carPlace.setLockStatus(1);
     		carPlace.setPlaceStatus(1);
-    	}else if(status == 2) {
+    	}else if(status == 1) {
 			carPlace.setLockStatus(2);
 			carPlace.setPlaceStatus(1);
 		}

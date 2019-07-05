@@ -51,7 +51,7 @@ public class CarPlaceDetailsSnResponse {
     private String cityCode;
     @ApiModelProperty(value="城市名称")
     private String cityName;
-    @ApiModelProperty(value="车位状态 状态:1，空闲；2，使用中 ")
+    @ApiModelProperty(value="车位状态 状态:0，空闲；1，使用中 ")
     private int carPlaceStatus;
     @ApiModelProperty(value=" 0 未安装  1已安装 ")
     private int installStatus = 0;

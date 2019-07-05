@@ -348,24 +348,24 @@ public class CarParkServiceImpl implements CarParkService {
                 if (car.getLockStatus() == null || car.getLockStatus().intValue() == 3) {
                     faultAmount++;
                 }
-                switch (car.getPlaceType() != null ? car.getPlaceType() : 0) {
+                switch (car.getPlaceType() != null ? car.getPlaceType() : 1) {
                     case 1:
                         carAmount++;
                         ownerAmount++;
-                        if (car.getPlaceStatus().intValue() == 2) {
+                        if (car.getPlaceStatus().intValue() == 1) {
                             carUseAmount++;
                             ownerUseAmount++;
-                        } else if (car.getPlaceStatus().intValue() == 1) {
+                        } else if (car.getPlaceStatus().intValue() == 0) {
                             leisureAmount++;
                         }
                         break;
                     case 2:
                         carAmount++;
                         tempAmount++;
-                        if (car.getPlaceStatus().intValue() == 2) {
+                        if (car.getPlaceStatus().intValue() == 1) {
                             carUseAmount++;
                             tempUseAmount++;
-                        } else if (car.getPlaceStatus().intValue() == 1) {
+                        } else if (car.getPlaceStatus().intValue() == 0) {
                             leisureAmount++;
                         }
                         break;

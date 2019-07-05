@@ -15,10 +15,10 @@ import com.linkmoretech.parking.vo.request.LockOperateRequest;
 import com.linkmoretech.parking.vo.response.CarPlaceDetailsResponse;
 import com.linkmoretech.parking.vo.response.CarPlaceDetailsSnResponse;
 import com.linkmoretech.parking.vo.response.ResGateway;
-//@Component
-public class StartUp //implements CommandLineRunner
- {
-//public class StartUp implements CommandLineRunner{
+@Component
+//public class StartUp //implements CommandLineRunner
+// {
+public class StartUp implements CommandLineRunner{
 
 //	@Override
 	public void run(String... args) throws Exception {
@@ -26,7 +26,6 @@ public class StartUp //implements CommandLineRunner
 			while (true) {
 			CarPlaceService carPlaceService = SpringUtil.getBean(CarPlaceService.class);
 				CarParkService carParkService = SpringUtil.getBean(CarParkService.class);
-
 				List<CityParkListResponse> list1 = carParkService.carParkList(null);
 				System.out.println(JsonUtil.toJson(list1));
 
@@ -46,7 +45,10 @@ public class StartUp //implements CommandLineRunner
 //			List<CityParkListResponse> list = carParkService.carParkList(null);
 //			System.out.println(JsonUtil.toJson(list));
 			
-//			LockOperateService operateService = SpringUtil.getBean(LockOperateService.class);
+			LockOperateService operateService = SpringUtil.getBean(LockOperateService.class);
+				operateService.getGatewayDetails("0001f46ec0f58a3c",null);
+				operateService.findGatewayGroup(1026L,null);
+				operateService.lockSignalHistory(null,"d674101962ea");
 //			List<ResGateway> list = operateService.findGatewayGroup(1026L, null);
 //			LockOperateRequest lockOperate = new LockOperateRequest();
 //			lockOperate.setCarPlaceId(1179L);

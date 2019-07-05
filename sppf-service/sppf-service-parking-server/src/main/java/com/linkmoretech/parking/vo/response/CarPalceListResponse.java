@@ -23,7 +23,7 @@ public class CarPalceListResponse {
     @JsonProperty("stallName")
     private String carPalceName;
     /** 车位状态;车位状态: 1:空闲，2:使用 */
-    @ApiModelProperty(value="车位状态 状态:1，空闲；2，使用中；4，下线  ")
+    @ApiModelProperty(value="车位状态 状态:0，空闲；1，使用中；4，下线  ")
     @JsonProperty("status")
     private Integer placeStatus;
     /** 地锁状态;地锁状态: 1:升起,2:降下, 3:故障 */
