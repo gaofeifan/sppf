@@ -1,4 +1,4 @@
-package com.linkmoretech.user.vo;
+package com.linkmoretech.versatile.vo.response;
 
 import javax.validation.constraints.NotNull;
 import io.swagger.annotations.ApiModel;
