@@ -47,12 +47,6 @@ public class UserAppVersionController {
     @Autowired
     UserAppVersionService userAppVersionService;
     
-    /**
-     * 查询当前版本
-     * @param source
-     * @param request
-     * @return
-     */
     @GetMapping(value="current")
 	@ResponseBody
 	@ApiOperation(value = "查询当前版本", notes = "来源必填 1 android 2 ios", consumes = "application/json")
@@ -68,11 +62,6 @@ public class UserAppVersionController {
 		return userAppVersionResponse;
 	}
 	
-    /**
-     * 上报用户版本
-     * @param uvr
-     * @param request
-     */
 	@PostMapping(value="report")
 	@ApiOperation(value = "上报用户版本", notes = "上报用户版本", consumes = "application/json")
 	public void report(Authentication authentication, @RequestBody @Validated UserVersionRequest uvr,HttpServletRequest request){
