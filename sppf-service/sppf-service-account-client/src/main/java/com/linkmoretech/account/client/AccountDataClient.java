@@ -13,7 +13,7 @@ import java.util.List;
  * Description: 获取用户数据操作权限接口定义
  * @date: 11:33 2019-06-25
  */
-@FeignClient(name = "account", configuration = FeignConfiguration.class, fallbackFactory = AccountFallBackFactory.class)
+@FeignClient(name = "account",  configuration = FeignConfiguration.class)
 public interface AccountDataClient {
 
 
@@ -42,4 +42,8 @@ public interface AccountDataClient {
     @GetMapping(value = "auth-user/getPlaceData")
     List<Long> getPlaceDataAccount(@RequestParam(value = "userId") Long userId, @RequestParam(value = "parkId")
                                    Long parkId);
+
+    @GetMapping(value = "auth-user/getaaa")
+    List<Long> getaaa(@RequestParam(value = "userId") Long userId);
+
 }

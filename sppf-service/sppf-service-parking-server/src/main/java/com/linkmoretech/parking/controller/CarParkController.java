@@ -1,5 +1,6 @@
 package com.linkmoretech.parking.controller;
 
+import com.linkmoretech.account.client.AccountDataClient;
 import com.linkmoretech.auth.common.util.AuthenticationTokenAnalysis;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
@@ -38,6 +39,10 @@ public class CarParkController {
 
     @Autowired
     CarParkService carParkService;
+
+    @Autowired
+    AccountDataClient accountDataClient;
+
 
     @ApiOperation(value = "添加车场", notes = "添加车场")
     @PostMapping(value = "create")
@@ -103,5 +108,11 @@ public class CarParkController {
             throw new CommonException(ResponseCodeEnum.PARAMS_ERROR, bindingResult.getFieldError().getDefaultMessage());
         }
         carParkService.upDownLine(carParkLineRequest);
+    }
+
+    @GetMapping(value = "test")
+    public void test() {
+        List l =  accountDataClient.getaaa(1L);
+        log.info("test {}", l);
     }
 }

@@ -80,19 +80,19 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
             .failureHandler(validateFailureHandler);
 
         http
-            .apply(accAuthenticationManagerConfig)
-            .and()
-            .apply(smsAuthenticationManagerConfig)
-            .and()
-            .apply(appLoginAuthenticationConfig)
-            .and()
-            .apply(appRegisterAuthenticationConfig)
-            .and()
             .authorizeRequests() // 授权设定
             .antMatchers(matchers).permitAll()    //对此链接不拦截
             .anyRequest() // 所有请求
             .authenticated() //需要身份认证
-            .and()
-            .csrf().disable();//关闭csrf
+                .and()
+                .apply(accAuthenticationManagerConfig)
+                .and()
+                .apply(smsAuthenticationManagerConfig)
+                .and()
+                .apply(appLoginAuthenticationConfig)
+                .and()
+                .apply(appRegisterAuthenticationConfig)
+                .and()
+                .csrf().disable();//关闭csrf
     }
 }
