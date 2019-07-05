@@ -1,5 +1,23 @@
 package com.linkmoretech.versatile.controller;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.linkmoretech.auth.common.util.AuthenticationTokenAnalysis;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.common.vo.PageDataResponse;
@@ -7,13 +25,11 @@ import com.linkmoretech.common.vo.PageSearchRequest;
 import com.linkmoretech.versatile.service.StaffAppVersionService;
 import com.linkmoretech.versatile.vo.request.StaffAppVersionCreateRequest;
 import com.linkmoretech.versatile.vo.request.StaffAppVersionEditRequest;
+import com.linkmoretech.versatile.vo.request.StaffAppVersionRequest;
 import com.linkmoretech.versatile.vo.response.StaffAppVersionPageResponse;
+import com.linkmoretech.versatile.vo.response.StaffAppVersionResponse;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
+import io.swagger.annotations.ApiParam;
 
 /**
  * 版本管理controller
@@ -64,6 +80,34 @@ public class StaffAppVersionController {
         }
         return staffAppVersionService.searchPage(searchRequest);
     }
+    
+    /**
+     * 当前版本
+     * @param source 请求来源 1 Android 2 IOS
+     * @param request
+     * @return
+     */
+	@RequestMapping(value="/current",method = RequestMethod.GET)
+	@ResponseBody
+	@ApiOperation(value = "查询当前版本", notes = "来源必填 1 android 2 ios", consumes = "application/json")
+	public StaffAppVersionResponse current(@RequestParam("source")@ApiParam(value="来源 1 android 2 ios",required=true) @NotNull(message="参数不能为空") Integer source){
+		int appType = 0;
+		if(1 == source){
+			appType = 1;
+		}else if(2 == source){
+			appType = 2;
+		}
+		StaffAppVersionResponse staffAppVersionResponse = this.staffAppVersionService.currentAppVersion(appType);
+		return staffAppVersionResponse;
+	}
+    
+	@PostMapping(value="/report")
+	public void report(Authentication authentication, @RequestBody @Validated StaffAppVersionRequest staffAppVersionRequest){
+		AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
+		Long userId = authenticationTokenAnalysis.getUserId();
+		this.staffAppVersionService.report(staffAppVersionRequest,userId);
+	}
+    
 
 
 }

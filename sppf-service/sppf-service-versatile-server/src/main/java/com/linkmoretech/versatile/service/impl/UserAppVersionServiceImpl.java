@@ -1,9 +1,7 @@
-package com.linkmoretech.user.service.impl;
+package com.linkmoretech.versatile.service.impl;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +12,15 @@ import org.springframework.stereotype.Service;
 import com.alibaba.fastjson.JSON;
 import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
-import com.linkmoretech.user.entity.UserAppVersion;
-import com.linkmoretech.user.entity.UserVersion;
-import com.linkmoretech.user.repository.UserAppVersionRepository;
-import com.linkmoretech.user.repository.UserVersionRepository;
-import com.linkmoretech.user.service.UserAppVersionService;
-import com.linkmoretech.user.vo.UserVersionRequest;
-import com.linkmoretech.user.vo.request.UserAppVersionRequest;
-import com.linkmoretech.user.vo.response.UserAppVersionPageResponse;
+import com.linkmoretech.versatile.entity.UserAppVersion;
+import com.linkmoretech.versatile.entity.UserVersion;
+import com.linkmoretech.versatile.repository.UserAppVersionRepository;
+import com.linkmoretech.versatile.repository.UserVersionRepository;
+import com.linkmoretech.versatile.service.UserAppVersionService;
+import com.linkmoretech.versatile.vo.request.UserAppVersionRequest;
+import com.linkmoretech.versatile.vo.response.UserAppVersionPageResponse;
+import com.linkmoretech.versatile.vo.response.UserVersionRequest;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**

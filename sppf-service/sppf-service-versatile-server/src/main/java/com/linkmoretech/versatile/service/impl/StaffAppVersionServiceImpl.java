@@ -1,5 +1,6 @@
 package com.linkmoretech.versatile.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
@@ -8,15 +9,17 @@ import com.linkmoretech.versatile.repository.StaffAppVersionRepository;
 import com.linkmoretech.versatile.service.StaffAppVersionService;
 import com.linkmoretech.versatile.vo.request.StaffAppVersionCreateRequest;
 import com.linkmoretech.versatile.vo.request.StaffAppVersionEditRequest;
+import com.linkmoretech.versatile.vo.request.StaffAppVersionRequest;
 import com.linkmoretech.versatile.vo.response.StaffAppVersionPageResponse;
+import com.linkmoretech.versatile.vo.response.StaffAppVersionResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -71,4 +74,43 @@ public class StaffAppVersionServiceImpl implements StaffAppVersionService {
         pageDataResponse.setData(staffAppVersionPageResponses);
         return pageDataResponse;
     }
+
+	@Override
+	public StaffAppVersionResponse currentAppVersion(int appType) {
+		List<StaffAppVersion> staffAppVersions = this.staffAppVersionRepository.findByTypeAndStatus(appType);
+		StaffAppVersionResponse staffAppVersionResponse = null;
+		if(CollectionUtils.isNotEmpty(staffAppVersions)) {
+			StaffAppVersion staffAppVersion = staffAppVersions.get(0);
+			staffAppVersionResponse = new StaffAppVersionResponse();
+			staffAppVersionResponse.setDescription(staffAppVersion.getDescription());
+			staffAppVersionResponse.setDownloadUrl(staffAppVersion.getUrl());
+			staffAppVersionResponse.setMustUpdate(staffAppVersion.getUpdateStatus());
+			staffAppVersionResponse.setVersion(staffAppVersion.getVersion());
+			staffAppVersionResponse.setVersionCode(staffAppVersion.getCode());
+			staffAppVersionResponse.setVersionName(staffAppVersion.getName());
+		}
+		return staffAppVersionResponse;
+	}
+
+	@Override
+	public void report(StaffAppVersionRequest staffAppVersionRequest, Long userId) {
+		/*UserVersion version = null;
+		boolean falg = false;
+		version = this.userVersionRepository.findByUserIdAndSystem(userId, 1);
+		log.info("report = {}",JSON.toJSON(version));
+		if(version != null) {
+			falg = true;
+		}else {
+			version = new UserVersion();
+			version.setUserId(userId);
+		}
+		BeanUtils.copyProperties(uvr, version);
+		version.setCommitTime(new Date());
+		version.setSystem(1);
+		if(falg) {
+			this.userVersionRepository.saveAndFlush(version);
+			return;
+		}
+		this.userVersionRepository.save(version);*/
+	}
 }

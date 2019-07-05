@@ -1,9 +1,9 @@
-package com.linkmoretech.user.repository;
+package com.linkmoretech.versatile.repository;
 
-import com.linkmoretech.user.entity.UserAppVersion;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import com.linkmoretech.versatile.entity.UserAppVersion;
 /**
  * 用户版本
  * @author jhb
@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.Query;
  */
 public interface UserAppVersionRepository extends JpaRepository<UserAppVersion, Long> {
 
-    @Query(value =" select * from t_user_app_version where type = ?1 and status= 1 and scope != 2 order by code desc", nativeQuery = true)
+    @Query(value =" select * from v_user_app_version where type = ?1 and status= 1 and scope != 2 order by code desc", nativeQuery = true)
 	List<UserAppVersion> findByTypeAndStatus(Integer source);
     
 	void deleteUserAppVersionByIdIn(List<Long> ids);

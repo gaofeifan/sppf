@@ -1,12 +1,12 @@
-package com.linkmoretech.user.service;
+package com.linkmoretech.versatile.service;
 
 import java.util.List;
 import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
-import com.linkmoretech.user.entity.UserAppVersion;
-import com.linkmoretech.user.vo.UserVersionRequest;
-import com.linkmoretech.user.vo.request.UserAppVersionRequest;
-import com.linkmoretech.user.vo.response.UserAppVersionPageResponse;
+import com.linkmoretech.versatile.entity.UserAppVersion;
+import com.linkmoretech.versatile.vo.request.UserAppVersionRequest;
+import com.linkmoretech.versatile.vo.response.UserAppVersionPageResponse;
+import com.linkmoretech.versatile.vo.response.UserVersionRequest;
 
 /**
  * 个人版版本管理
