@@ -1,8 +1,7 @@
-package com.linkmoretech.user.repository;
-
-import com.linkmoretech.user.entity.UserVersion;
+package com.linkmoretech.versatile.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import com.linkmoretech.versatile.entity.UserVersion;
 /**
  * 用户版本
  * @author jhb

@@ -1,10 +1,10 @@
-package com.linkmoretech.user.controller;
+package com.linkmoretech.versatile.controller;
 
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
@@ -18,18 +18,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.linkmoretech.auth.common.util.AuthenticationTokenAnalysis;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
-import com.linkmoretech.user.entity.UserAppVersion;
-import com.linkmoretech.user.service.UserAppVersionService;
-import com.linkmoretech.user.vo.UserAppVersionResponse;
-import com.linkmoretech.user.vo.UserVersionRequest;
-import com.linkmoretech.user.vo.request.UserAppVersionRequest;
-import com.linkmoretech.user.vo.response.UserAppVersionPageResponse;
+import com.linkmoretech.versatile.entity.UserAppVersion;
+import com.linkmoretech.versatile.service.UserAppVersionService;
+import com.linkmoretech.versatile.vo.request.UserAppVersionRequest;
+import com.linkmoretech.versatile.vo.response.UserAppVersionPageResponse;
+import com.linkmoretech.versatile.vo.response.UserAppVersionResponse;
+import com.linkmoretech.versatile.vo.response.UserVersionRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -42,18 +41,12 @@ import io.swagger.annotations.ApiParam;
  */
 @RestController
 @RequestMapping(value = "user-app-version")
-@Api(tags = "用户版本", value = "App-Version" )
+@Api(tags = "用户版本", value = "User-App-Version" )
 public class UserAppVersionController {
 
     @Autowired
     UserAppVersionService userAppVersionService;
     
-    /**
-     * 查询当前版本
-     * @param source
-     * @param request
-     * @return
-     */
     @GetMapping(value="current")
 	@ResponseBody
 	@ApiOperation(value = "查询当前版本", notes = "来源必填 1 android 2 ios", consumes = "application/json")
@@ -69,11 +62,6 @@ public class UserAppVersionController {
 		return userAppVersionResponse;
 	}
 	
-    /**
-     * 上报用户版本
-     * @param uvr
-     * @param request
-     */
 	@PostMapping(value="report")
 	@ApiOperation(value = "上报用户版本", notes = "上报用户版本", consumes = "application/json")
 	public void report(Authentication authentication, @RequestBody @Validated UserVersionRequest uvr,HttpServletRequest request){

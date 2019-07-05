@@ -1,4 +1,4 @@
-package com.linkmoretech.user.vo.response;
+package com.linkmoretech.versatile.vo.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -78,9 +78,11 @@ public class LeasePlaceServiceImpl implements LeasePlaceService {
         List<LeasePlaceListResponse> leaseListResponsePlaceList = leasePlaceList.stream().map(leasePlace -> {
             LeasePlaceListResponse leasePlaceListResponse = new LeasePlaceListResponse();
             BeanUtils.copyProperties(leasePlace, leasePlaceListResponse);
-            List<String> plateList = licensePlateMap.get(leasePlace.getPlaceId()).stream()
-                    .map(LicensePlate::getLicensePlateNo).collect(Collectors.toList());
-            leasePlaceListResponse.setLicensePlateNoList(plateList);
+            if (licensePlateMap.get(leasePlace.getPlaceId()) != null) {
+                List<String> plateList = licensePlateMap.get(leasePlace.getPlaceId()).stream()
+                        .map(LicensePlate::getLicensePlateNo).collect(Collectors.toList());
+                leasePlaceListResponse.setLicensePlateNoList(plateList);
+            }
             return leasePlaceListResponse;
         }).collect(Collectors.toList());
         pageDataResponse.setData(leaseListResponsePlaceList);
