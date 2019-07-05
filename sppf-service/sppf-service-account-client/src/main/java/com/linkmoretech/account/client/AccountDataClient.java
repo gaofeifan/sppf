@@ -1,6 +1,6 @@
 package com.linkmoretech.account.client;
 
-import com.linkmoretech.account.client.fallback.AccountFallBackFactory;
+import com.linkmoretech.account.client.fallback.AccountFallBack;
 import com.linkmoretech.auth.common.configuration.FeignConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +13,7 @@ import java.util.List;
  * Description: 获取用户数据操作权限接口定义
  * @date: 11:33 2019-06-25
  */
-@FeignClient(name = "account", configuration = FeignConfiguration.class, fallbackFactory = AccountFallBackFactory.class)
+@FeignClient(name = "account", configuration = FeignConfiguration.class, fallback= AccountFallBack.class)
 public interface AccountDataClient {
 
 

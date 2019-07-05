@@ -3,13 +3,11 @@ package com.linkmoretech.auth.authentication.configuration;
 import com.linkmoretech.auth.authentication.authentication.ValidateFailureHandler;
 import com.linkmoretech.auth.authentication.authentication.ValidateSuccessHandler;
 import com.linkmoretech.auth.authentication.authentication.account.AccAuthenticationManagerConfig;
-import com.linkmoretech.auth.authentication.authentication.sms.mobile.SmsCodeFilter;
 import com.linkmoretech.auth.authentication.authentication.sms.mobile.SmsLoginFilter;
 import com.linkmoretech.auth.authentication.authentication.sms.personal.AppLoginAuthenticationConfig;
 import com.linkmoretech.auth.authentication.authentication.sms.personal.AppRegisterAuthenticationConfig;
 import com.linkmoretech.auth.authentication.authentication.sms.manager.SmsAuthenticationManagerConfig;
 import com.linkmoretech.auth.authentication.component.ValidateCodeManage;
-import com.linkmoretech.auth.common.construct.ParamsConstruct;
 import com.linkmoretech.auth.common.configuration.OauthResourceConfig;
 
 import lombok.extern.slf4j.Slf4j;
@@ -80,6 +78,11 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
             .failureHandler(validateFailureHandler);
 
         http
+            .authorizeRequests() // 授权设定
+            .antMatchers(matchers).permitAll()    //对此链接不拦截
+            .anyRequest() // 所有请求
+            .authenticated() //需要身份认证
+            .and()
             .apply(accAuthenticationManagerConfig)
             .and()
             .apply(smsAuthenticationManagerConfig)
@@ -87,11 +90,6 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
             .apply(appLoginAuthenticationConfig)
             .and()
             .apply(appRegisterAuthenticationConfig)
-            .and()
-            .authorizeRequests() // 授权设定
-            .antMatchers(matchers).permitAll()    //对此链接不拦截
-            .anyRequest() // 所有请求
-            .authenticated() //需要身份认证
             .and()
             .csrf().disable();//关闭csrf
     }
