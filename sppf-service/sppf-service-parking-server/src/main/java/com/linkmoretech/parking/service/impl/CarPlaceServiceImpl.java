@@ -392,17 +392,20 @@ public class CarPlaceServiceImpl implements CarPlaceService {
 
     @Override
     public CarPlaceDetailsSnResponse detailsSn(HttpServletRequest request, String sn, Long parkId) {
+        CarPlaceDetailsSnResponse carPlaceRes = new CarPlaceDetailsSnResponse();
+        carPlaceRes.setSerialNumber("0000"+sn);
         if(sn.contains("0000")) {
+            carPlaceRes.setSerialNumber(sn);
             sn = sn.substring(4).toUpperCase();
         }
         CarPlace carPlace = this.carPlaceRepository.getOneByLockCodeAndParkId(sn,parkId);
-        CarPlaceDetailsSnResponse carPlaceRes = new CarPlaceDetailsSnResponse();
         carPlaceRes.setCarPlaceLockSn(sn);
         LockService lockService = this.lockFactory.getLockService();
         ResLockInfo lockInfo = lockService.lockInfo(sn);
         if(carPlace != null){
             carPlaceRes.setCarPlaceId(carPlace.getId());
             carPlaceRes.setParkId(carPlace.getParkId());
+            carPlaceRes.setCarPlaceName(carPlace.getPlaceNo());
             carPlaceRes.setParkName(carPlace.getParkName());
             carPlaceRes.setCarPlaceStatus(carPlace.getPlaceStatus());
             carPlaceRes.setLockStatus(carPlace.getLockStatus());
@@ -445,15 +448,11 @@ public class CarPlaceServiceImpl implements CarPlaceService {
 
 
     @Override
-    public List<PlaceParkIdAndRangeOutput> findByParkIdAndIdRange(PlaceParkIdAndRangeInput input) {
+    public List<PlaceParkIdAndRangeOutput> findByParkIdAndIdRange(PlaceParkIdAndRangeInput input) throws CommonException {
         List<PlaceParkIdAndRangeOutput> outputs = new ArrayList<>();
         PlaceParkIdAndRangeOutput output;
         if(input.getHeadId().size() != input.getEndId().size()){
-            try {
-                throw new CommonException(ResponseCodeEnum.PARAMS_ERROR);
-            } catch (CommonException e) {
-                e.printStackTrace();
-            }
+            throw new CommonException(ResponseCodeEnum.PARAMS_ERROR);
         }
 
             List<CarPlace> list = this.carPlaceRepository.findAll(new Specification<CarPlace>() {

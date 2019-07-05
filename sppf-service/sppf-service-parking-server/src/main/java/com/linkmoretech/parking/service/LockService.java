@@ -1,5 +1,6 @@
 package com.linkmoretech.parking.service;
 
+import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.parking.entity.*;
 import com.linkmoretech.parking.vo.response.ResSignalHistory;
 
@@ -33,28 +34,28 @@ public interface LockService {
 	 * @Version  v2.0
 	 * @return true  false
 	 */
-	public boolean upLock(String sn) ;
+	public boolean upLock(String sn) throws CommonException;
 	
 	/**
 	 * @Description  升起锁(返回具体的信息 用于自定义处理)
 	 * @Author   GFF 
 	 * @Version  v2.0
 	 */
-	public ResLockMessage upLockMes(String sn) ;
+	public ResLockMessage upLockMes(String sn) throws CommonException;
 	
 	/**
 	 * @Description  下降锁 （只返回为操作成功或失败）
 	 * @Author   GFF 
 	 * @Version  v2.0
 	 */
-	public Boolean downLock(String sn);
+	public Boolean downLock(String sn) throws CommonException;
 	
 	/**
 	 * @Description  下降锁 （返回操作的具体信息  用于自定义处理）
 	 * @Author   GFF 
 	 * @Version  v2.0
 	 */
-	public ResLockMessage downLockMes(String sn);
+	public ResLockMessage downLockMes(String sn) throws CommonException;
 	
 	/**
 	 * @return 

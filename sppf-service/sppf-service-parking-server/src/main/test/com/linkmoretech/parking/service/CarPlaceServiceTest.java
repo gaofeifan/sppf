@@ -25,8 +25,8 @@ public class CarPlaceServiceTest {
 	public void testFindByParkIdAndIdRange() {
 		PlaceParkIdAndRangeInput input = new PlaceParkIdAndRangeInput();
 		input.setParkId(824L);
-		List<PlaceParkIdAndRangeOutput> list = carPlaceService.findByParkIdAndIdRange(input );
-		System.out.println(JsonUtil.toJson(list));
+//		List<PlaceParkIdAndRangeOutput> list = carPlaceService.findByParkIdAndIdRange(input );
+//		System.out.println(JsonUtil.toJson(list));
 	}
 
 }

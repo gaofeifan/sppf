@@ -13,8 +13,12 @@ import java.util.List;
  * Description: 获取用户数据操作权限接口定义
  * @date: 11:33 2019-06-25
  */
+<<<<<<< HEAD
 
 @FeignClient(name = "account", configuration = FeignConfiguration.class, fallback= AccountFallBack.class)
+=======
+@FeignClient(name = "account", configuration = FeignConfiguration.class, fallbackFactory = AccountFallBack.class)
+>>>>>>> c2a6485c73aa99e546ace28d284643be0fbea0f0
 public interface AccountDataClient {
 
 

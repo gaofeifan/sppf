@@ -1,6 +1,7 @@
 package com.linkmoretech.parking.service.impl;
 
 import com.linkmoretech.common.enums.ResponseCodeEnum;
+import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.common.util.TaskPool;
 import com.linkmoretech.parking.entity.ResLockMessage;
 import com.linkmoretech.parking.enums.PushType;
@@ -20,7 +21,7 @@ public class PushMessageDecorator extends LockDecorator implements PushService {
     PushType[] values = PushType.values();
     private int type = 0;
     @Override
-    public boolean upLock(String sn) {
+    public boolean upLock(String sn) throws CommonException {
 
         Boolean lock = super.upLock(sn);
         Boolean pushFlag = this.push();
@@ -28,7 +29,7 @@ public class PushMessageDecorator extends LockDecorator implements PushService {
     }
 
     @Override
-    public ResLockMessage upLockMes(String sn) {
+    public ResLockMessage upLockMes(String sn) throws CommonException {
         ResLockMessage message = super.upLockMes(sn);
         Boolean pushFlag = this.push();
         return message;
@@ -42,14 +43,14 @@ public class PushMessageDecorator extends LockDecorator implements PushService {
     }
 
     @Override
-    public Boolean downLock(String sn) {
+    public Boolean downLock(String sn) throws CommonException {
         Boolean lock = super.downLock(sn);
         this.push();
         return lock;
     }
 
     @Override
-    public ResLockMessage downLockMes(String sn) {
+    public ResLockMessage downLockMes(String sn) throws CommonException {
         ResLockMessage lockMessage = super.downLockMes(sn);
         this.push();
         return lockMessage;

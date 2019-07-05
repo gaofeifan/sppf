@@ -1,5 +1,6 @@
 package com.linkmoretech.parking.controller.read;
 
+import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.parking.common.PlaceParkIdAndRangeInput;
 import com.linkmoretech.parking.common.PlaceParkIdAndRangeOutput;
 import com.linkmoretech.parking.service.CarParkService;
@@ -57,7 +58,7 @@ public class CarPlaceReadController {
 
     @PostMapping(value = "park-id-and-id-range")
     @ApiOperation(value = "查询车位数据", notes = "根据车场id与车位区间的id查询")
-    public List<PlaceParkIdAndRangeOutput> findByParkIdAndIdRange(@RequestBody PlaceParkIdAndRangeInput input){
+    public List<PlaceParkIdAndRangeOutput> findByParkIdAndIdRange(@RequestBody PlaceParkIdAndRangeInput input) throws CommonException {
         return this.carPlaceService.findByParkIdAndIdRange(input);
     }
 }

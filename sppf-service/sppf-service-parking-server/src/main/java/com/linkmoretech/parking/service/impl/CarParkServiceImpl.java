@@ -295,6 +295,7 @@ public class CarParkServiceImpl implements CarParkService {
     public List<CityParkListResponse> carParkList(Authentication authentication) {
         AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
         List<Long> accountParkIds = accountDataClient.getParkDataAccount(authenticationTokenAnalysis.getUserId());
+//        List<Long> accountParkIds = Arrays.asList(1026L,1031L);
         log.info(JsonUtil.toJson(accountParkIds));
 //        List<Long> accountParkIds = null;//accountDataClient.getParkDataAccount(authenticationTokenAnalysis.getUserId());
         List<CityParkListResponse> citys = new ArrayList<>();
@@ -348,24 +349,24 @@ public class CarParkServiceImpl implements CarParkService {
                 if (car.getLockStatus() == null || car.getLockStatus().intValue() == 3) {
                     faultAmount++;
                 }
-                switch (car.getPlaceType() != null ? car.getPlaceType() : 0) {
+                switch (car.getPlaceType() != null ? car.getPlaceType() : 1) {
                     case 1:
                         carAmount++;
                         ownerAmount++;
-                        if (car.getPlaceStatus().intValue() == 2) {
+                        if (car.getPlaceStatus().intValue() == 1) {
                             carUseAmount++;
                             ownerUseAmount++;
-                        } else if (car.getPlaceStatus().intValue() == 1) {
+                        } else if (car.getPlaceStatus().intValue() == 0) {
                             leisureAmount++;
                         }
                         break;
                     case 2:
                         carAmount++;
                         tempAmount++;
-                        if (car.getPlaceStatus().intValue() == 2) {
+                        if (car.getPlaceStatus().intValue() == 1) {
                             carUseAmount++;
                             tempUseAmount++;
-                        } else if (car.getPlaceStatus().intValue() == 1) {
+                        } else if (car.getPlaceStatus().intValue() == 0) {
                             leisureAmount++;
                         }
                         break;

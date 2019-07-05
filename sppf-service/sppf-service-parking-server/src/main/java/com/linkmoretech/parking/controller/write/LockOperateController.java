@@ -1,5 +1,6 @@
 package com.linkmoretech.parking.controller.write;
 
+import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.parking.service.LockOperateService;
 import com.linkmoretech.parking.vo.request.LockOperateRequest;
 import com.linkmoretech.parking.vo.request.ReqLockIntall;
@@ -34,7 +35,7 @@ public class LockOperateController {
 
     @ApiOperation(value = "操作锁", notes = "控制锁升降")
     @PostMapping(value = "operate")
-    public Boolean operate(HttpServletRequest request, @RequestBody LockOperateRequest lockOperate){
+    public Boolean operate(HttpServletRequest request, @RequestBody LockOperateRequest lockOperate) throws CommonException {
         return this.lockOperateService.operate(request,lockOperate);
     }
 
@@ -134,14 +135,14 @@ public class LockOperateController {
     @ApiOperation(value = "地锁安装2.0.1", notes = "地锁安装")
     @RequestMapping(value = "/v2.0.1/installLock", method = RequestMethod.POST)
     @ResponseBody
-    public Boolean installLockTwo(HttpServletRequest request, @Validated @RequestBody ReqLockIntall reqLockIntall) {
+    public Boolean installLockTwo(HttpServletRequest request, @Validated @RequestBody ReqLockIntall reqLockIntall) throws CommonException {
             Boolean flag= this.lockOperateService.installLock(reqLockIntall,request);
         return flag;
     }
     @ApiOperation(value = "删除车位锁", notes = "删除车位锁")
     @RequestMapping(value = "/remove-stall-lock", method = RequestMethod.POST)
     @ResponseBody
-    public Boolean removeStallLock(HttpServletRequest request, @ApiParam(value="车位id",required=true) @NotNull(message="车位id不能为空") @RequestParam(value = "stallId",required= true) Long stallId ) {
+    public Boolean removeStallLock(HttpServletRequest request, @ApiParam(value="车位id",required=true) @NotNull(message="车位id不能为空") @RequestParam(value = "stallId",required= true) Long stallId ) throws CommonException {
             return this.lockOperateService.removeStallLock(stallId,request);
     }
 

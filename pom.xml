@@ -64,7 +64,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	<repositories>
+	<!--<repositories>
         <repository> 
             <id>nexus</id> 
             <name>rongxin private nexus</name> 
@@ -76,5 +76,5 @@
                 <enabled>true</enabled>
             </snapshots> 
         </repository> 
-    </repositories>
+    </repositories>-->
 </project>

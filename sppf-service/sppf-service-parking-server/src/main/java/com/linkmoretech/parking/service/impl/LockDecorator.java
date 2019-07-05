@@ -1,4 +1,5 @@
 package com.linkmoretech.parking.service.impl;
+import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.parking.entity.*;
 import com.linkmoretech.parking.service.LockService;
 import com.linkmoretech.parking.vo.response.ResSignalHistory;
@@ -32,22 +33,22 @@ public abstract class LockDecorator implements LockService{
 	}
 
 	@Override
-	public boolean upLock(String sn) {
+	public boolean upLock(String sn) throws CommonException {
 		return lockService.upLock(sn);
 	}
 
 	@Override
-	public ResLockMessage upLockMes(String sn) {
+	public ResLockMessage upLockMes(String sn) throws CommonException {
 		return lockService.upLockMes(sn);
 	}
 
 	@Override
-	public Boolean downLock(String sn) {
+	public Boolean downLock(String sn) throws CommonException {
 		return lockService.downLock(sn);
 	}
 
 	@Override
-	public ResLockMessage downLockMes(String sn) {
+	public ResLockMessage downLockMes(String sn) throws CommonException {
 		return lockService.downLockMes(sn);
 	}
 

@@ -1,5 +1,6 @@
 package com.linkmoretech.parking.service;
 
+import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.parking.vo.request.LockOperateRequest;
 import com.linkmoretech.parking.vo.request.ReqLockIntall;
 import com.linkmoretech.parking.vo.response.ResGateway;
@@ -17,7 +18,7 @@ import java.util.List;
  */
 public interface LockOperateService {
 
-    Boolean operate(HttpServletRequest request, LockOperateRequest lockOperate);
+    Boolean operate(HttpServletRequest request, LockOperateRequest lockOperate) throws CommonException;
 
 
     /**
@@ -111,7 +112,7 @@ public interface LockOperateService {
      */
     Boolean editLockBindGateway(HttpServletRequest request, String serialNumbers, String lockSn);
 
-    Boolean removeStallLock(Long stallId, HttpServletRequest request);
+    Boolean removeStallLock(Long stallId, HttpServletRequest request) throws CommonException;
 
-    public Boolean installLock(ReqLockIntall reqLockIntall, HttpServletRequest request);
+    public Boolean installLock(ReqLockIntall reqLockIntall, HttpServletRequest request) throws CommonException;
 }

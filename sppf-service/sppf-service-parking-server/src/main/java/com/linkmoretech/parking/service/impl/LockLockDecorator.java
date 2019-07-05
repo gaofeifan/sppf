@@ -32,7 +32,7 @@ public class LockLockDecorator extends LockDecorator implements Lock{
     }
 
     @Override
-    public Boolean downLock(String sn) {
+    public Boolean downLock(String sn) throws CommonException {
     	try {
 			lock();
 			return super.downLock(sn);
@@ -42,7 +42,7 @@ public class LockLockDecorator extends LockDecorator implements Lock{
     }
 
     @Override
-    public ResLockMessage downLockMes(String sn) {
+    public ResLockMessage downLockMes(String sn) throws CommonException {
         try {
         	lock();
         	return super.downLockMes(sn);
@@ -52,7 +52,7 @@ public class LockLockDecorator extends LockDecorator implements Lock{
     }
 
     @Override
-    public boolean upLock(String sn) {
+    public boolean upLock(String sn) throws CommonException {
 		try {
 			lock();
 			return super.upLock(sn);
@@ -62,7 +62,7 @@ public class LockLockDecorator extends LockDecorator implements Lock{
     }
 
     @Override
-    public ResLockMessage upLockMes(String sn) {
+    public ResLockMessage upLockMes(String sn) throws CommonException {
        try {
     	   lock();
     	   return super.upLockMes(sn);

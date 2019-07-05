@@ -15,18 +15,24 @@ import java.util.List;
  */
 @Component
 @Slf4j
-public class AccountFallBack implements AccountDataClient {
+public class AccountFallBack implements FallbackFactory<AccountDataClient> {
 
     @Override
-    public List<Long> getParkDataAccount(Long userId) {
-        log.error("服务器熔断降级，返回空值 {}", userId);
-        return new ArrayList<>();
-    }
+    public AccountDataClient create(Throwable throwable) {
+        return new AccountDataClient() {
 
-    @Override
-    public List<Long> getPlaceDataAccount(Long userId, Long parkId) {
-        log.error("服务器熔断降级，返回空值 {}", userId);
-        return new ArrayList<>();
+            @Override
+            public List<Long> getParkDataAccount(Long userId) {
+                log.error("服务器熔断降级，返回空值 {}", throwable);
+                return new ArrayList<>();
+            }
+
+            @Override
+            public List<Long> getPlaceDataAccount(Long userId, Long parkId) {
+                log.error("服务器熔断降级，返回空值 {}" , throwable);
+                return new ArrayList<>();
+            }
+        };
     }
 
     @Override
