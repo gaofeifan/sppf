@@ -32,14 +32,14 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 /**
- * 版本管理controller
+ * 管理版版本管理
  * @Author: jhb
  * @Description:
  * @date: 10:27 AM 2019/4/30
  */
 @RestController
 @RequestMapping("staff-app-version")
-@Api(tags = "管理版用户版本", value = "Staff-App-Version")
+@Api(tags = "管理版版本管理", value = "Staff-App-Version")
 public class StaffAppVersionController {
 
     @Autowired
@@ -84,7 +84,7 @@ public class StaffAppVersionController {
     
 	@GetMapping(value="/current")
 	@ResponseBody
-	@ApiOperation(value = "查询当前版本", notes = "来源必填 1 android 2 ios", consumes = "application/json")
+	@ApiOperation(value = "查询当前版本-APP", notes = "来源必填 1 android 2 ios", consumes = "application/json")
 	public StaffAppVersionResponse current(@RequestParam("source")@ApiParam(value="来源 1 android 2 ios",required=true) @NotNull(message="参数不能为空") Integer source){
 		int appType = 0;
 		if(1 == source){
@@ -97,6 +97,7 @@ public class StaffAppVersionController {
 	}
     
 	@PostMapping(value="/report")
+	@ApiOperation(value = "上报用户版本-APP", notes = "上报用户版本", consumes = "application/json")
 	public void report(Authentication authentication, @RequestBody @Validated StaffAppVersionRequest staffAppVersionRequest){
 		AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
 		Long userId = authenticationTokenAnalysis.getUserId();
