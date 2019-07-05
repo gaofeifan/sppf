@@ -102,7 +102,7 @@ public interface CarPlaceService {
 
     List<CarPalceListResponse> findCarPlaceListByParkId(HttpServletRequest request, CarPlaceListRequest carPlace, Authentication authentication);
 
-    List<PlaceParkIdAndRangeOutput> findByParkIdAndIdRange(PlaceParkIdAndRangeInput input);
+    List<PlaceParkIdAndRangeOutput> findByParkIdAndIdRange(PlaceParkIdAndRangeInput input) throws CommonException;
 
 	void updateLockStatusAndPlaceStatus(String lockCode, Integer lockStatus, Integer placeStatus);
 

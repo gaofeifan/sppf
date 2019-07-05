@@ -445,15 +445,11 @@ public class CarPlaceServiceImpl implements CarPlaceService {
 
 
     @Override
-    public List<PlaceParkIdAndRangeOutput> findByParkIdAndIdRange(PlaceParkIdAndRangeInput input) {
+    public List<PlaceParkIdAndRangeOutput> findByParkIdAndIdRange(PlaceParkIdAndRangeInput input) throws CommonException {
         List<PlaceParkIdAndRangeOutput> outputs = new ArrayList<>();
         PlaceParkIdAndRangeOutput output;
         if(input.getHeadId().size() != input.getEndId().size()){
-            try {
-                throw new CommonException(ResponseCodeEnum.PARAMS_ERROR);
-            } catch (CommonException e) {
-                e.printStackTrace();
-            }
+            throw new CommonException(ResponseCodeEnum.PARAMS_ERROR);
         }
 
             List<CarPlace> list = this.carPlaceRepository.findAll(new Specification<CarPlace>() {

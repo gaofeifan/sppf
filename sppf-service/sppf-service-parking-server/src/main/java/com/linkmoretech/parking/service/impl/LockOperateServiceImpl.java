@@ -195,19 +195,15 @@ public class LockOperateServiceImpl implements LockOperateService {
 
     @Override
     @Transactional
-    public Boolean installLock(ReqLockIntall reqLockIntall, HttpServletRequest request) {
+    public Boolean installLock(ReqLockIntall reqLockIntall, HttpServletRequest request) throws CommonException {
 //        Long userId = getUserId(getUser(request));
         CarPlace stall = this.carPlaceService.findByPlaceNoAndParkIdAndFloorPlanId(reqLockIntall.getStallName(),reqLockIntall.getPreId(),reqLockIntall.getFloorId());
         if(stall != null) {
-            try {
-                if(stall.getLineStatus().intValue() != 2){
-                    throw new CommonException(ResponseCodeEnum.CAR_PLACE_NOT_DOWN);
-                }
-                if(stall.getLockCode() != null){
-                    throw new CommonException(ResponseCodeEnum.STALL_LOCK_CODE_EXIST);
-                }
-            } catch (CommonException e) {
-                e.printStackTrace();
+            if(stall.getLineStatus().intValue() != 2){
+                throw new CommonException(ResponseCodeEnum.CAR_PLACE_NOT_DOWN);
+            }
+            if(stall.getLockCode() != null){
+                throw new CommonException(ResponseCodeEnum.STALL_LOCK_CODE_EXIST);
             }
         }
         stall = insertLock(stall,reqLockIntall);
@@ -221,22 +217,18 @@ public class LockOperateServiceImpl implements LockOperateService {
         map.put("name", reqLockIntall.getStallName());
         lockFactory.getLockService().setLockName(map);
     }
-    private CarPlace insertLock(CarPlace stall, ReqLockIntall reqLockIntall) {
+    private CarPlace insertLock(CarPlace stall, ReqLockIntall reqLockIntall) throws CommonException {
         if(stall != null){
             stall.setLockCode(reqLockIntall.getLockSn());
             CarPlaceEditRequest carPlaceEditRequest = new CarPlaceEditRequest();
             carPlaceEditRequest.setId(stall.getId());
             carPlaceEditRequest.setPlaceNo(reqLockIntall.getStallName());
             carPlaceEditRequest.setLockCode(stall.getLockCode());
-            try {
-            	CarParkInfoResponse detail = this.carParkService.findDetail(stall.getParkId());
-				if(detail != null) {
-					stall.setParkName(detail.getParkName());
-				}
-                this.carPlaceService.edit(carPlaceEditRequest);
-            } catch (CommonException e) {
-                e.printStackTrace();
+            CarParkInfoResponse detail = this.carParkService.findDetail(stall.getParkId());
+            if(detail != null) {
+                stall.setParkName(detail.getParkName());
             }
+            this.carPlaceService.edit(carPlaceEditRequest);
         }else{
             stall = new CarPlace();
             stall.setLockCode(reqLockIntall.getLockSn());
@@ -248,13 +240,10 @@ public class LockOperateServiceImpl implements LockOperateService {
             stall.setPlaceStatus(1);
             stall.setPlaceType(1);
             stall.setLockStatus(1);
-			try {
-				CarParkInfoResponse detail = this.carParkService.findDetail(stall.getParkId());
-				if(detail != null) {
-					stall.setParkName(detail.getParkName());
-				}
-			} catch (CommonException e) {
-			}
+            CarParkInfoResponse detail = this.carParkService.findDetail(stall.getParkId());
+            if(detail != null) {
+                stall.setParkName(detail.getParkName());
+            }
             this.carPlaceService.insert(stall);
             
         }
@@ -264,25 +253,18 @@ public class LockOperateServiceImpl implements LockOperateService {
 
 
     @Override
-    public Boolean removeStallLock(Long stallId, HttpServletRequest request) {
-        try {
-            CarPlaceInfoResponse detail = this.carPlaceService.findDetail(stallId);
-            if(detail == null || detail.getLockCode() == null) {
-
-                throw new CommonException(ResponseCodeEnum.STALL_NOT_EXIST);
-            }
-            if(detail.getLineStatus().intValue() != 2){
-                throw new CommonException(ResponseCodeEnum.CAR_PLACE_NOT_DOWN);
-            }
-            detail.setLockCode(null);
-            this.carPlaceService.updateLockCode(detail.getId(),detail.getLockCode());
-        	lockFactory.getLockService().removeLock(detail.getLockCode());
-        } catch (CommonException e) {
-                e.printStackTrace();
-                return false;
+    public Boolean removeStallLock(Long stallId, HttpServletRequest request) throws CommonException {
+        CarPlaceInfoResponse detail = this.carPlaceService.findDetail(stallId);
+        if(detail == null || detail.getLockCode() == null) {
+            throw new CommonException(ResponseCodeEnum.STALL_NOT_EXIST);
         }
+        if(detail.getLineStatus().intValue() != 2){
+            throw new CommonException(ResponseCodeEnum.CAR_PLACE_NOT_DOWN);
+        }
+        detail.setLockCode(null);
+        this.carPlaceService.updateLockCode(detail.getId(),detail.getLockCode());
+        lockFactory.getLockService().removeLock(detail.getLockCode());
 //		this.stallMasterMapper.delete(stall.getId());
-
         return true;
     }
 
