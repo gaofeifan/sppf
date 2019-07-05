@@ -13,6 +13,3 @@ eureka:
   instance:
     prefer-ip-address: true
     hostname: account
-
-
-

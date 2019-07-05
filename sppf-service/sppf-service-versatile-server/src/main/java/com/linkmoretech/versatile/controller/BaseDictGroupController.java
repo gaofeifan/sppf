@@ -1,22 +1,32 @@
 package com.linkmoretech.versatile.controller;
 
+import static com.linkmoretech.common.enums.ResponseCodeEnum.PARAMS_ERROR;
+
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
 import com.linkmoretech.versatile.service.BaseDictGroupService;
 import com.linkmoretech.versatile.vo.request.BaseDictGroupCreateRequest;
 import com.linkmoretech.versatile.vo.request.BaseDictGroupEditRequest;
-import com.linkmoretech.versatile.vo.response.AreaCityTreeResponse;
 import com.linkmoretech.versatile.vo.response.BaseDictGroupPageResponse;
 import com.linkmoretech.versatile.vo.response.BaseDictGroupTreeResponse;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import javax.validation.Valid;
-import java.util.List;
 
-import static com.linkmoretech.common.enums.ResponseCodeEnum.PARAMS_ERROR;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * 字典分类controller
@@ -25,7 +35,8 @@ import static com.linkmoretech.common.enums.ResponseCodeEnum.PARAMS_ERROR;
  * @date: 10:27 AM 2019/4/30
  */
 @RestController(value = "baseDictGroup")
-@RequestMapping("base/dict/group")
+@RequestMapping("dict-group")
+@Api(tags = "数据字典分类", value = "Base-Dict-Group")
 public class BaseDictGroupController {
 
     @Autowired

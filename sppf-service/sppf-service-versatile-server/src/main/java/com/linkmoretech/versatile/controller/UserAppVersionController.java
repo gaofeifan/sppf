@@ -34,14 +34,14 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
 /**
- * 用户版本
+ * 个人版版本管理
  * @author jhb
  * @Date 2019年6月27日 下午1:54:27
  * @Version 1.0
  */
 @RestController
 @RequestMapping(value = "user-app-version")
-@Api(tags = "用户版本", value = "User-App-Version" )
+@Api(tags = "个人版版本管理", value = "User-App-Version" )
 public class UserAppVersionController {
 
     @Autowired
@@ -49,7 +49,7 @@ public class UserAppVersionController {
     
     @GetMapping(value="current")
 	@ResponseBody
-	@ApiOperation(value = "查询当前版本", notes = "来源必填 1 android 2 ios", consumes = "application/json")
+	@ApiOperation(value = "查询当前版本-APP", notes = "来源必填 1 android 2 ios", consumes = "application/json")
 	public UserAppVersionResponse current(@ApiParam(value="来源" ,required=true) @NotNull(message="来源不能为空") @RequestParam("source")Integer source,HttpServletRequest request){
 		UserAppVersion userAppVersion = this.userAppVersionService.currentAppVersion(source);
 		UserAppVersionResponse userAppVersionResponse = new UserAppVersionResponse();
@@ -63,7 +63,7 @@ public class UserAppVersionController {
 	}
 	
 	@PostMapping(value="report")
-	@ApiOperation(value = "上报用户版本", notes = "上报用户版本", consumes = "application/json")
+	@ApiOperation(value = "上报用户版本-APP", notes = "上报用户版本", consumes = "application/json")
 	public void report(Authentication authentication, @RequestBody @Validated UserVersionRequest uvr,HttpServletRequest request){
 		AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
 		this.userAppVersionService.report(uvr,authenticationTokenAnalysis.getUserId());
