@@ -41,7 +41,7 @@ import io.swagger.annotations.ApiParam;
  */
 @RestController
 @RequestMapping(value = "user-app-version")
-@Api(tags = "用户版本", value = "App-Version" )
+@Api(tags = "用户版本", value = "User-App-Version" )
 public class UserAppVersionController {
 
     @Autowired

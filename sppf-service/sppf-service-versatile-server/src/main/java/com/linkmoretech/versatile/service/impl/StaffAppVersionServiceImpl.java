@@ -1,18 +1,8 @@
 package com.linkmoretech.versatile.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.linkmoretech.common.exception.CommonException;
-import com.linkmoretech.common.vo.PageDataResponse;
-import com.linkmoretech.common.vo.PageSearchRequest;
-import com.linkmoretech.versatile.entity.StaffAppVersion;
-import com.linkmoretech.versatile.repository.StaffAppVersionRepository;
-import com.linkmoretech.versatile.service.StaffAppVersionService;
-import com.linkmoretech.versatile.vo.request.StaffAppVersionCreateRequest;
-import com.linkmoretech.versatile.vo.request.StaffAppVersionEditRequest;
-import com.linkmoretech.versatile.vo.request.StaffAppVersionRequest;
-import com.linkmoretech.versatile.vo.response.StaffAppVersionPageResponse;
-import com.linkmoretech.versatile.vo.response.StaffAppVersionResponse;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +10,21 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.alibaba.fastjson.JSON;
+import com.linkmoretech.common.exception.CommonException;
+import com.linkmoretech.common.vo.PageDataResponse;
+import com.linkmoretech.common.vo.PageSearchRequest;
+import com.linkmoretech.versatile.entity.StaffAppVersion;
+import com.linkmoretech.versatile.entity.UserVersion;
+import com.linkmoretech.versatile.repository.StaffAppVersionRepository;
+import com.linkmoretech.versatile.repository.UserVersionRepository;
+import com.linkmoretech.versatile.service.StaffAppVersionService;
+import com.linkmoretech.versatile.vo.request.StaffAppVersionCreateRequest;
+import com.linkmoretech.versatile.vo.request.StaffAppVersionEditRequest;
+import com.linkmoretech.versatile.vo.request.StaffAppVersionRequest;
+import com.linkmoretech.versatile.vo.response.StaffAppVersionPageResponse;
+import com.linkmoretech.versatile.vo.response.StaffAppVersionResponse;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @Author: jhb
@@ -35,6 +37,9 @@ public class StaffAppVersionServiceImpl implements StaffAppVersionService {
 
     @Autowired
     StaffAppVersionRepository staffAppVersionRepository;
+    
+    @Autowired
+    UserVersionRepository userVersionRepository;
 
     @Override
     public void create(StaffAppVersionCreateRequest staffAppVersionCreateRequest) throws CommonException {
@@ -94,9 +99,9 @@ public class StaffAppVersionServiceImpl implements StaffAppVersionService {
 
 	@Override
 	public void report(StaffAppVersionRequest staffAppVersionRequest, Long userId) {
-		/*UserVersion version = null;
+		UserVersion version = null;
 		boolean falg = false;
-		version = this.userVersionRepository.findByUserIdAndSystem(userId, 1);
+		version = this.userVersionRepository.findByUserIdAndSystem(userId, 3);
 		log.info("report = {}",JSON.toJSON(version));
 		if(version != null) {
 			falg = true;
@@ -104,13 +109,13 @@ public class StaffAppVersionServiceImpl implements StaffAppVersionService {
 			version = new UserVersion();
 			version.setUserId(userId);
 		}
-		BeanUtils.copyProperties(uvr, version);
+		BeanUtils.copyProperties(staffAppVersionRequest, version);
 		version.setCommitTime(new Date());
-		version.setSystem(1);
+		version.setSystem(3);
 		if(falg) {
 			this.userVersionRepository.saveAndFlush(version);
 			return;
 		}
-		this.userVersionRepository.save(version);*/
+		this.userVersionRepository.save(version);
 	}
 }
