@@ -63,7 +63,7 @@ public class BaseDictController {
         baseDictService.delete(id);
     }
 
-    @ApiOperation(value = "获取车场列表", notes = "用于分页显示已添加车场的数据")
+    @ApiOperation(value = "获取字典列表", notes = "用于分页显示已添加字典的数据")
     @PostMapping(value = "list")
     public PageDataResponse<BaseDictPageResponse> list(@RequestBody @Valid PageSearchRequest searchRequest,
                                                                     BindingResult bindingResult) throws CommonException {
