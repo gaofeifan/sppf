@@ -35,7 +35,7 @@ public class LockOperateController {
 
     @ApiOperation(value = "操作锁", notes = "控制锁升降")
     @PostMapping(value = "operate")
-    public Boolean operate(HttpServletRequest request, @RequestBody LockOperateRequest lockOperate){
+    public Boolean operate(HttpServletRequest request, @RequestBody LockOperateRequest lockOperate) throws CommonException {
         return this.lockOperateService.operate(request,lockOperate);
     }
 

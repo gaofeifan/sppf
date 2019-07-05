@@ -295,6 +295,7 @@ public class CarParkServiceImpl implements CarParkService {
     public List<CityParkListResponse> carParkList(Authentication authentication) {
         AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
         List<Long> accountParkIds = accountDataClient.getParkDataAccount(authenticationTokenAnalysis.getUserId());
+//        List<Long> accountParkIds = Arrays.asList(1026L,1031L);
         log.info(JsonUtil.toJson(accountParkIds));
 //        List<Long> accountParkIds = null;//accountDataClient.getParkDataAccount(authenticationTokenAnalysis.getUserId());
         List<CityParkListResponse> citys = new ArrayList<>();

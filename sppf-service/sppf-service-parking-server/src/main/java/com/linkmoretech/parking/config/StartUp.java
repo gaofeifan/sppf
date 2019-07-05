@@ -15,7 +15,7 @@ import com.linkmoretech.parking.vo.request.LockOperateRequest;
 import com.linkmoretech.parking.vo.response.CarPlaceDetailsResponse;
 import com.linkmoretech.parking.vo.response.CarPlaceDetailsSnResponse;
 import com.linkmoretech.parking.vo.response.ResGateway;
-@Component
+//@Component
 //public class StartUp //implements CommandLineRunner
 // {
 public class StartUp implements CommandLineRunner{
@@ -26,8 +26,8 @@ public class StartUp implements CommandLineRunner{
 			while (true) {
 			CarPlaceService carPlaceService = SpringUtil.getBean(CarPlaceService.class);
 				CarParkService carParkService = SpringUtil.getBean(CarParkService.class);
-				List<CityParkListResponse> list1 = carParkService.carParkList(null);
-				System.out.println(JsonUtil.toJson(list1));
+//				List<CityParkListResponse> list1 = carParkService.carParkList(null);
+//				System.out.println(JsonUtil.toJson(list1));
 
 
 //			CarPlaceListRequest carPlace = new CarPlaceListRequest();

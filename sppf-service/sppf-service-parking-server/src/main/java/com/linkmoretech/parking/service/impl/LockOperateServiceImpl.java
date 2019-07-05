@@ -4,10 +4,12 @@ import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.parking.entity.*;
 import com.linkmoretech.parking.entity.ResGatewayDetails;
+import com.linkmoretech.parking.enums.LineStatusEnum;
 import com.linkmoretech.parking.service.CarParkService;
 import com.linkmoretech.parking.service.CarPlaceService;
 import com.linkmoretech.parking.service.LockOperateService;
 import com.linkmoretech.parking.service.LockService;
+import com.linkmoretech.parking.vo.request.CarParkLineRequest;
 import com.linkmoretech.parking.vo.request.CarPlaceEditRequest;
 import com.linkmoretech.parking.vo.request.LockOperateRequest;
 import com.linkmoretech.parking.vo.request.ReqLockIntall;
@@ -36,21 +38,17 @@ public class LockOperateServiceImpl implements LockOperateService {
     private CarPlaceService carPlaceService;
     private LockFactory lockFactory = LockFactory.getInstance();
     @Override
-    public Boolean operate(HttpServletRequest request, LockOperateRequest lockOperate) {
+    public Boolean operate(HttpServletRequest request, LockOperateRequest lockOperate) throws CommonException {
         LockService lockService = lockFactory.getLockService(LockFactory.MANAGE, lockOperate.getMsgStatus(), Boolean.TRUE);
         if(lockOperate.getCarPlaceId() == null && lockOperate.getLockSn() == null){
-            throw new RuntimeException("参数输入有误");
+            throw new CommonException(ResponseCodeEnum.STALL_NOT_EXIST);
         }
         if(lockOperate.getLockSn() == null){
-            try {
-                CarPlaceInfoResponse detail = this.carPlaceService.findDetail(lockOperate.getCarPlaceId());
-                if(detail == null || detail.getLockCode() == null){
-                    throw new RuntimeException("锁编号不存在");
-                }
-                lockOperate.setLockSn(detail.getLockCode());
-            } catch (CommonException e) {
-                e.printStackTrace();
+            CarPlaceInfoResponse detail = this.carPlaceService.findDetail(lockOperate.getCarPlaceId());
+            if(detail == null || detail.getLockCode() == null){
+                throw new CommonException(ResponseCodeEnum.STALL_NOT_EXIST);
             }
+            lockOperate.setLockSn(detail.getLockCode());
 
         }
         if(lockOperate.getState().intValue() == 1){
@@ -258,7 +256,7 @@ public class LockOperateServiceImpl implements LockOperateService {
         if(detail == null || detail.getLockCode() == null) {
             throw new CommonException(ResponseCodeEnum.STALL_NOT_EXIST);
         }
-        if(detail.getLineStatus().intValue() != 2){
+        if(detail.getLineStatus().intValue() != LineStatusEnum.OFFLINE.getCode().intValue()){
             throw new CommonException(ResponseCodeEnum.CAR_PLACE_NOT_DOWN);
         }
         detail.setLockCode(null);

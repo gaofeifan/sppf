@@ -18,7 +18,7 @@ import java.util.List;
  */
 public interface LockOperateService {
 
-    Boolean operate(HttpServletRequest request, LockOperateRequest lockOperate);
+    Boolean operate(HttpServletRequest request, LockOperateRequest lockOperate) throws CommonException;
 
 
     /**
