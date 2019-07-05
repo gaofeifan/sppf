@@ -22,6 +22,6 @@ public interface AppWechatClient {
 	 * @return
 	 */
 	@GetMapping(value = "app-wechat/fans")
-	public ResFans getFans(@RequestParam(value = "code") String code);
+	ResFans getFans(@RequestParam(value = "code") String code);
     
 }
