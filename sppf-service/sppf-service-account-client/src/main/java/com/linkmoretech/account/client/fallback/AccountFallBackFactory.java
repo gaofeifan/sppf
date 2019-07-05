@@ -23,13 +23,13 @@ public class AccountFallBackFactory implements FallbackFactory<AccountDataClient
 
             @Override
             public List<Long> getParkDataAccount(Long userId) {
-                log.error("服务器熔断降级，返回空值");
+                log.error("服务器熔断降级，返回空值 {}", throwable);
                 return new ArrayList<>();
             }
 
             @Override
             public List<Long> getPlaceDataAccount(Long userId, Long parkId) {
-                log.error("服务器熔断降级，返回空值");
+                log.error("服务器熔断降级，返回空值 {}" , throwable);
                 return new ArrayList<>();
             }
         };
