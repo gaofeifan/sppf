@@ -7,6 +7,9 @@ import com.linkmoretech.versatile.service.AreaCityService;
 import com.linkmoretech.versatile.vo.request.AreaCityCreateRequest;
 import com.linkmoretech.versatile.vo.response.AreaCityListResponse;
 import com.linkmoretech.versatile.vo.response.AreaCityTreeResponse;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,7 @@ import java.util.List;
 @RestController(value = "areaCity")
 @RequestMapping("city")
 @Slf4j
+@Api(tags = "城市", value = "Area-City")
 public class AreaCityController {
 
     @Autowired

@@ -125,7 +125,7 @@ public class JianHangLong {
 		ReqLongPay pay = new ReqLongPay();
 		pay.setAmount(new BigDecimal(0.01));
 		pay.setOrderId("sdfsdfsdfsd");
-		pay.setUserId("77255");
+		pay.setUserId(77255L);
 		ResLoongPay resLoongPay = create(pay , bean);
 		System.out.println(JsonUtil.toJson(resLoongPay));
 		

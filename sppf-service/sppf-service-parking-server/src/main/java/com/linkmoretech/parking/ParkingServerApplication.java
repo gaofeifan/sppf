@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2019/4/4 16:39
  */
 @EnableDiscoveryClient
-@SpringBootApplication(exclude= {DataSourceAutoConfiguration.class})
+@SpringBootApplication
 @EnableFeignClients(basePackages = "com.linkmoretech")
 @EnableCircuitBreaker
 @Slf4j
@@ -26,5 +26,6 @@ public class ParkingServerApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ParkingServerApplication.class, args);
+        log.info("车场服务已启动");
     }
 }

@@ -1,4 +1,4 @@
-package com.linkmoretech.user.entity;
+package com.linkmoretech.versatile.entity;
 
 import java.util.Date;
 import javax.persistence.Entity;
@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "t_user_app_version")
+@Table(name = "v_user_app_version")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

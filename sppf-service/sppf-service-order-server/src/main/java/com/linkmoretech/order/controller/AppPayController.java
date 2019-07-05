@@ -2,12 +2,14 @@ package com.linkmoretech.order.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import com.linkmoretech.auth.common.util.AuthenticationTokenAnalysis;
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.order.common.request.ReqPayConfirm;
 import com.linkmoretech.order.common.response.ResOrderDetail;
@@ -36,9 +38,10 @@ public class AppPayController {
 	@ApiOperation(value = "生成账单", notes = "生成账单[订单ID不为空]", consumes = "application/json")
 	@RequestMapping(value = "checkout", method = RequestMethod.GET)
 	@ResponseBody
-	public ResPayCheckout checkout(@RequestParam("orderId") String orderId, HttpServletRequest request) {
+	public ResPayCheckout checkout(Authentication authentication, @RequestParam("orderId") String orderId) {
 		log.info("....checkout....orderId:{}", orderId);
-		String userId = "322424324126655";
+		AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
+    	Long userId = authenticationTokenAnalysis.getUserId();
 		ResPayCheckout checkout = null;
 		try {
 			checkout = payService.checkout(orderId,userId);
@@ -64,8 +67,9 @@ public class AppPayController {
 	@ApiOperation(value = "校验支付", notes = "校验支付[订单ID不为空]", consumes = "application/json")
 	@RequestMapping(value = "verify", method = RequestMethod.GET)
 	@ResponseBody
-	public ResOrderDetail verify(@RequestParam("orderId") String orderId, HttpServletRequest request) {
-		String userId = "322424324126655";
+	public ResOrderDetail verify(Authentication authentication, @RequestParam("orderId") String orderId) {
+		AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
+    	Long userId = authenticationTokenAnalysis.getUserId();
 		ResOrderDetail detail = null;
 		try {
 			detail = this.payService.verify(orderId,userId);

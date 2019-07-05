@@ -1,6 +1,7 @@
-package com.linkmoretech.user.vo;
+package com.linkmoretech.versatile.vo.response;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -9,16 +10,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 当前版本
+ * 
  * @author jhb
- * @Date 2019年6月27日 下午1:41:36
+ * @Date 2019年7月4日 下午8:38:16
  * @Version 1.0
  */
+@ApiModel("当前版本响应bean")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel("当前版本响应")
-public class UserAppVersionResponse implements Serializable{
+public class StaffAppVersionResponse implements Serializable{
 	/**
 	 * serial id
 	 */

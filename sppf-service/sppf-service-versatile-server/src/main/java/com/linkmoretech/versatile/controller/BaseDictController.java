@@ -1,5 +1,16 @@
 package com.linkmoretech.versatile.controller;
 
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.common.vo.PageDataResponse;
@@ -8,12 +19,9 @@ import com.linkmoretech.versatile.service.BaseDictService;
 import com.linkmoretech.versatile.vo.request.BaseDictCreateRequest;
 import com.linkmoretech.versatile.vo.request.BaseDictEditRequest;
 import com.linkmoretech.versatile.vo.response.BaseDictPageResponse;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
 /**
  * 数据字典controller
@@ -22,12 +30,12 @@ import javax.validation.Valid;
  * @date: 10:27 AM 2019/4/30
  */
 @RestController(value = "baseDict")
-@RequestMapping("base/dict")
+@RequestMapping("dict")
+@Api(tags = "数据字典", value = "Base-Dict")
 public class BaseDictController {
 
     @Autowired
     BaseDictService baseDictService;
-
 
     @ApiOperation(value = "添加数据字典", notes = "添加数据字典")
     @PostMapping(value = "create")
@@ -55,7 +63,7 @@ public class BaseDictController {
         baseDictService.delete(id);
     }
 
-    @ApiOperation(value = "获取车场列表", notes = "用于分页显示已添加车场的数据")
+    @ApiOperation(value = "获取字典列表", notes = "用于分页显示已添加字典的数据")
     @PostMapping(value = "list")
     public PageDataResponse<BaseDictPageResponse> list(@RequestBody @Valid PageSearchRequest searchRequest,
                                                                     BindingResult bindingResult) throws CommonException {

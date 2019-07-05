@@ -3,7 +3,6 @@ package com.linkmoretech.parking.repository;
 import com.linkmoretech.parking.entity.LeasePlace;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 
 /**
  * @Author: alec

@@ -1,4 +1,4 @@
-package com.linkmoretech.user.vo.request;
+package com.linkmoretech.versatile.vo.request;
 
 import javax.validation.constraints.NotNull;
 

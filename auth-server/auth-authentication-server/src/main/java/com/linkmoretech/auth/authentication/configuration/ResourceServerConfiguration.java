@@ -69,8 +69,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         oauthResourceConfig.getIgnores().add(OAUTH_URL);
         String[] matchers = new String[oauthResourceConfig.getIgnores().size()];
         matchers = oauthResourceConfig.getIgnores().toArray(matchers);
-
-
+        log.info("对 {} url 不进行拦截 {}", matchers);
         SmsLoginFilter smsCodeFilter = new SmsLoginFilter(validateCodeManage, validateFailureHandler);
         smsCodeFilter.afterPropertiesSet();
 

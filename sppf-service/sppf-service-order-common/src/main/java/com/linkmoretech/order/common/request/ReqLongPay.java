@@ -14,6 +14,6 @@ public class ReqLongPay {
 	
 	private BigDecimal amount;
 	
-	private String userId;
+	private Long userId;
 
 }

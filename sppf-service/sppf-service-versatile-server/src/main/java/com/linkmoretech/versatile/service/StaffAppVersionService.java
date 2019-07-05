@@ -5,7 +5,9 @@ import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
 import com.linkmoretech.versatile.vo.request.StaffAppVersionCreateRequest;
 import com.linkmoretech.versatile.vo.request.StaffAppVersionEditRequest;
+import com.linkmoretech.versatile.vo.request.StaffAppVersionRequest;
 import com.linkmoretech.versatile.vo.response.StaffAppVersionPageResponse;
+import com.linkmoretech.versatile.vo.response.StaffAppVersionResponse;
 
 /**
  * 管理版版本管理服务层
@@ -41,5 +43,14 @@ public interface StaffAppVersionService {
      * @return 分页查询结果
      * */
     PageDataResponse<StaffAppVersionPageResponse> searchPage(PageSearchRequest pageSearchRequest);
+    
+    /**
+     * 查询当前最新版本
+     * @param appType
+     * @return
+     */
+	StaffAppVersionResponse currentAppVersion(int appType);
+
+	void report(StaffAppVersionRequest staffAppVersionRequest, Long userId);
 
 }

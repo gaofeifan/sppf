@@ -102,7 +102,7 @@ public class PayServiceImpl implements PayService {
 	
 
 	@Override
-	public ResPayCheckout checkout(String orderId, String userId) throws CommonException {
+	public ResPayCheckout checkout(String orderId, Long userId) throws CommonException {
 		Orders order = ordersRepository.getOne(orderId);
 		OrderDetail orderDetail = orderDetailRepository.findOrderDetailByOrderId(orderId);
 		if(!(order.getStatus() == OrderStatusEnum.BOOKED.getCode() || order.getStatus() == OrderStatusEnum.SUSPENDED.getCode())) {
@@ -510,7 +510,7 @@ public class PayServiceImpl implements PayService {
 	
 
 	@Override
-	public ResOrderDetail verify(String orderId, String userId) throws CommonException {
+	public ResOrderDetail verify(String orderId, Long userId) throws CommonException {
 
 		Orders orders = ordersRepository.getOne(orderId);
 		OrderDetail orderDetail = orderDetailRepository.findOrderDetailByOrderId(orderId);
