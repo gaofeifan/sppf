@@ -17,4 +17,6 @@ public interface LeasePlaceRepository extends JpaRepository<LeasePlace, Long> {
      * @return 长租信息
      * */
     LeasePlace getFirstByLeaseCode(String leaseCode);
+
+
 }
