@@ -8,6 +8,8 @@ import com.linkmoretech.parking.enums.UserStatusEnum;
 import com.linkmoretech.parking.service.LeasePlaceService;
 import com.linkmoretech.parking.vo.request.LeasePlaceBatchRequest;
 import com.linkmoretech.parking.vo.request.LeasePlaceCreateRequest;
+import com.linkmoretech.parking.vo.response.LeasePlaceEditResponse;
+import com.linkmoretech.parking.vo.response.LeasePlaceInfoResponse;
 import com.linkmoretech.parking.vo.response.LeasePlaceListResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -80,4 +82,17 @@ public class LeasePlaceController {
             throws CommonException {
         leasePlaceService.updateEnableStatus(id, UserStatusEnum.DISABLED.getCode(), username);
     }
+
+    @ApiOperation(value = "查询明细", notes = "查询明细")
+    @GetMapping(value = "info")
+    public LeasePlaceInfoResponse info(@RequestParam(value = "id") Long id) throws CommonException {
+        return leasePlaceService.getLeasePlaceDetail(id);
+    }
+
+    @ApiOperation(value = "查询编辑信息", notes = "查询编辑信息")
+    @GetMapping(value = "detail")
+    public LeasePlaceEditResponse detail(@RequestParam(value = "leaseCode") String leaseCode) throws CommonException {
+        return leasePlaceService.getDetail(leaseCode);
+    }
+
 }

@@ -21,7 +21,11 @@ import com.linkmoretech.parking.repository.LicensePlateRepository;
 import com.linkmoretech.parking.service.LeasePlaceService;
 import com.linkmoretech.parking.vo.request.LeasePlaceBatchRequest;
 import com.linkmoretech.parking.vo.request.LeasePlaceCreateRequest;
+import com.linkmoretech.parking.vo.response.LeasePlaceEditResponse;
+import com.linkmoretech.parking.vo.response.LeasePlaceInfoResponse;
 import com.linkmoretech.parking.vo.response.LeasePlaceListResponse;
+import com.linkmoretech.parking.vo.response.LeasePlaceResponse;
+import com.linkmoretech.versatile.client.AreaCityClient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
@@ -57,6 +61,10 @@ public class LeasePlaceServiceImpl implements LeasePlaceService {
     LeaseOrderComponent leaseOrderComponent;
     @Autowired
     AmqpTemplate amqpTemplate;
+
+    @Autowired
+    AreaCityClient areaCityClient;
+
 
     @Override
     public PageDataResponse<LeasePlaceListResponse> searchPage(PageSearchRequest pageSearchRequest) {
@@ -267,6 +275,58 @@ public class LeasePlaceServiceImpl implements LeasePlaceService {
             licensePlateRepository.updateLicensePlateStatus(carPark.getId(), placeId, status);
         }
     }
+
+    @Override
+    public LeasePlaceInfoResponse getLeasePlaceDetail(Long id) throws CommonException {
+        LeasePlaceInfoResponse leasePlaceInfoResponse = new LeasePlaceInfoResponse();
+        Optional<LeasePlace> optional = leasePlaceRepository.findById(id);
+        if (!optional.isPresent()) {
+            return leasePlaceInfoResponse;
+        }
+        LeasePlace leasePlace = optional.get();
+        BeanUtils.copyProperties(leasePlace, leasePlaceInfoResponse);
+
+        CarPark carPark = carParkComponent.getCarPark(leasePlace.getParkId());
+        log.info("车场 {}", carPark);
+        leasePlaceInfoResponse.setCityName(carPark.getCityName());
+        List<LicensePlate> licensePlateList = licensePlateRepository.getAllByPlaceNoAndLeaseCode(leasePlace.getPlaceNo(),
+                leasePlace.getLeaseCode());
+        if (licensePlateList != null) {
+            List<String> licensePlateNo = licensePlateList.stream().map(LicensePlate::getLicensePlateNo).collect(Collectors.toList());
+            leasePlaceInfoResponse.setLicensePlateNoList(licensePlateNo);
+        }
+        log.info("查询info {}", leasePlaceInfoResponse);
+        return leasePlaceInfoResponse;
+
+    }
+
+    @Override
+    public LeasePlaceEditResponse getDetail(String leaseCode) throws CommonException {
+        List<LeasePlace> leasePlaceList = leasePlaceRepository.getAllByLeaseCode(leaseCode);
+        LeasePlaceEditResponse leasePlaceEditResponse = new LeasePlaceEditResponse();
+        if (leasePlaceList == null) {
+            return  leasePlaceEditResponse;
+        }
+        LeasePlace firstLeasePlace = leasePlaceList.get(0);
+        BeanUtils.copyProperties(firstLeasePlace, leasePlaceEditResponse);
+        CarPark carPark = carParkComponent.getCarPark(firstLeasePlace.getParkId());
+        List<String> cityCodes = areaCityClient.getAllCityCode(carPark.getCityCode());
+        leasePlaceEditResponse.setCityCodes(cityCodes);
+        List<LeasePlaceResponse> placeIdList = leasePlaceList.stream()
+                .map(leasePlace -> {
+                    LeasePlaceResponse leasePlaceResponse = new LeasePlaceResponse();
+                    leasePlaceResponse.setId(leasePlace.getPlaceId());
+                    leasePlaceResponse.setPlaceNo(leasePlace.getPlaceNo());
+                    return leasePlaceResponse;
+                }).collect(Collectors.toList());
+        leasePlaceEditResponse.setPlaceIdList(placeIdList);
+        List<LicensePlate> licensePlateList = licensePlateRepository.getAllByLeaseCode(leaseCode);
+        List<String> licensePlateNoList = licensePlateList.stream().map(LicensePlate::getLicensePlateNo).collect(Collectors.toList());
+        leasePlaceEditResponse.setLicensePlateList(licensePlateNoList);
+        return leasePlaceEditResponse;
+
+    }
+
     private List<LicensePlate> batchSaveLicensePlate(Map<String, List<String>> licensePlateMap,
                                        Map<String, LeasePlace> placeMap) {
         List<LicensePlate> licensePlates = new ArrayList<>();

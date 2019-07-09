@@ -7,6 +7,8 @@ import com.linkmoretech.parking.common.LeaseInput;
 import com.linkmoretech.parking.common.LeaseOutput;
 import com.linkmoretech.parking.vo.request.LeasePlaceBatchRequest;
 import com.linkmoretech.parking.vo.request.LeasePlaceCreateRequest;
+import com.linkmoretech.parking.vo.response.LeasePlaceEditResponse;
+import com.linkmoretech.parking.vo.response.LeasePlaceInfoResponse;
 import com.linkmoretech.parking.vo.response.LeasePlaceListResponse;
 
 /**
@@ -61,5 +63,18 @@ public interface LeasePlaceService {
      * @throws CommonException 自定义验证异常
      * */
     void updateEnableStatus(Long leaseId, Integer status, String username) throws CommonException;
+
+
+    /**
+     * 查询当前车位的长租情况
+     * @param id 记录ID
+     * @return 返回数据域
+     * */
+    LeasePlaceInfoResponse getLeasePlaceDetail(Long id) throws CommonException;
+
+    /**
+     * 根据长租授权码查询编辑长租车位信息
+     * */
+    LeasePlaceEditResponse getDetail(String leaseCode) throws CommonException;
 
 }
