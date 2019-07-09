@@ -90,4 +90,7 @@ public interface CarParkService {
 
 
 	List<CityParkListResponse> carParkList(Authentication authentication);
+
+	List<CarParkFloorsResponse> carParkFloors(Long carParkId);
+	
 }

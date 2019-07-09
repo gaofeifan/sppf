@@ -354,6 +354,7 @@ public class CarPlaceServiceImpl implements CarPlaceService {
         		}
         	}
             details.setCarPlaceId(carPlace.getId());
+            details.setFloorId(carPlace.getFloorPlanId());
             details.setFloor(carPlace.getFloorPlanName());
             details.setLockSn(carPlace.getLockCode());
             details.setCarPlaceName(carPlace.getPlaceNo());
@@ -410,7 +411,7 @@ public class CarPlaceServiceImpl implements CarPlaceService {
             carPlaceRes.setCarPlaceStatus(carPlace.getPlaceStatus());
             carPlaceRes.setLockStatus(carPlace.getLockStatus());
             carPlaceRes.setFloor(carPlace.getFloorPlanName());
-//            carPlaceRes.setflor
+            carPlaceRes.setFloorId(carPlace.getFloorPlanId());
             carPlaceRes.setCarPlaceLockSn(sn);
         }
         if(lockInfo != null){
@@ -425,7 +426,6 @@ public class CarPlaceServiceImpl implements CarPlaceService {
             carPlaceRes.setVersion(lockInfo.getVersion());
             if(carPlace != null) {
             	CarPark park = this.carParkRepository.findById(carPlace.getParkId()).get();
-           
             if(park != null){
                 carPlaceRes.setCityCode(park.getCityCode());
                 carPlaceRes.setCityName(park.getCityName());
@@ -440,7 +440,7 @@ public class CarPlaceServiceImpl implements CarPlaceService {
                         }
                     }
                 }
-            } 
+            	}
             }
         }
         return carPlaceRes;

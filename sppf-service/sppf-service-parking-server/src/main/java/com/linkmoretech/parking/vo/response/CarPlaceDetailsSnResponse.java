@@ -63,7 +63,9 @@ public class CarPlaceDetailsSnResponse {
     private String floor;
     @ApiModelProperty(value="车位所属层级Id")
     private Long floorId;
-
+    /** 上线状态;上线状态: 1: 上线，2:下线 */
+    @ApiModelProperty(value="锁在线状态  0下线 1上线")
+    private Integer lineStatus ;
     @ApiModelProperty(value="车位锁绑定的网关")
     private List<ResLockGatewayList> gatewayList = new ArrayList<>();
 
