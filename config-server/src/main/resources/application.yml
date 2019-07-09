@@ -13,7 +13,6 @@ server:
     #   buffers-per-region: 1024 # 这个参数不需要写了
     # 是否分配的直接内存
     direct-buffers: true
-
 eureka:
   client:
     service-url:

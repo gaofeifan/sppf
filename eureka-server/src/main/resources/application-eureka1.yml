@@ -9,7 +9,8 @@ eureka:
     ##检测存活率，在开发环境可以开启，生产环境一定要关闭
     enable-self-preservation: false
   instance:
-      prefer-ip-address: true
+      prefer-ip-address: false
+      hostname: eureka1
 spring:
   application:
     name: eureka
