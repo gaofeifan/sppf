@@ -87,11 +87,13 @@ public class CarParkController {
 
     @ApiOperation(value = "编辑车场", notes = "编辑车场")
     @PostMapping(value = "edit")
-    public void edit(@RequestBody @Valid CarParkEditRequest carParkEditRequest, BindingResult bindingResult)
+    public void edit(Authentication authentication , @RequestBody @Valid CarParkEditRequest carParkEditRequest, BindingResult bindingResult)
             throws CommonException {
         if (bindingResult.hasErrors()) {
             throw new CommonException(ResponseCodeEnum.PARAMS_ERROR, bindingResult.getFieldError().getDefaultMessage());
         }
+        AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
+        carParkEditRequest.setUsername(authenticationTokenAnalysis.getUsername());
         carParkService.edit(carParkEditRequest);
     }
 
