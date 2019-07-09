@@ -20,6 +20,8 @@ import java.util.List;
 public class LeasePlaceListResponse {
 
     private Long id;
+    
+    private String leaseCode;
 
     private String placeNo;
 
