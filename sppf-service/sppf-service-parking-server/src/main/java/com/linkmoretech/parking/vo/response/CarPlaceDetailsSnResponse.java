@@ -33,7 +33,7 @@ public class CarPlaceDetailsSnResponse {
     private String areaName;
     @ApiModelProperty(value="车位锁状态 1 升起  2 降下 3 故障")
     private Integer lockStatus;
-    @ApiModelProperty(value="车位锁离线状态 1离线  2 在线")
+    @ApiModelProperty(value="车位锁离线状态  1 在线 0 离线")
     private Integer lockOffLine;
     @ApiModelProperty(value="超声波 0 无车 1 有车 2其他(未知)")
     private int ultrasonic;
