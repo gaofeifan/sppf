@@ -8,14 +8,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.linkmoretech.parking.service.CarParkService;
 import com.linkmoretech.parking.vo.request.UserParkListRequest;
+import com.linkmoretech.parking.vo.response.CarParkFloorsResponse;
 import com.linkmoretech.parking.vo.response.CityParkListResponse;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import reactor.ipc.netty.http.server.HttpServerRequest;
 
@@ -37,6 +40,11 @@ public class CarParkReadController {
     public  List<CityParkListResponse> carParkList(Authentication authentication){
         List<CityParkListResponse> parkListResponses = carParkService.carParkList(authentication);
         return parkListResponses;
+    }
+    @ApiOperation(value = "查询车场层级", notes = "获取车场层级")
+    @GetMapping(value = "car-park-floors")
+    public  List<CarParkFloorsResponse> carParkFloors( @ApiParam(value="车场",required=false) @RequestParam(value="carParkId",required=false) Long carParkId){
+    	return carParkService.carParkFloors(carParkId);
     }
 
 //    @ApiOperation(value = "查询车场列表", notes = "获取用户具有权限的车场")

@@ -197,7 +197,7 @@ public class LockOperateServiceImpl implements LockOperateService {
 //        Long userId = getUserId(getUser(request));
         CarPlace stall = this.carPlaceService.findByPlaceNoAndParkIdAndFloorPlanId(reqLockIntall.getStallName(),reqLockIntall.getPreId(),reqLockIntall.getFloorId());
         if(stall != null) {
-            if(stall.getLineStatus().intValue() != 2){
+            if(stall.getLineStatus().intValue() != LineStatusEnum.OFFLINE.getCode().intValue()){
                 throw new CommonException(ResponseCodeEnum.CAR_PLACE_NOT_DOWN);
             }
             if(stall.getLockCode() != null){

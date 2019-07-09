@@ -383,6 +383,20 @@ public class CarParkServiceImpl implements CarParkService {
         carPark.getCarPlaceType().put("VIP",new CarParkListResponse.ParkCarPlaceTypeBuilder().type((short)3).typeName("VIP").parkAmount(0).parkUseAmount(0).builder());
         return carPark;
     }
+	@Override
+	public List<CarParkFloorsResponse> carParkFloors(Long carParkId) {
+		List<CarParkFloorsResponse> ParkFloors = new ArrayList<>();
+		CarParkFloorsResponse floor = null;
+		List<FloorPlan> floors = this.floorPlanRepository.getAllByParkId(carParkId);
+		if(floors == null || floors.size() == 0) {
+			return ParkFloors;
+		}
+		for (FloorPlan f : floors) {
+			floor = new CarParkFloorsResponse(f.getId(),f.getFloorName());
+			ParkFloors.add(floor);
+		}
+		return ParkFloors;
+	}
 
 
 

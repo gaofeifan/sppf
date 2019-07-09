@@ -72,4 +72,6 @@ public class CarPlaceDetailsResponse {
     private Long orderId;
     @ApiModelProperty(value = "floor")
     private String floor;
+    @ApiModelProperty(value = "floorId")
+    private Long floorId;
 }
