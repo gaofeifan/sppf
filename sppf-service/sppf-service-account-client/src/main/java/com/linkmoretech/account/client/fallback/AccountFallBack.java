@@ -32,12 +32,11 @@ public class AccountFallBack implements FallbackFactory<AccountDataClient> {
                 log.error("服务器熔断降级，返回空值 {}" , throwable);
                 return new ArrayList<>();
             }
-        };
-    }
 
-    @Override
-    public List<Long> getaaa(Long userId) {
-        log.error("服务器熔断降级，返回空值 {}", userId);
-        return new ArrayList<>();
+            @Override
+            public List<Long> getaaa(Long userId) {
+                return null;
+            }
+        };
     }
 }
