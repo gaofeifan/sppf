@@ -77,8 +77,8 @@ public class AuthorityFilter extends ZuulFilter {
         String ACCESS_TOKEN = "accessToken";
         requestContext.addZuulRequestHeader(ACCESS_TOKEN, token);
         //跳过不需要验证的路径
-        log.info("不需要认证URL {}", authConfig.getIgnores());
-        if (Arrays.asList(authConfig.getIgnores()).contains(url)) {
+        log.info("不需要认证URL {}, url {}", authConfig.getIgnores(), url);
+        if (authConfig.getIgnores().contains(url)) {
             log.info("传递token {}", token);
             requestContext.addZuulRequestHeader(AUTHORIZE_TOKEN, "*");
             return false;
