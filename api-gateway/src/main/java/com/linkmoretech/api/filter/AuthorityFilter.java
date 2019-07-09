@@ -1,9 +1,11 @@
 package com.linkmoretech.api.filter;
 
+import com.linkmoretech.api.configuration.AuthConfig;
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +30,11 @@ public class AuthorityFilter extends ZuulFilter {
 
     private final String clientSecurt = "linkmore2018";
 
-    String[] skipAuthUrls = {"/account/system/login", "/account/login-mobile",
+
+    @Autowired
+    AuthConfig authConfig;
+
+   /* String[] skipAuthUrls = {"/account/system/login", "/account/login-mobile",
             "/account/personal/login", "/account/personal/login-mobile", "/account/sms/code",
     "/swagger-ui.html",
 	"/configuration",
@@ -39,7 +45,7 @@ public class AuthorityFilter extends ZuulFilter {
 	"/api-docs",
 	"/v2/api-docs",
     
-    };
+    };*/
 
 
     /**
@@ -65,12 +71,14 @@ public class AuthorityFilter extends ZuulFilter {
         RequestContext requestContext = RequestContext.getCurrentContext();
         HttpServletRequest request = requestContext.getRequest();
         String url = request.getRequestURI();
-        String token =  clientId + ":" + clientSecurt;
+        String token =  authConfig.getClientId() + ":" + authConfig.getClientSecure();
+        log.info("token {}", token);
         token = "Basic " +  Base64.getEncoder().encodeToString(token.getBytes(StandardCharsets.UTF_8));
         String ACCESS_TOKEN = "accessToken";
         requestContext.addZuulRequestHeader(ACCESS_TOKEN, token);
         //跳过不需要验证的路径
-        if (Arrays.asList(skipAuthUrls).contains(url)) {
+        log.info("不需要认证URL {}", authConfig.getIgnores());
+        if (Arrays.asList(authConfig.getIgnores()).contains(url)) {
             log.info("传递token {}", token);
             requestContext.addZuulRequestHeader(AUTHORIZE_TOKEN, "*");
             return false;
