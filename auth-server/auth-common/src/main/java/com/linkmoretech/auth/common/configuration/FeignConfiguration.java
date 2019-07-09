@@ -26,7 +26,7 @@ public class FeignConfiguration implements RequestInterceptor {
         log.info("feign 调用被拦截，需要添加token");
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        log.info("authe {}" , authentication.getClass().getName());
+        log.info("authe {}" , authentication);
         if (authentication != null && authentication.getDetails() instanceof OAuth2AuthenticationDetails) {
             OAuth2AuthenticationDetails oAuth2AuthenticationDetails = (OAuth2AuthenticationDetails)
                     authentication.getDetails();

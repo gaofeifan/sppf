@@ -15,8 +15,6 @@ import java.util.List;
  */
 @FeignClient(name = "account", configuration = FeignConfiguration.class, fallbackFactory = AccountFallBack.class)
 public interface AccountDataClient {
-
-
     /**
      *
      *  返回用户可操作车场对数据权限
@@ -42,4 +40,6 @@ public interface AccountDataClient {
     @GetMapping(value = "auth-user/getPlaceData")
     List<Long> getPlaceDataAccount(@RequestParam(value = "userId") Long userId, @RequestParam(value = "parkId")
                                    Long parkId);
+    @GetMapping(value = "auth-user/getaaa")
+    List<Long> getaaa(@RequestParam(value = "userId") Long userId);
 }

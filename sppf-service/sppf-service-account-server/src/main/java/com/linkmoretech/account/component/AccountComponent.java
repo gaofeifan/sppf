@@ -57,10 +57,14 @@ public class AccountComponent {
             return null;
         }
         UserResponseBean userResponseBean = dealUserLogin(user);
+        String[] resources = userResponseBean.getOptionResources();
+        if (resources == null) {
+          resources = new String[0];
+        }
         AccountUserDetail userDetails = new AccountUserDetail(user.getUserName(),
                 user.getPassword(),
                 user.getStatus().equals(EnableStatusEnum.ENABLED.getCode()),
-                AuthorityUtils.createAuthorityList(userResponseBean.getOptionResources()),
+                AuthorityUtils.createAuthorityList(resources),
                 user.getId(), user.getClientId());
 
         return userDetails;

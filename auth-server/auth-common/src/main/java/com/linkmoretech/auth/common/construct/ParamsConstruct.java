@@ -8,7 +8,7 @@ package com.linkmoretech.auth.common.construct;
 public interface ParamsConstruct {
 
    /**
-    * 大后台登录
+    * 后台登录
     * */
    String LOGIN_CUSTOMER = "/system/login";
 

@@ -17,6 +17,7 @@ import com.linkmoretech.parking.enums.CoordinateTypeEnum;
 import com.linkmoretech.parking.enums.LineStatusEnum;
 import com.linkmoretech.parking.enums.CarParkTypeEnum;
 import com.linkmoretech.parking.repository.CarParkRepository;
+import com.linkmoretech.parking.repository.CarPlaceRepository;
 import com.linkmoretech.parking.repository.CoordinateRepository;
 import com.linkmoretech.parking.repository.FloorPlanRepository;
 import com.linkmoretech.parking.service.CarParkService;
@@ -65,6 +66,9 @@ public class CarParkServiceImpl implements CarParkService {
     BindLockPlatformComponent bindLockPlatformComponent;
     @Autowired
     CarParkComponent carParkComponent;
+
+    @Autowired
+    CarPlaceRepository carPlaceRepository;
 
     @Override
     @Transactional(rollbackOn = Exception.class)
@@ -143,14 +147,11 @@ public class CarParkServiceImpl implements CarParkService {
         /**
          * 删除车位数据
          * */
-
+        floorPlanRepository.deleteAllByParkId(carParkId);
         /**
          * 删除长租车位数据
          * */
-
-        /**
-         * 删除参与业务的热数据
-         * */
+        carPlaceRepository.deleteAllByParkId(carParkId);
     }
     @Override
     public List<CarParkSelectResponse> getSelectedData(String cityCode)  {

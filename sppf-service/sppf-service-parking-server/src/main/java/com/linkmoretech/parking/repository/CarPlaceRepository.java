@@ -53,6 +53,14 @@ public interface CarPlaceRepository extends JpaRepository<CarPlace, Long>, JpaSp
      * @return 返回车位数
      * */
     long countByParkId(Long parkId);
+
+
+    /**
+     * 根据车场ID删除其车场下所有车位数据
+     * @param parkId 车场ID
+     * */
+    void deleteAllByParkId(Long parkId);
+
     /**
      * 编辑车位的类型
      * @param idList 车位列表

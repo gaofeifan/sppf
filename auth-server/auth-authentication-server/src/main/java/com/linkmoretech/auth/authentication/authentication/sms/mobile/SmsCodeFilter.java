@@ -71,14 +71,6 @@ public abstract class SmsCodeFilter extends OncePerRequestFilter implements Init
         }
 
     }
-    /**
-     * 处理登录验证码过滤器
-     * */
-    /*@Override
-    public abstract void afterPropertiesSet()  {
-        urls.add(ParamsConstruct.LOGIN_MANAGE_MOBILE);
-        urls.add(ParamsConstruct.LOGIN_MOBILE_PERSONAL);
-    }*/
 
     private void redisValidate( MultiReadHttpServletRequest multiReadHttpServletRequest) throws  ValidateCodeException {
         Map<String, Object> loginParams = HttpRequestBodyUtil.getHttpBody(multiReadHttpServletRequest);

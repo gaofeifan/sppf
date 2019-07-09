@@ -47,4 +47,21 @@ public interface LicensePlateRepository extends JpaRepository<LicensePlate, Long
      * @return 车牌信息集合
      * */
     List<LicensePlate> getAllByLicensePlateNoInAndLeaseCode(List<String> licensePlateNo, String leaseCode);
+
+    /**
+     * 根据车位号查询长租车位信息
+     * @param placeNo 车牌号
+     * @param leaseCode 车区授权码
+     * @return 车牌信息集合
+     * */
+    List<LicensePlate> getAllByPlaceNoAndLeaseCode(String placeNo, String leaseCode);
+
+
+    /**
+     * 根据车位号查询长租车位信息
+     * @param leaseCode 车区授权码
+     * @return 车牌信息集合
+     * */
+    List<LicensePlate> getAllByLeaseCode(String leaseCode);
+
 }
