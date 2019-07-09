@@ -90,6 +90,7 @@ public class CarPlaceServiceImpl implements CarPlaceService {
         if (floorPlan.getId() == null) {
             throw new CommonException(ResponseCodeEnum.ERROR, "车场分布不存在");
         }
+
         Date currentDate = new Date();
         CarPlace carPlace = new CarPlace();
         carPlace.setParkId(carPark.getId());
@@ -116,8 +117,17 @@ public class CarPlaceServiceImpl implements CarPlaceService {
             tempCarPlace.setPlaceNo(carLockCreateRequest.getPlaceNo());
             return tempCarPlace;
         }).collect(Collectors.toList());
+
+       /**
+        * 检测车位编号是否存在
+        * */
+       List<String> lockCodeList = carPlaceList.stream().map(CarPlace::getLockCode).collect(Collectors.toList());
+       List<CarPlace> carPlaces = carPlaceRepository.getAllByLockCodeIn(lockCodeList);
+       if (carPlaces != null && carPlaces.size() > 0) {
+           throw new CommonException(ResponseCodeEnum.ERROR, "车锁编号" + carPlaces.get(0).getLockCode() + "已存在");
+       }
        List<CarPlace> resultData = carPlaceRepository.saveAll(carPlaceList);
-        log.info("save success and total is {}", resultData.size());
+       log.info("save success and total is {}", resultData.size());
     }
 
     @Override

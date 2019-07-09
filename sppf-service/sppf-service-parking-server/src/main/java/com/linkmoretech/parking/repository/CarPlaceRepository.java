@@ -61,6 +61,14 @@ public interface CarPlaceRepository extends JpaRepository<CarPlace, Long>, JpaSp
      * */
     void deleteAllByParkId(Long parkId);
 
+
+    /**
+     * 查询车锁编号是否已存在
+     * @param lockCodeList 车锁编号
+     * @return 车位集合
+     * */
+    List<CarPlace> getAllByLockCodeIn(List<String> lockCodeList);
+
     /**
      * 编辑车位的类型
      * @param idList 车位列表
