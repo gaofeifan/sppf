@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Optional;
 
 /**
  * @Author: alec
@@ -55,10 +56,11 @@ public class CarParkComponent {
      * 根据车场ID 查询车场
      * */
     public CarPark getCarPark(Long carParkId) throws CommonException {
-        CarPark carPark = carParkRepository.findById(carParkId).get();
-        if (carPark.getId() == null) {
+        Optional<CarPark> optional = carParkRepository.findById(carParkId);
+        if (!optional.isPresent()) {
             throw new CommonException(ResponseCodeEnum.ERROR, "未找到相关车场");
         }
+        CarPark carPark = optional.get();
         return carPark;
     }
 
@@ -66,11 +68,11 @@ public class CarParkComponent {
      * 根据车位ID 查询车位
      * */
     public CarPlace getCarPlace(Long carPlaceId) throws CommonException {
-        CarPlace carPlace = carPlaceRepository.findById(carPlaceId).get();
-        if (carPlace.getId() == null) {
+        Optional<CarPlace> optional = carPlaceRepository.findById(carPlaceId);
+        if (!optional.isPresent()) {
             throw new CommonException(ResponseCodeEnum.ERROR, "车位数据不存在");
         }
-        return carPlace;
+        return optional.get();
     }
 
     /**
