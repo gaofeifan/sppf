@@ -108,6 +108,8 @@ public interface CarPlaceService {
 
 	CarPlace findByLockCode(String lockCode);
 
+	void updateLineStatus(Integer state, Long carPlaceId) throws CommonException;
+
 
 
 }

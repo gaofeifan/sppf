@@ -14,9 +14,3 @@ eureka:
     prefer-ip-address: false
     hostname: parking
 
-
-jpa:
-  show-sql: true
-  properties:
-    hibernate:
-      format_sql: true

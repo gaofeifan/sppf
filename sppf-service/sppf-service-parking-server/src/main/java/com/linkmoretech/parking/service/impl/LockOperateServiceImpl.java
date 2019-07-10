@@ -1,21 +1,28 @@
 package com.linkmoretech.parking.service.impl;
 
+import com.esotericsoftware.minlog.Log;
+import com.linkmoretech.auth.common.util.AuthenticationTokenAnalysis;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.parking.entity.*;
 import com.linkmoretech.parking.entity.ResGatewayDetails;
+import com.linkmoretech.parking.enums.CarPlaceStatusEnum;
+import com.linkmoretech.parking.enums.CarPlaceTypeEnum;
 import com.linkmoretech.parking.enums.LineStatusEnum;
+import com.linkmoretech.parking.enums.LockStatusEnum;
 import com.linkmoretech.parking.service.CarParkService;
 import com.linkmoretech.parking.service.CarPlaceService;
 import com.linkmoretech.parking.service.LockOperateService;
 import com.linkmoretech.parking.service.LockService;
 import com.linkmoretech.parking.vo.request.CarParkLineRequest;
 import com.linkmoretech.parking.vo.request.CarPlaceEditRequest;
+import com.linkmoretech.parking.vo.request.LineStatusRquest;
 import com.linkmoretech.parking.vo.request.LockOperateRequest;
 import com.linkmoretech.parking.vo.request.ReqLockIntall;
 import com.linkmoretech.parking.vo.response.*;
 import com.linkmoretech.parking.vo.response.ResLockGatewayList;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,8 +45,10 @@ public class LockOperateServiceImpl implements LockOperateService {
     private CarPlaceService carPlaceService;
     private LockFactory lockFactory = LockFactory.getInstance();
     @Override
-    public Boolean operate(HttpServletRequest request, LockOperateRequest lockOperate) throws CommonException {
-        LockService lockService = lockFactory.getLockService(LockFactory.MANAGE, lockOperate.getMsgStatus(), Boolean.TRUE);
+    public Boolean operate(Authentication authentication, LockOperateRequest lockOperate) throws CommonException {
+//    	 AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
+//    	Long userId = authenticationTokenAnalysis.getUserId();
+        LockService lockService = lockFactory.getLockService(LockFactory.MANAGE, lockOperate.getMsgStatus(), Boolean.TRUE, null);
         if(lockOperate.getCarPlaceId() == null && lockOperate.getLockSn() == null){
             throw new CommonException(ResponseCodeEnum.STALL_NOT_EXIST);
         }
@@ -60,7 +69,7 @@ public class LockOperateServiceImpl implements LockOperateService {
 
 
     @Override
-    public Boolean bindGroup(Long preId, String serialNumber, HttpServletRequest request) {
+    public Boolean bindGroup(Long preId, String serialNumber, HttpServletRequest request) throws CommonException {
         CarParkInfoResponse detail1 = null;
         try {
             detail1 = carParkService.findDetail(preId);
@@ -71,7 +80,7 @@ public class LockOperateServiceImpl implements LockOperateService {
     }
 
     @Override
-    public Boolean unBindGroup(String groupCode, String serialNumber, HttpServletRequest request) {
+    public Boolean unBindGroup(String groupCode, String serialNumber, HttpServletRequest request) throws CommonException {
         return lockFactory.getLockService().unbindGroup(groupCode, serialNumber);
     }
 
@@ -234,10 +243,10 @@ public class LockOperateServiceImpl implements LockOperateService {
             stall.setFloorPlanId(reqLockIntall.getFloorId());
             stall.setFloorPlanName(reqLockIntall.getFloor());
             stall.setPlaceNo(reqLockIntall.getStallName());
-            stall.setLineStatus(2);
-            stall.setPlaceStatus(1);
-            stall.setPlaceType(1);
-            stall.setLockStatus(1);
+            stall.setLineStatus(LineStatusEnum.OFFLINE.getCode());
+            stall.setPlaceStatus(CarPlaceStatusEnum.FREE.getCode());
+            stall.setPlaceType(CarPlaceTypeEnum.TEMP_PLACE.getCode());
+            stall.setLockStatus(LockStatusEnum.UP.getCode());
             CarParkInfoResponse detail = this.carParkService.findDetail(stall.getParkId());
             if(detail != null) {
                 stall.setParkName(detail.getParkName());
@@ -280,4 +289,23 @@ public class LockOperateServiceImpl implements LockOperateService {
     private Long getUserId(Object object){
         return 1L;
     }
+
+
+	@Override
+	public Boolean editLineStatus(LineStatusRquest lineStatusRquest) throws CommonException {
+		this.carPlaceService.updateLineStatus(lineStatusRquest.getState(),lineStatusRquest.getCarPlaceId());
+		// TODO 缺少将下线原因保存
+		return true;
+	}
+
+
+	@Override
+	public Boolean reset(Long carPlaceId) {
+		
+		return true;
+	}
+
+    
+    
+
 }

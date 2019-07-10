@@ -2,6 +2,7 @@ package com.linkmoretech.parking.controller.write;
 
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.parking.service.LockOperateService;
+import com.linkmoretech.parking.vo.request.LineStatusRquest;
 import com.linkmoretech.parking.vo.request.LockOperateRequest;
 import com.linkmoretech.parking.vo.request.ReqLockIntall;
 import com.linkmoretech.parking.vo.response.*;
@@ -10,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,8 +37,22 @@ public class LockOperateController {
 
     @ApiOperation(value = "操作锁", notes = "控制锁升降")
     @PostMapping(value = "operate")
-    public Boolean operate(HttpServletRequest request, @RequestBody LockOperateRequest lockOperate) throws CommonException {
-        return this.lockOperateService.operate(request,lockOperate);
+    public Boolean operate(Authentication authentication, @RequestBody LockOperateRequest lockOperate) throws CommonException {
+        return this.lockOperateService.operate(authentication,lockOperate);
+    }
+    @ApiOperation(value = "操作锁上下线", notes = "操作锁上下线")
+    @PostMapping(value = "operate-line")
+    public Boolean editLineStatus(
+    		@RequestBody LineStatusRquest lineStatusRquest
+    		) throws CommonException  {
+    	return this.lockOperateService.editLineStatus(lineStatusRquest);
+    }
+    @ApiOperation(value = "复位", notes = "复位")
+    @PostMapping(value = "reset")
+    public Boolean reset(
+    		@ApiParam(value="车位id",required=true) @RequestParam(value = "carPlaceId",required= true) Long carPlaceId 
+    		)  {
+    	return this.lockOperateService.reset(carPlaceId);
     }
 
 
@@ -45,7 +61,7 @@ public class LockOperateController {
     @ResponseBody
     public Boolean bindGroup(HttpServletRequest request, @ApiParam(value="车区id",required=true) @NotNull(message="车区id不能为空") @RequestParam(value = "preId",required= true) Long preId ,
                                              @ApiParam(value="网关编号",required=true) @NotBlank(message="网关编号不能为空") @RequestParam(value = "serialNumber",required= true) String serialNumber
-    ){
+    ) throws CommonException{
         Boolean falg = this.lockOperateService.bindGroup(preId,serialNumber,request);
         return falg;
     }
@@ -55,7 +71,7 @@ public class LockOperateController {
     @ResponseBody
     public Boolean unBindGroup(HttpServletRequest request, @ApiParam(value="分组编号",required=true) @NotNull(message="分组编号不能为空") @RequestParam(value = "groupCode",required= true) String groupCode ,
                                                @ApiParam(value="网关编号",required=true) @NotBlank(message="网关编号不能为空") @RequestParam(value = "serialNumber",required= true) String serialNumber
-    ){
+    ) throws CommonException{
         Boolean falg = this.lockOperateService.unBindGroup(groupCode,serialNumber,request);
         return falg;
     }
@@ -143,7 +159,7 @@ public class LockOperateController {
     @RequestMapping(value = "/remove-stall-lock", method = RequestMethod.POST)
     @ResponseBody
     public Boolean removeStallLock(HttpServletRequest request, @ApiParam(value="车位id",required=true) @NotNull(message="车位id不能为空") @RequestParam(value = "stallId",required= true) Long stallId ) throws CommonException {
-            return this.lockOperateService.removeStallLock(stallId,request);
+        return this.lockOperateService.removeStallLock(stallId,request);
     }
 
     @RequestMapping(value="/lock­signal­history",method=RequestMethod.GET)
