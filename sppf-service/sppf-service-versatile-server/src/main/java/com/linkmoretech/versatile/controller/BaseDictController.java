@@ -1,14 +1,18 @@
 package com.linkmoretech.versatile.controller;
 
-import javax.validation.Valid;
+import java.util.List;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.linkmoretech.common.enums.ResponseCodeEnum;
@@ -19,6 +23,7 @@ import com.linkmoretech.versatile.service.BaseDictService;
 import com.linkmoretech.versatile.vo.request.BaseDictCreateRequest;
 import com.linkmoretech.versatile.vo.request.BaseDictEditRequest;
 import com.linkmoretech.versatile.vo.response.BaseDictPageResponse;
+import com.linkmoretech.versatile.vo.response.BaseDictResponse;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -71,6 +76,13 @@ public class BaseDictController {
             throw new CommonException(ResponseCodeEnum.PARAMS_ERROR);
         }
         return baseDictService.searchPage(searchRequest);
+    }
+    
+    @ApiOperation(value = "获取数据字典列表-APP", notes = "获取数据字典列表")
+    @GetMapping(value = "dict-list")
+    public List<BaseDictResponse> dictList(@RequestParam(value = "code") @NotNull(message="code不能为空") String code) {
+       List<BaseDictResponse> baseDictResponses=  baseDictService.findListByCode(code);
+       return baseDictResponses;
     }
 
 
