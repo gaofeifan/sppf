@@ -31,7 +31,7 @@ public class StartUp {
 				CarParkService carParkService = SpringUtil.getBean(CarParkService.class);
 //				List<CarParkFloorsResponse> list = carParkService.carParkFloors(1075L);
 //				System.out.println(JsonUtil.toJson(list));
-//				List<CityParkListResponse> list1 = carParkService.carParkList(null);
+//				List<CityParkListResponse> list1 = carPark Service.carParkList(null);
 //				System.out.println(JsonUtil.toJson(list1));
 
 

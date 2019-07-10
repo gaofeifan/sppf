@@ -316,6 +316,7 @@ public class CarPlaceServiceImpl implements CarPlaceService {
             carPalceListResponse.setType(carPlace.getPlaceType());
             carPalceListResponse.setLockSn(carPlace.getLockCode());
             carPalceListResponse.setPlaceStatus(carPlace.getPlaceStatus());
+            carPalceListResponse.setLineStatus(carPlace.getLineStatus());
             carPalceListResponse = setCarPlaceLock(lockInfos,carPalceListResponse);
             carPalceListResponses.add(carPalceListResponse);
         }
@@ -524,7 +525,7 @@ public class CarPlaceServiceImpl implements CarPlaceService {
 		if(carPlace.getPlaceStatus().intValue() == CarPlaceStatusEnum.USING.getCode().intValue()) {
 			throw new CommonException(ResponseCodeEnum.CARPLACEOCCUPIED);
 		}
-		carPlace.setPlaceStatus(state);
+		carPlace.setLineStatus(state);
 		this.carPlaceRepository.save(carPlace);
 	}
 	
