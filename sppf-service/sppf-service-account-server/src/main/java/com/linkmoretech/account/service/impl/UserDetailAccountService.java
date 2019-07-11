@@ -96,6 +96,12 @@ public class UserDetailAccountService extends UserDetailAccountAbstract {
     }
 
     @Override
+    public UserDetails loginForWechat(String code) {
+        log.info("微信小程序调用登录");
+        return null;
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
        return null;
     }

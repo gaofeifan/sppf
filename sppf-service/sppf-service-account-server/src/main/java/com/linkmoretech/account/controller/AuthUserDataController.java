@@ -95,14 +95,4 @@ public class AuthUserDataController {
         return userDataAuthService.getPlaceNoList(userId, parkId);
     }
 
-
-    @GetMapping(value = "getaaa")
-    @IgnoreResponseAdvice
-    public List<Long> getaaa(@RequestParam(value = "userId") Long userId, @RequestParam(value = "parkId")
-            Long parkId) {
-        List l = new ArrayList();
-        l.add(1L);
-        l.add(2L);
-        return l;
-    }
 }

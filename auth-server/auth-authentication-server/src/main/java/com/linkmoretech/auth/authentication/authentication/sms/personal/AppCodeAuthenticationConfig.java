@@ -21,7 +21,7 @@ import javax.annotation.Resource;
  */
 @Component
 @Slf4j
-public class AppLoginAuthenticationConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
+public class AppCodeAuthenticationConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
 
     @Autowired
@@ -36,15 +36,15 @@ public class AppLoginAuthenticationConfig extends SecurityConfigurerAdapter<Defa
     @Override
     public void configure(HttpSecurity http){
 
-        log.info("个人版手机登录");
-        AppLoginAuthenticationFilter appLoginAuthenticationFilter = new AppLoginAuthenticationFilter();
-        appLoginAuthenticationFilter.setAuthenticationSuccessHandler(validateSuccessHandler);
-        appLoginAuthenticationFilter.setAuthenticationFailureHandler(validateFailureHandler);
-        appLoginAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
+        log.info("小程序code 登录");
+        AppCodeAuthenticationFilter appCodeAuthenticationFilter = new AppCodeAuthenticationFilter();
+        appCodeAuthenticationFilter.setAuthenticationSuccessHandler(validateSuccessHandler);
+        appCodeAuthenticationFilter.setAuthenticationFailureHandler(validateFailureHandler);
+        appCodeAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
 
-        AppLoginAuthenticationProvider appLoginAuthenticationProvider = new AppLoginAuthenticationProvider();
-        appLoginAuthenticationProvider.setUserDetailService(userDetailAccountService);
-        http.authenticationProvider(appLoginAuthenticationProvider)
-                .addFilterAfter(appLoginAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        AppCodeAuthenticationProvider appCodeAuthenticationProvider = new AppCodeAuthenticationProvider();
+        appCodeAuthenticationProvider.setUserDetailService(userDetailAccountService);
+        http.authenticationProvider(appCodeAuthenticationProvider)
+                .addFilterAfter(appCodeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }

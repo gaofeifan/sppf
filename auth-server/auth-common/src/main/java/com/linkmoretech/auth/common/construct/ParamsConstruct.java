@@ -29,6 +29,11 @@ public interface ParamsConstruct {
    String LOGIN_PERSION = "/app/login";
 
    /**
+    * 个人版小程序
+    * */
+   String LOGIN_PERSON_CODE = "/app/login-code";
+
+   /**
     * json登录不需要跳转至登录界面，需要提示未登录信息，默认提示地址
     * */
 
@@ -46,6 +51,8 @@ public interface ParamsConstruct {
    String MOBILE_PARAMS = "mobile";
 
    String SOURCE = "type";
+
+   String CODE = "code";
 
    /**
     * 验证码类型 1 登录
