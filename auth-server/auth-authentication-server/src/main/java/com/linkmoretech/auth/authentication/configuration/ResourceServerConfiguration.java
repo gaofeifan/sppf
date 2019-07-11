@@ -94,9 +94,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .and()
                 .apply(appLoginAuthenticationConfig)
                 .and()
-                .apply(appRegisterAuthenticationConfig)
-                .and()
                 .apply(appCodeAuthenticationConfig)
+                .and()
+                .apply(appRegisterAuthenticationConfig)
                 .and()
                 .csrf().disable();//关闭csrf
     }
