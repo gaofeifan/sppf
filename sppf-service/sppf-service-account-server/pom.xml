@@ -115,6 +115,11 @@
             <artifactId>sppf-service-versatile-client</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.linkmoretech</groupId>
+            <artifactId>http-common-component</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

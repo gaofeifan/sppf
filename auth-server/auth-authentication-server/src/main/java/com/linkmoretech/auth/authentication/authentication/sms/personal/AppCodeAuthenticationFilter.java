@@ -3,7 +3,7 @@ package com.linkmoretech.auth.authentication.authentication.sms.personal;
 import com.linkmoretech.auth.authentication.authentication.ValidateAuthenticationFilter;
 import com.linkmoretech.auth.common.construct.ParamsConstruct;
 import com.linkmoretech.auth.common.token.AppCodeAuthenticationToken;
-import com.linkmoretech.auth.common.token.AppLoginAuthenticationToken;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
