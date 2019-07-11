@@ -2,6 +2,7 @@ package com.linkmoretech.auth.authentication.authentication.sms.personal;
 
 import com.linkmoretech.auth.authentication.authentication.ValidateAuthenticationFilter;
 import com.linkmoretech.auth.common.construct.ParamsConstruct;
+import com.linkmoretech.auth.common.token.AppCodeAuthenticationToken;
 import com.linkmoretech.auth.common.token.AppLoginAuthenticationToken;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
@@ -37,7 +38,7 @@ public class AppCodeAuthenticationFilter extends ValidateAuthenticationFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         String code = attemptCode(request);
-        AppLoginAuthenticationToken authRequest = new AppLoginAuthenticationToken(code);
+        AppCodeAuthenticationToken authRequest = new AppCodeAuthenticationToken(code);
         this.setDetails(request, authRequest);
         return this.getAuthenticationManager().authenticate(authRequest);
     }

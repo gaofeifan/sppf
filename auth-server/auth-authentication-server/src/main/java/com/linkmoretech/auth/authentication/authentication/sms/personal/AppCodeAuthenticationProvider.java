@@ -1,7 +1,7 @@
 package com.linkmoretech.auth.authentication.authentication.sms.personal;
 
 import com.linkmoretech.auth.common.service.UserDetailAccountAbstract;
-import com.linkmoretech.auth.common.token.AppLoginAuthenticationToken;
+import com.linkmoretech.auth.common.token.AppCodeAuthenticationToken;
 import lombok.Data;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
@@ -25,6 +25,6 @@ public class AppCodeAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authenticationTokenClass) {
-        return AppLoginAuthenticationToken.class.isAssignableFrom(authenticationTokenClass);
+        return AppCodeAuthenticationToken.class.isAssignableFrom(authenticationTokenClass);
     }
 }
