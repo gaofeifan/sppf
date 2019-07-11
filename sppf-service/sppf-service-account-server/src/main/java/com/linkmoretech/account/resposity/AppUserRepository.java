@@ -20,7 +20,6 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
     /**
      * @param openId 用户OPEN ID
-     * @param unionId 用户UUID
      * */
-    AppUser getByOpenIdAndUnionId(String openId, String unionId);
+    AppUser getByOpenId(String openId);
 }

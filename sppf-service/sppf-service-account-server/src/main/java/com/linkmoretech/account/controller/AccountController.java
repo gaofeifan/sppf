@@ -10,6 +10,7 @@ import com.linkmoretech.account.enums.LoginTypeEnum;
 import com.linkmoretech.account.enums.SmsTypeEnum;
 import com.linkmoretech.account.service.AccountService;
 import com.linkmoretech.account.service.SmsCodeService;
+import com.linkmoretech.account.vo.request.AppUserRegisterRequest;
 import com.linkmoretech.account.vo.request.PasswordEditRequest;
 import com.linkmoretech.auth.common.bean.AccountUserDetail;
 import com.linkmoretech.auth.common.util.AuthenticationTokenAnalysis;
@@ -88,6 +89,22 @@ public class AccountController {
             accountService.updatePassword(clientId, username, passwordEditRequest.getPassword(),
                     passwordEditRequest.getOldPassword());
         }
+    }
+
+    @PostMapping(value = "register-mobile")
+    @ApiOperation(value="修改用户手机号", notes="修改当前用户登录密码,修改成功后需要客户端发起注销",produces = "application/json")
+    public void updateUserMobile(Authentication authentication,
+                                   @RequestBody AppUserRegisterRequest appUserRegisterRequest,
+                                   BindingResult bindingResult)
+            throws CommonException {
+
+        if (bindingResult.hasErrors()) {
+            throw new CommonException(ResponseCodeEnum.PARAMS_ERROR);
+        }
+        AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
+        authenticationTokenAnalysis.getUserId();
+
+
     }
 
     /**
