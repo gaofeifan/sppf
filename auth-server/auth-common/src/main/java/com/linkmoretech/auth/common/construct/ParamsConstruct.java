@@ -39,7 +39,7 @@ public interface ParamsConstruct {
 
    String LOGIN_MOBILE_PERSONAL = "/personal/login-mobile";
 
-
+   String APP_REGISTER = "/register-mobile";
    /**
     * 管理版客户端标示
     * */

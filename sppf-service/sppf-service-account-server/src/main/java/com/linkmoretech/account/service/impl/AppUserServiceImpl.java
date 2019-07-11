@@ -49,6 +49,8 @@ public class AppUserServiceImpl implements AppUserService {
             throw new CommonException(ResponseCodeEnum.ERROR, "手机号已存在");
         }
 
+
+
         /**
          * 创建用户
          * */
@@ -64,6 +66,24 @@ public class AppUserServiceImpl implements AppUserService {
         /**
          * 创建完成用户后调用用户服务将帐号信息同步至用户服务
          * */
+        return resultUser;
+    }
+
+    @Override
+    public AppUser register(String openId) throws CommonException {
+
+        AppUser exitUser = appUserRepository.getByOpenId(openId);
+        if (exitUser != null) {
+            throw new CommonException(ResponseCodeEnum.ERROR, "openId已存在");
+        }
+        AppUser appUser = new AppUser();
+        appUser.setUserId(appUserComponent.createUserId());
+        appUser.setUsername(openId);
+        appUser.setUserSource(UserSourceEnum.WE_CHAR.getCode());
+        int len = 10;
+        appUser.setPassword(RandomStringUtils.randomNumeric(len));
+        appUser.setCreateTime(new Date());
+        AppUser resultUser =  appUserRepository.save(appUser);
         return resultUser;
     }
 
