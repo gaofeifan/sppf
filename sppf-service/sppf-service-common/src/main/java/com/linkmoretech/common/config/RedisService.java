@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import com.linkmoretech.common.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.ListOperations;
@@ -294,5 +296,25 @@ public class RedisService {
 	public void hDel(String key, Object... hashKeys) {
 		HashOperations<String, Object, Object> hash = redisTemplate.opsForHash();
 		hash.delete(key, hashKeys);
+	}
+
+	public Boolean lock(String key,String value,Long timeout){
+		if(redisTemplate.opsForValue().setIfAbsent(key,value)){
+			redisTemplate.expire(key,timeout == null ? Constants.ExpiredTime.STALL_LOCK_BOOKING_EXP_TIME.time :timeout ,TimeUnit.SECONDS);
+			return true;
+		}
+		return false;
+	}
+
+	public Boolean upLock(String key,String value){
+		Object o = redisTemplate.opsForValue().get(key);
+		if(o == null){
+			return true;
+		}else if(o.toString().equals(value)){
+			return true;
+		}else{
+			return false;
+		}
+
 	}
 }

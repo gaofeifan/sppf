@@ -9,6 +9,7 @@ import com.linkmoretech.versatile.service.BaseDictService;
 import com.linkmoretech.versatile.vo.request.BaseDictCreateRequest;
 import com.linkmoretech.versatile.vo.request.BaseDictEditRequest;
 import com.linkmoretech.versatile.vo.response.BaseDictPageResponse;
+import com.linkmoretech.versatile.vo.response.BaseDictResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,4 +72,15 @@ public class BaseDictServiceImpl implements BaseDictService {
         pageDataResponse.setData(baseDictPageResponses);
         return pageDataResponse;
     }
+
+	@Override
+	public List<BaseDictResponse> findListByCode(String code) {
+		List<BaseDict> baseDictList = baseDictRepository.findListByCode(code);
+		List<BaseDictResponse> baseDictResponseList = baseDictList.stream().map(baseDict ->{
+			BaseDictResponse baseDictResponse = new BaseDictResponse();
+			BeanUtils.copyProperties(baseDict, baseDictResponse);
+			return baseDictResponse;
+		}).collect(Collectors.toList());
+		return baseDictResponseList;
+	}
 }

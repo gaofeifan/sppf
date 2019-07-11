@@ -1,6 +1,7 @@
 package com.linkmoretech.parking.service;
 
 import com.linkmoretech.common.exception.CommonException;
+import com.linkmoretech.parking.vo.request.LineStatusRquest;
 import com.linkmoretech.parking.vo.request.LockOperateRequest;
 import com.linkmoretech.parking.vo.request.ReqLockIntall;
 import com.linkmoretech.parking.vo.response.ResGateway;
@@ -9,6 +10,9 @@ import com.linkmoretech.parking.vo.response.ResLockGatewayList;
 import com.linkmoretech.parking.vo.response.ResSignalHistory;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.security.core.Authentication;
+
 import java.util.List;
 
 /**
@@ -18,22 +22,22 @@ import java.util.List;
  */
 public interface LockOperateService {
 
-    Boolean operate(HttpServletRequest request, LockOperateRequest lockOperate) throws CommonException;
-
 
     /**
+     * @throws CommonException 
      * @Description  绑定网关
      * @Author   GFF
      * @Version  v2.0
      */
-    Boolean bindGroup(Long preId, String serialNumber, HttpServletRequest request);
+    Boolean bindGroup(Long preId, String serialNumber, HttpServletRequest request) throws CommonException;
 
     /**
+     * @throws CommonException 
      * @Description  接触绑定
      * @Author   GFF
      * @Version  v2.0
      */
-    Boolean unBindGroup(String groupCode, String serialNumber, HttpServletRequest request);
+    Boolean unBindGroup(String groupCode, String serialNumber, HttpServletRequest request) throws CommonException;
 
     /**
      * @Description  查询车区网关list
@@ -115,4 +119,11 @@ public interface LockOperateService {
     Boolean removeStallLock(Long stallId, HttpServletRequest request) throws CommonException;
 
     public Boolean installLock(ReqLockIntall reqLockIntall, HttpServletRequest request) throws CommonException;
+
+	Boolean operate(Authentication authentication, LockOperateRequest lockOperate) throws CommonException;
+
+	Boolean editLineStatus(LineStatusRquest lineStatusRquest) throws CommonException;
+
+	Boolean reset(Long carPlaceId);
+
 }

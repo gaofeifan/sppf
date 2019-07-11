@@ -316,6 +316,7 @@ public class CarPlaceServiceImpl implements CarPlaceService {
             carPalceListResponse.setType(carPlace.getPlaceType());
             carPalceListResponse.setLockSn(carPlace.getLockCode());
             carPalceListResponse.setPlaceStatus(carPlace.getPlaceStatus());
+            carPalceListResponse.setLineStatus(carPlace.getLineStatus());
             carPalceListResponse = setCarPlaceLock(lockInfos,carPalceListResponse);
             carPalceListResponses.add(carPalceListResponse);
         }
@@ -422,7 +423,30 @@ public class CarPlaceServiceImpl implements CarPlaceService {
             carPlaceRes.setLockStatus(carPlace.getLockStatus());
             carPlaceRes.setFloor(carPlace.getFloorPlanName());
             carPlaceRes.setFloorId(carPlace.getFloorPlanId());
+            carPlaceRes.setLineStatus(carPlace.getLineStatus());
             carPlaceRes.setCarPlaceLockSn(sn);
+        }
+        if(carPlace != null && carPlace.getParkId() != null) {
+        	try {
+        		CarPark park = this.carParkRepository.findById(carPlace.getParkId()).get();
+				if(park != null) {
+					carPlaceRes.setCityCode(park.getCityCode());
+					carPlaceRes.setCityName(park.getCityName());
+					List<com.linkmoretech.parking.entity.ResLockGatewayList> gatewayList = lockService.getLockGatewayList(carPlace.getLockCode(), park.getLockGroupCode());
+	                com.linkmoretech.parking.vo.response.ResLockGatewayList rgl = null;
+	                if(gatewayList != null) {
+	                    for (com.linkmoretech.parking.entity.ResLockGatewayList resLockGatewayList : gatewayList) {
+	                        if(resLockGatewayList.getBindFlag().equals("1")) {
+	                            rgl = new com.linkmoretech.parking.vo.response.ResLockGatewayList(resLockGatewayList.getGatewaySerialNumber());
+	                            rgl.setBindFlag(resLockGatewayList.getBindFlag());
+	                            carPlaceRes.getGatewayList().add(rgl);
+	                        }
+	                    }
+	                }
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
         }
         if(lockInfo != null){
             carPlaceRes.setBindStata(2);
@@ -434,24 +458,6 @@ public class CarPlaceServiceImpl implements CarPlaceService {
             carPlaceRes.setInductionState(lockInfo.getInductionState());
             carPlaceRes.setModel(lockInfo.getModel());
             carPlaceRes.setVersion(lockInfo.getVersion());
-            if(carPlace != null) {
-            	CarPark park = this.carParkRepository.findById(carPlace.getParkId()).get();
-            if(park != null){
-                carPlaceRes.setCityCode(park.getCityCode());
-                carPlaceRes.setCityName(park.getCityName());
-                List<com.linkmoretech.parking.entity.ResLockGatewayList> gatewayList = lockService.getLockGatewayList(carPlace.getLockCode(), park.getLockGroupCode());
-                com.linkmoretech.parking.vo.response.ResLockGatewayList rgl = null;
-                if(gatewayList != null) {
-                    for (com.linkmoretech.parking.entity.ResLockGatewayList resLockGatewayList : gatewayList) {
-                        if(resLockGatewayList.getBindFlag().equals("1")) {
-                            rgl = new com.linkmoretech.parking.vo.response.ResLockGatewayList(resLockGatewayList.getGatewaySerialNumber());
-                            rgl.setBindFlag(resLockGatewayList.getBindFlag());
-                            carPlaceRes.getGatewayList().add(rgl);
-                        }
-                    }
-                }
-            	}
-            }
         }
         return carPlaceRes;
     }
@@ -503,6 +509,24 @@ public class CarPlaceServiceImpl implements CarPlaceService {
 	@Override
 	public CarPlace findByLockCode(String lockCode) {
 		return this.carPlaceRepository.findByLockCode(lockCode);
+	}
+
+	@Override
+	public void updateLineStatus(Integer state, Long carPlaceId) throws CommonException {
+		CarPlace carPlace = null;
+		try {
+			carPlace = this.carPlaceRepository.findById(carPlaceId).get();
+		} catch (Exception e) {
+			throw new CommonException(ResponseCodeEnum.CAR_PLACE_NOT_EXIST);
+		}
+		if(carPlace == null) {
+			throw new CommonException(ResponseCodeEnum.CAR_PLACE_NOT_EXIST);
+		}
+		if(carPlace.getPlaceStatus().intValue() == CarPlaceStatusEnum.USING.getCode().intValue()) {
+			throw new CommonException(ResponseCodeEnum.CARPLACEOCCUPIED);
+		}
+		carPlace.setLineStatus(state);
+		this.carPlaceRepository.save(carPlace);
 	}
 	
 	

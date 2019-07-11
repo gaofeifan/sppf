@@ -32,6 +32,7 @@ public class CarPalceListResponse {
     @ApiModelProperty(value="车位锁异常状态  true 正常车位  false 异常车位")
     private boolean excStatus = true;
     @ApiModelProperty(value="锁编号")
-
     private String lockSn;
+    @ApiModelProperty("上线状态;上线状态: 1: 上线，0:下线  ")
+    private Integer  lineStatus; /** 上线状态;上线状态: 1: 上线，2:下线 */
 }

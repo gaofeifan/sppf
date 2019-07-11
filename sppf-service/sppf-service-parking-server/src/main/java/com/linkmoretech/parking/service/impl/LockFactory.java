@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.bouncycastle.crypto.RuntimeCryptoException;
 
+import com.esotericsoftware.minlog.Log;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.parking.service.LockService;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
  * @Description: 锁操作的工厂类
  * @Date: 2019/6/17
  */
+@Slf4j
 public class LockFactory {
 
     public static final int MANAGE = 0;
@@ -27,33 +29,42 @@ public class LockFactory {
     }
     
     /**
+     * @throws CommonException 
      * @Author GFF
-     * @Description  server 0管理版  type  操作的状态（0直连 1 极光 2 socket） lock 是否使用分布式锁控制
+     * @Description  server 0管理版  type  操作的状态（0直连 1 极光 2 socket） lock 是否使用分布式锁控制 userId 用户id
      * @Date 2019/6/17
      */
-    public LockService getLockService(int server,int type ,boolean isLock){
+    public LockService getLockService(int server,int type ,boolean isLock,Long userId) {
     	checkServer(server);
     	LockService lockService = getCHM(server);
     	if(isLock){
-            lockService = new LockLockDecorator(lockService);
+            lockService = new LockLockDecorator(lockService) {
+            	@Override
+            	public synchronized void setUserId(Long userId) {
+            		super.setUserId(userId);
+            	}
+            };
         }
         lockService = new PushMessageDecorator(lockService,type);
         return lockService;
     }
 
-    private void checkServer(int server) {
+    private void checkServer(int server)  {
     	switch (server) {
 		case MANAGE:
 			break;
 		case USER:
 			break;
 		default:
-			throw new RuntimeCryptoException("参数有误请确认");
+			log.error("参数有误+{"+server+"}");
 		}
 	}
-	public LockService getLockService(){
-        return getLockService(0,0,false);
+	public LockService getLockService() {
+        return getLockService(0,0,false,null);
     }
+	public LockService getLockService(Long userId){
+		return getLockService(0,0,false,userId);
+	}
 	
 	private synchronized void init() {
 		LazyLockFactory.chm.put(MANAGE, new ManageLockDecorator(LockServiceImpl.getInstance()));
