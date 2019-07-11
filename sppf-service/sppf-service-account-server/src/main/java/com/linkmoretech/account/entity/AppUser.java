@@ -37,6 +37,9 @@ public class AppUser {
      * 用户微信OpenId
      * */
     private String openId;
+
+    private String unionId;
+
     /**
      * 注册来源
      * */
