@@ -97,7 +97,7 @@ public class AppUserComponent {
     }
 
 
-    public WeChatUser loadUserByWechat(String code) {
+    public WeChatUser loadUserByWechat(String code) throws CommonException {
         /**
          * 微信小程序登录
          * 换取token
@@ -112,35 +112,30 @@ public class AppUserComponent {
 
         String responseValue =  httpUtilComponent.sendHttpGetRequest(weixinApiConfig.getUrlLogin(), params);
         log.info("响应码{}", responseValue);
-        try {
-            JSONObject jsonObject = JSONObject.parseObject(responseValue);
-            int responseCode = jsonObject.getInteger("errcode");
-            if (responseCode != 0) {
-                throw new CommonException(ResponseCodeEnum.ERROR, "请求微信认证失败,错误码 " + responseCode );
-            }
-            String openId = jsonObject.getString("openid");
-            String unionId = jsonObject.getString("unionid");
-            String sessionKey = jsonObject.getString("session_key");
-
-            /**
-             * 校验用户信息是否存在
-             * */
-            WeChatUser weChatUser = weChatUserRepository.getByOpenIdAndUnionId(openId, unionId);
-            if (weChatUser == null) {
-                /**
-                 * 表示当前用户是新用户，需要存储其 token 信息
-                 * */
-                weChatUser = new WeChatUser();
-                weChatUser.setOpenId(openId);
-                weChatUser.setUnionId(unionId);
-                weChatUser.setSessionKey(sessionKey);
-                weChatUser = weChatUserRepository.save(weChatUser);
-            }
-            return weChatUser;
-
-        } catch (Exception e) {
-            log.error("request error {}", e.getMessage());
-            return  null;
+        JSONObject jsonObject = JSONObject.parseObject(responseValue);
+        int responseCode = jsonObject.getInteger("errcode");
+        if (responseCode != 0) {
+            log.error("error message {}" , jsonObject.getString("errmsg"));
+            throw new CommonException(ResponseCodeEnum.ERROR, "请求微信认证失败,错误码 " + responseCode );
         }
+        String openId = jsonObject.getString("openid");
+        String unionId = jsonObject.getString("unionid");
+        String sessionKey = jsonObject.getString("session_key");
+
+        /**
+         * 校验用户信息是否存在
+         * */
+        WeChatUser weChatUser = weChatUserRepository.getByOpenIdAndUnionId(openId, unionId);
+        if (weChatUser == null) {
+            /**
+             * 表示当前用户是新用户，需要存储其 token 信息
+             * */
+            weChatUser = new WeChatUser();
+            weChatUser.setOpenId(openId);
+            weChatUser.setUnionId(unionId);
+            weChatUser.setSessionKey(sessionKey);
+            weChatUser = weChatUserRepository.save(weChatUser);
+        }
+        return weChatUser;
     }
 }

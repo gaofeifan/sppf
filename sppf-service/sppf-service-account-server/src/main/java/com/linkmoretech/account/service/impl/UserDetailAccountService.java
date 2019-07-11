@@ -98,9 +98,14 @@ public class UserDetailAccountService extends UserDetailAccountAbstract {
     }
 
     @Override
-    public UserDetails loginForWechat(String code) {
+    public UserDetails loginForWechat(String code) throws RegisterException {
         log.info("微信小程序调用登录 {}", code);
-        WeChatUser weChatUser = appUserComponent.loadUserByWechat(code);
+        WeChatUser weChatUser = null;
+        try {
+            weChatUser = appUserComponent.loadUserByWechat(code);
+        } catch (CommonException e) {
+            throw new RegisterException(e.getCodeEnum().getCode(), e.getMessage());
+        }
         if (StringUtils.isEmpty(weChatUser.getMobile())) {
             return appUserComponent.getUserDetail(weChatUser, true);
         }
