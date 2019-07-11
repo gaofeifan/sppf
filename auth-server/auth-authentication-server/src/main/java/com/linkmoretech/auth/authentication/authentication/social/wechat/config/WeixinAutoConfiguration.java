@@ -12,7 +12,7 @@ import org.springframework.social.connect.ConnectionFactory;
  * Description:
  * @date: 10:04 2019-07-11
  */
-@Configuration
+//@Configuration
 public class WeixinAutoConfiguration  extends SocialConfigurerAdapter {
 
     private String providerId = "weixin";
