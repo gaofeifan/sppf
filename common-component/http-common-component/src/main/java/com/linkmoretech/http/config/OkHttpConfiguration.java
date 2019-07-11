@@ -28,9 +28,9 @@ public class OkHttpConfiguration {
        return new OkHttpClient.Builder().retryOnConnectionFailure(false)
                .sslSocketFactory(sslSocketFactory(), x509TrustManager())
                .connectionPool(connectionPool())
-               .connectTimeout(30, TimeUnit.SECONDS)
-               .readTimeout(30, TimeUnit.SECONDS)
-               .writeTimeout(30, TimeUnit.SECONDS).build();
+               .connectTimeout(100, TimeUnit.SECONDS)
+               .readTimeout(100, TimeUnit.SECONDS)
+               .writeTimeout(100, TimeUnit.SECONDS).build();
     }
 
     @Bean

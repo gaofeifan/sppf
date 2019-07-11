@@ -31,7 +31,6 @@ public class HttpUtilComponent {
 
     public String sendHttpGetRequest(String url, Map<String, String> params) {
         StringBuilder stringBuilder = new StringBuilder(url);
-        String responseBody = "";
         if (params != null && params.keySet().size() > 0) {
             boolean firstFlag = true;
             Iterator iterator = params.entrySet().iterator();
@@ -96,6 +95,7 @@ public class HttpUtilComponent {
                 return response.body().string();
             }
         } catch (IOException e) {
+            e.printStackTrace();
             log.error("ok http3 get error >> ex =  { } ", e);
         } finally {
             if (response != null) {
