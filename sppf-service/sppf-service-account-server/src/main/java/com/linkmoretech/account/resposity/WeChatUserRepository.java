@@ -10,5 +10,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface WeChatUserRepository extends JpaRepository<WeChatUser, String> {
 
-    WeChatUser getByOpenIdAndUnionId(String openId, String unionId);
+    WeChatUser getByOpenId(String openId);
 }
