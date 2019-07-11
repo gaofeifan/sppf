@@ -1,5 +1,6 @@
 package com.linkmoretech.auth.authentication.authentication.social.wechat.bean;
 
+import lombok.Data;
 import org.springframework.social.oauth2.AccessGrant;
 
 /**
@@ -7,6 +8,7 @@ import org.springframework.social.oauth2.AccessGrant;
  * Description: 处理微信响应消息
  * @date: 16:06 2019-07-02
  */
+@Data
 public class WeChatAccessGrant extends AccessGrant {
 
     private String openId;

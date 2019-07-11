@@ -10,7 +10,9 @@ import com.linkmoretech.account.vo.request.AppUserRegisterRequest;
 import com.linkmoretech.auth.common.exception.RegisterException;
 import com.linkmoretech.auth.common.service.UserDetailAccountAbstract;
 import com.linkmoretech.common.exception.CommonException;
+import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -93,6 +95,16 @@ public class UserDetailAccountService extends UserDetailAccountAbstract {
         }
         log.info("处理用户登录逻辑");
         return appUserComponent.getUserDetail(appUser, false);
+    }
+
+    @Override
+    public UserDetails loginForWechat(String code) {
+        log.info("微信小程序调用登录 {}", code);
+        WeChatUser weChatUser = appUserComponent.loadUserByWechat(code);
+        if (StringUtils.isEmpty(weChatUser.getMobile())) {
+            return appUserComponent.getUserDetail(weChatUser, true);
+        }
+        return appUserComponent.getUserDetail(weChatUser, false);
     }
 
     @Override

@@ -34,4 +34,9 @@ public abstract class UserDetailAccountAbstract implements UserDetailsService {
     public abstract UserDetails login(String mobile, Integer type) throws RegisterException;
 
 
+    /**
+     * 小程序登录
+     * */
+    public abstract UserDetails loginForWechat(String code);
+
 }

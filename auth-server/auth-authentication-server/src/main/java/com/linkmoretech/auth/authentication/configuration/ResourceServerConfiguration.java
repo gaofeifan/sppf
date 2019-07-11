@@ -4,6 +4,7 @@ import com.linkmoretech.auth.authentication.authentication.ValidateFailureHandle
 import com.linkmoretech.auth.authentication.authentication.ValidateSuccessHandler;
 import com.linkmoretech.auth.authentication.authentication.account.AccAuthenticationManagerConfig;
 import com.linkmoretech.auth.authentication.authentication.sms.mobile.SmsLoginFilter;
+import com.linkmoretech.auth.authentication.authentication.sms.personal.AppCodeAuthenticationConfig;
 import com.linkmoretech.auth.authentication.authentication.sms.personal.AppLoginAuthenticationConfig;
 import com.linkmoretech.auth.authentication.authentication.sms.personal.AppRegisterAuthenticationConfig;
 import com.linkmoretech.auth.authentication.authentication.sms.manager.SmsAuthenticationManagerConfig;
@@ -51,6 +52,10 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     @Autowired
     AppRegisterAuthenticationConfig appRegisterAuthenticationConfig;
 
+
+    @Autowired
+    AppCodeAuthenticationConfig appCodeAuthenticationConfig;
+
     @Autowired
     ValidateCodeManage validateCodeManage;
 
@@ -90,6 +95,8 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .apply(appLoginAuthenticationConfig)
                 .and()
                 .apply(appRegisterAuthenticationConfig)
+                .and()
+                .apply(appCodeAuthenticationConfig)
                 .and()
                 .csrf().disable();//关闭csrf
     }
