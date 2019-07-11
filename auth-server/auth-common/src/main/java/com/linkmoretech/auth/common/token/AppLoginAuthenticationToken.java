@@ -16,8 +16,4 @@ public class AppLoginAuthenticationToken extends AppAuthenticationToken {
         super(principal, source);
         this.validateCode = validateCode;
     }
-
-    public AppLoginAuthenticationToken( String code) {
-        super(code, null);
-    }
 }
