@@ -4,6 +4,7 @@ import com.linkmoretech.auth.authentication.authentication.ValidateFailureHandle
 import com.linkmoretech.auth.authentication.authentication.ValidateSuccessHandler;
 import com.linkmoretech.auth.authentication.authentication.account.AccAuthenticationManagerConfig;
 import com.linkmoretech.auth.authentication.authentication.sms.mobile.SmsLoginFilter;
+import com.linkmoretech.auth.authentication.authentication.sms.mobile.SmsRegisterFilter;
 import com.linkmoretech.auth.authentication.authentication.sms.personal.AppCodeAuthenticationConfig;
 import com.linkmoretech.auth.authentication.authentication.sms.personal.AppLoginAuthenticationConfig;
 import com.linkmoretech.auth.authentication.authentication.sms.personal.AppRegisterAuthenticationConfig;
@@ -74,10 +75,11 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         matchers = oauthResourceConfig.getIgnores().toArray(matchers);
         log.info("对 {} url 不进行拦截 {}", matchers);
         SmsLoginFilter smsCodeFilter = new SmsLoginFilter(validateCodeManage, validateFailureHandler);
+        SmsRegisterFilter smsRegisterFilter = new SmsRegisterFilter(validateCodeManage, validateFailureHandler);
         smsCodeFilter.afterPropertiesSet();
-
+        smsRegisterFilter.afterPropertiesSet();
         http.addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class);
-
+        http.addFilterBefore(smsRegisterFilter, UsernamePasswordAuthenticationFilter.class);
         http.formLogin() //采用表单认证方式 -- 身份认证
             .successHandler(validateSuccessHandler)
             .failureHandler(validateFailureHandler);
@@ -94,9 +96,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .and()
                 .apply(appLoginAuthenticationConfig)
                 .and()
-                .apply(appRegisterAuthenticationConfig)
-                .and()
                 .apply(appCodeAuthenticationConfig)
+                .and()
+                .apply(appRegisterAuthenticationConfig)
                 .and()
                 .csrf().disable();//关闭csrf
     }

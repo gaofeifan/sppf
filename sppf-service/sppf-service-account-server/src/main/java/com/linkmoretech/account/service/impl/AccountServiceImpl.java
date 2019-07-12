@@ -2,6 +2,7 @@ package com.linkmoretech.account.service.impl;
 
 import com.linkmoretech.account.component.UserComponent;
 import com.linkmoretech.account.entity.User;
+import com.linkmoretech.account.enums.ClientTypeEnum;
 import com.linkmoretech.account.resposity.UserRepository;
 import com.linkmoretech.account.service.AccountService;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
@@ -56,6 +57,26 @@ public class AccountServiceImpl implements AccountService {
             throw new CommonException(ResponseCodeEnum.PARAMS_ERROR, "原密码不正确");
         }
         updatePassword(clientId, username, password);
+    }
+
+    @Override
+    public void registerMobile(Long userId, String mobile) throws CommonException {
+
+        User user = userRepository.getUserByClientIdAndMobile(ClientTypeEnum.PERSONAL.getCode(), mobile);
+
+        if (user != null) {
+            throw new CommonException(ResponseCodeEnum.PARAMS_ERROR, "手机号已存在");
+        }
+
+        user =  userComponent.getUser(userId);
+
+        if (user == null) {
+            throw new CommonException(ResponseCodeEnum.PARAMS_ERROR, "用户已存在");
+        }
+
+        user.setMobile(mobile);
+        user.setUpdateTime(new Date());
+        userRepository.save(user);
     }
 
 
