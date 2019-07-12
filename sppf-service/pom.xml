@@ -26,6 +26,8 @@
         <module>sppf-service-account-common</module>
         <module>sppf-service-account-client</module>
         <module>sppf-service-notice-server</module>
+        <module>sppf-service-third-server</module>
+        <module>sppf-service-cbd-server</module>
     </modules>
     <modelVersion>4.0.0</modelVersion>
 
