@@ -1,0 +1,7 @@
+makejava:
+        image: maven:3-jdk-8
+        stage: package
+        tags:
+        - docker
+        script:
+        - mvn clean package -Dmaven.test.skip=true
