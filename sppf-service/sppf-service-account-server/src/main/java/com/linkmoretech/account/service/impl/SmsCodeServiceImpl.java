@@ -46,6 +46,11 @@ public class SmsCodeServiceImpl implements SmsCodeService {
    @Override
    public void createSmsCode(String mobile, String clientId, SmsTypeEnum smsTypeEnum) throws CommonException {
 
+       /**
+        * 验证手机号是否合法
+        * */
+
+
        if (ParamsConstruct.CLIENT_MANAGE.equals(clientId)) {
            /**
             * 验证用户是否存在
@@ -56,6 +61,9 @@ public class SmsCodeServiceImpl implements SmsCodeService {
         * 生成随机验证码
         * */
        ValidateCode validateCode = smsValidateCodeGenerator.createValidateCode();
+
+
+
        /**
         * 存储验证码
         * */
