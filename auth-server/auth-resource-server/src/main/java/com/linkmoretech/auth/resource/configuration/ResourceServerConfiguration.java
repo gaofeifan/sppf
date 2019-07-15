@@ -46,9 +46,10 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
               .authorizeRequests()
               .antMatchers(matchers)
               .permitAll()
-               .anyRequest() // 所有请求
-               .authenticated() //需要身份认证
-               .and()
-               .csrf().disable();//关闭csrf
+              .anyRequest() // 所有请求
+              .authenticated() //需要身份认证
+              .and()
+              .csrf().disable()//关闭csrf
+              .headers().frameOptions().disable();
     }
 }
