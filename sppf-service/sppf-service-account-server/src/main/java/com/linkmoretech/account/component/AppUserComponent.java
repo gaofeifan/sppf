@@ -91,7 +91,7 @@ public class AppUserComponent {
         }
 
         AppUserDetail appUserDetail = new AppUserDetail(weChatUser.getOpenId(),
-                weChatUser.getUnionId(),
+                weChatUser.getOpenId(),
                 0L,
                 ClientTypeEnum.PERSONAL.getCode(), isNewUser);
         return appUserDetail;
@@ -103,7 +103,6 @@ public class AppUserComponent {
          * 微信小程序登录
          * 换取token
          * */
-
         Map<String, String> params = new HashMap<>();
         params.put("appid", weixinApiConfig.getAppid());
         params.put("secret", weixinApiConfig.getSecret());
@@ -117,9 +116,9 @@ public class AppUserComponent {
             throw new CommonException(ResponseCodeEnum.ERROR, "请求微信认证失败,错误码为空 ");
         }
         JSONObject jsonObject = JSONObject.parseObject(responseValue);
-        int responseCode = jsonObject.getInteger("errcode");
-        if (responseCode != 200) {
-            throw new CommonException(ResponseCodeEnum.ERROR, "请求微信认证失败,错误码 " + responseCode );
+        Object responseCode = jsonObject.get("errcode");
+        if (responseCode != null) {
+            throw new CommonException(ResponseCodeEnum.ERROR, "请求微信认证失败,错误码 " + responseCode.toString() );
         }
         String openId = jsonObject.getString("openid");
         String sessionKey = jsonObject.getString("session_key");
