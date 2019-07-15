@@ -64,10 +64,16 @@ public class UserDetailAccountService extends UserDetailAccountAbstract {
         if (clientId.equals(ClientTypeEnum.PERSONAL.getCode())) {
             AppUser appUser = appUserRepository.getByMobile(username);
             userDetails = appUserComponent.getUserDetail(appUser, false);
-        } else {
-            User user = userRepository.getUserByClientIdAndUserName(clientId, username);
-            userDetails = accountComponent.getUserDetail(user);
+            return userDetails;
         }
+        User user = userRepository.getUserByClientIdAndUserName(clientId, username);
+
+        if (clientId.equals(ClientTypeEnum.MANAGE.getCode())) {
+            if (user == null) {
+                user = userRepository.getUserByClientIdAndMobile(clientId, username);
+            }
+        }
+        userDetails = accountComponent.getUserDetail(user);
         return userDetails;
     }
 
