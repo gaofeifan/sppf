@@ -1,0 +1,61 @@
+
+eureka:
+  client:
+    service-url:
+      defaultZone:  http://192.168.1.140:8761
+  instance:
+    prefer-ip-address: true
+    hostname: datastation
+
+
+server:
+  port: 8086
+  undertow:
+    max-http-post-size: 0
+    # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程,数量和CPU 内核数目一样即可
+    io-threads: 4
+    # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载  io-threads*8
+    worker-threads: 32
+    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
+    # 每块buffer的空间大小,越小的空间被利用越充分
+    buffer-size: 1024
+    # 每个区分配的buffer数量 , 所以pool的大小是buffer-size * buffers-per-region
+    #   buffers-per-region: 1024 # 这个参数不需要写了
+    # 是否分配的直接内存
+    direct-buffers: true
+
+spring:
+  application:
+    name: datastation
+
+  rabbitmq:
+    username: guest
+    password: guest
+    addresses: 192.168.1.80:5672,192.168.1.80:5673,192.168.1.80:5674
+  redis:
+    dataBase: 3
+    host: 192.168.1.218
+    port: 6380
+    password: ppyx
+  datasource:
+    url: jdbc:mysql://192.168.1.218:3306/tech_map?useUnicode=true&characterEncoding=UTF8&useSSL=false
+    username: root
+    password: Linkmore@2018
+    driver-class-name: com.mysql.jdbc.Driver
+    tomcat:
+      max-active: 4
+      min-idle: 2
+      initial-size: 2
+  cloud:
+    stream:
+      binders:
+        lease_place:
+          group: parking
+          content-type: application/json
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+      show-sql: true
