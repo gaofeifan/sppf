@@ -78,7 +78,9 @@ public class AuthorityFilter extends ZuulFilter {
         requestContext.addZuulRequestHeader(ACCESS_TOKEN, token);
         //跳过不需要验证的路径
         log.info("不需要认证URL {}, url {}", authConfig.getIgnores(), url);
-        if (authConfig.getIgnores().contains(url)) {
+        if (authConfig.getIgnores().contains(url) 
+        		|| url.contains("webjars") || url.contains("swagger-resources")
+        		|| url.contains("swagger-ui.html") || url.contains("api-docs")) {
             log.info("传递token {}", token);
             requestContext.addZuulRequestHeader(AUTHORIZE_TOKEN, "*");
             return false;

@@ -27,4 +27,11 @@ public interface AccountService {
     void updatePassword(String clientId, String username, String password, String oldPassword) throws CommonException;
 
 
+    /**
+     * 修改用户手机号
+     * @param userId 用户ID
+     * @param mobile 手机号
+     * */
+    void registerMobile(Long userId, String mobile) throws CommonException;
+
 }

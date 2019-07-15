@@ -20,6 +20,16 @@ public interface AppUserService {
      * */
     AppUser register(AppUserRegisterRequest appUserRegisterRequest) throws CommonException;
 
+
+    /**
+     * 注册临时帐号
+     * @param openId 微信openID
+     * */
+
+    AppUser register(String openId) throws CommonException;
+
+
+
     /**
      * 验证注册用户手机号
      * @param mobile 用户手机号

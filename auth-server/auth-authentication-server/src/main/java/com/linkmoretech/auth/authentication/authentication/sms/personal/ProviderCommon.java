@@ -21,7 +21,7 @@ public class ProviderCommon {
     }
 
     public AppAuthenticationToken getUserDetailForLogin (UserDetailAccountAbstract userDetailService) {
-        String mobile =getMobile();
+        String mobile = getMobile();
         Integer type = getType();
         AppUserDetail userDetails = (AppUserDetail) userDetailService.login(mobile, type);
         return build(userDetails);
@@ -29,11 +29,18 @@ public class ProviderCommon {
 
 
     public AppAuthenticationToken getUserDetailForRegister (UserDetailAccountAbstract userDetailService) throws RegisterException {
-        String mobile =getMobile();
+        String mobile = getMobile();
         Integer type = getType();
         AppUserDetail userDetails = (AppUserDetail) userDetailService.register(mobile, type);
         return build(userDetails);
     }
+
+    public AppAuthenticationToken getUserDetailForCode (UserDetailAccountAbstract userDetailService) {
+        String code  = getMobile();
+        AppUserDetail userDetails = (AppUserDetail) userDetailService.loginForWechat(code);
+        return build(userDetails);
+    }
+
 
     private String getMobile () {
         return (String)token.getPrincipal();

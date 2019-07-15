@@ -57,6 +57,13 @@ public  abstract class ValidateAuthenticationFilter extends AbstractAuthenticati
         return new Object[]{type, mobile};
     }
 
+
+    public String attemptCode (HttpServletRequest request){
+        Map<String, Object> loginParams = getLoginParamsMap(request);
+        String code = (String) loginParams.get(ParamsConstruct.CODE);
+        return code;
+    }
+
     public Map<String, Object> getLoginParamsMap (HttpServletRequest request) {
         if (this.postOnly && !request.getMethod().equals("POST")) {
             throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());

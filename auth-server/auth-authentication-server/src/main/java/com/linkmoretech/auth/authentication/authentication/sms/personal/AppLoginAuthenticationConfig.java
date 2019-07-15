@@ -1,6 +1,5 @@
 package com.linkmoretech.auth.authentication.authentication.sms.personal;
 
-import com.linkmoretech.auth.common.service.AppUserDetailAbstract;
 import com.linkmoretech.auth.common.service.UserDetailAccountAbstract;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

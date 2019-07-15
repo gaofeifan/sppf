@@ -1,8 +1,5 @@
 package com.linkmoretech.auth.authentication.authentication.sms.personal;
 
-import com.linkmoretech.auth.common.bean.AccountUserDetail;
-import com.linkmoretech.auth.common.bean.AppUserDetail;
-import com.linkmoretech.auth.common.service.AppUserDetailAbstract;
 import com.linkmoretech.auth.common.service.UserDetailAccountAbstract;
 import com.linkmoretech.auth.common.token.AppAuthenticationToken;
 import lombok.Setter;
@@ -25,15 +22,6 @@ public class AppRegisterAuthenticationProvider implements AuthenticationProvider
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-       /* AppAuthenticationToken token = (AppAuthenticationToken) authentication;
-        String mobile = (String)token.getPrincipal();
-        Integer type = token.getType();
-        log.info("帐号注册 {} - {}", mobile, type);
-        AppUserDetail userDetails = (AppUserDetail) appUserDetailAbstract.register(mobile, type);
-        AppAuthenticationToken appAuthenticationToken = new AppAuthenticationToken(userDetails.getUsername(),
-                userDetails.getUserId(), userDetails.getRegister());
-        appAuthenticationToken.setDetails(token.getDetails());
-        return appAuthenticationToken;*/
         ProviderCommon providerCommon = new ProviderCommon(authentication);
         return providerCommon.getUserDetailForRegister(userDetailService);
     }

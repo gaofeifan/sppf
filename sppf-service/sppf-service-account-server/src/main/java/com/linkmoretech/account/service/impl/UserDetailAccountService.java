@@ -10,7 +10,9 @@ import com.linkmoretech.account.vo.request.AppUserRegisterRequest;
 import com.linkmoretech.auth.common.exception.RegisterException;
 import com.linkmoretech.auth.common.service.UserDetailAccountAbstract;
 import com.linkmoretech.common.exception.CommonException;
+import io.netty.util.internal.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -62,10 +64,16 @@ public class UserDetailAccountService extends UserDetailAccountAbstract {
         if (clientId.equals(ClientTypeEnum.PERSONAL.getCode())) {
             AppUser appUser = appUserRepository.getByMobile(username);
             userDetails = appUserComponent.getUserDetail(appUser, false);
-        } else {
-            User user = userRepository.getUserByClientIdAndUserName(clientId, username);
-            userDetails = accountComponent.getUserDetail(user);
+            return userDetails;
         }
+        User user = userRepository.getUserByClientIdAndUserName(clientId, username);
+
+        if (clientId.equals(ClientTypeEnum.MANAGE.getCode())) {
+            if (user == null) {
+                user = userRepository.getUserByClientIdAndMobile(clientId, username);
+            }
+        }
+        userDetails = accountComponent.getUserDetail(user);
         return userDetails;
     }
 
@@ -76,7 +84,7 @@ public class UserDetailAccountService extends UserDetailAccountAbstract {
         registerRequest.setMobile(mobile);
         registerRequest.setUserSource(type);
         try {
-            AppUser appUser =  appUserService.register(registerRequest);
+            AppUser appUser = appUserService.register(registerRequest);
             return appUserComponent.getUserDetail(appUser, true);
         } catch (CommonException e) {
             log.error("登录异常 {}", e.getMessage());
@@ -93,6 +101,25 @@ public class UserDetailAccountService extends UserDetailAccountAbstract {
         }
         log.info("处理用户登录逻辑");
         return appUserComponent.getUserDetail(appUser, false);
+    }
+
+    @Override
+    public UserDetails loginForWechat(String code) throws RegisterException {
+        log.info("微信小程序调用登录 {}", code);
+        try {
+            WeChatUser weChatUser = appUserComponent.loadUserByWechat(code);
+            if (StringUtils.isEmpty(weChatUser.getMobile())) {
+                /**
+                 * 需要创建帐号
+                 * */
+                AppUser appUser =  appUserService.register(weChatUser.getOpenId());
+                return appUserComponent.getUserDetail(appUser, true);
+            }
+            AppUser appUser = appUserRepository.getByOpenId(weChatUser.getOpenId());
+            return appUserComponent.getUserDetail(appUser, false);
+        } catch (CommonException e) {
+            throw new RegisterException(e.getCodeEnum().getCode(), e.getMessage());
+        }
     }
 
     @Override

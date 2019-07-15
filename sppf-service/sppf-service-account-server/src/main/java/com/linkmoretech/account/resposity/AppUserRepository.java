@@ -16,4 +16,10 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
      * @return 反映用户帐号信息
      * */
     AppUser getByMobile(String mobile);
+
+
+    /**
+     * @param openId 用户OPEN ID
+     * */
+    AppUser getByOpenId(String openId);
 }
