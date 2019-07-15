@@ -1,15 +1,14 @@
 
 eureka:
-  client:
-    service-url:
-      defaultZone:  http://192.168.1.140:8761
+  service-url:
+    defaultZone: http://eureka1:8761/eureka,http://eureka2:8762/eureka,http://eureka3:8763/eureka
   instance:
     prefer-ip-address: true
     hostname: datastation
 
 
 server:
-  port: 8086
+  port: 8081
   undertow:
     max-http-post-size: 0
     # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程,数量和CPU 内核数目一样即可
