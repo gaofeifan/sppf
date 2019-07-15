@@ -13,7 +13,7 @@ import lombok.Data;
 public class PushMessageRequest {
     private Long userId;
 
-    private Long Client;
+    private String client;
 
     private String content;
 

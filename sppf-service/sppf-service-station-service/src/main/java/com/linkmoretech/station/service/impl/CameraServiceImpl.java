@@ -1,4 +1,4 @@
-package com.linkmoretech.cbd.service.impl;
+package com.linkmoretech.station.service.impl;
 
 import java.util.Date;
 import java.util.List;
@@ -15,16 +15,16 @@ import org.springframework.stereotype.Service;
 
 import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
-import com.linkmoretech.cbd.entity.Camera;
-import com.linkmoretech.cbd.repository.CameraRepository;
-import com.linkmoretech.cbd.service.CameraService;
-import com.linkmoretech.cbd.vo.request.CameraRequest;
-import com.linkmoretech.cbd.vo.response.CameraPageResponse;
+import com.linkmoretech.station.entity.Camera;
+import com.linkmoretech.station.repository.CameraRepository;
+import com.linkmoretech.station.service.CameraService;
+import com.linkmoretech.station.vo.request.CameraRequest;
+import com.linkmoretech.station.vo.response.CameraPageResponse;
 
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 个人版版本管理
+ * 设备管理
  * 
  * @author jhb
  * @Date 2019年6月27日 下午1:53:12

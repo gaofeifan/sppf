@@ -1,8 +1,8 @@
-package com.linkmoretech.cbd.repository;
+package com.linkmoretech.station.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.linkmoretech.cbd.entity.Camera;
+import com.linkmoretech.station.entity.Camera;
 /**
  * 摄像头
  * @author jhb

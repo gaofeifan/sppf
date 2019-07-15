@@ -1,10 +1,10 @@
-package com.linkmoretech.cbd.service;
+package com.linkmoretech.station.service;
 
 import javax.validation.Valid;
 import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
-import com.linkmoretech.cbd.vo.request.CameraRequest;
-import com.linkmoretech.cbd.vo.response.CameraPageResponse;
+import com.linkmoretech.station.vo.request.CameraRequest;
+import com.linkmoretech.station.vo.response.CameraPageResponse;
 
 /**
  * 投诉建议

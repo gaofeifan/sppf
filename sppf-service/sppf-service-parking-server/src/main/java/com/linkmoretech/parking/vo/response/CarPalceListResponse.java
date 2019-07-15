@@ -17,7 +17,7 @@ public class CarPalceListResponse {
     @ApiModelProperty("车位id")
     @JsonProperty("stallId")
     private Long id;
-    @ApiModelProperty("车位类型 2临停 1固定 ")
+    @ApiModelProperty("车位类型 1临停 2固定 ")
     private Integer type;
     @ApiModelProperty("车位名称 ")
     @JsonProperty("stallName")

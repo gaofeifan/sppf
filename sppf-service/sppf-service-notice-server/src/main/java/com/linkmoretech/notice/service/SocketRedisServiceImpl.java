@@ -1,17 +1,18 @@
 package com.linkmoretech.notice.service;
 
 import com.corundumstudio.socketio.SocketIOClient;
+import com.linkmoretech.notice.vo.request.PushMesRequest;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * @Author: GFF
  * @Description: ${description}
  * @Date: 2019/7/10
- */
+ *//*
 @Service(value = "socketRedisService")
-public class SocketRedisServiceImpl extends SocketDecorator {
+public class SocketRedisServiceImpl extends AbstractSocketDecorator {
     public SocketRedisServiceImpl(SocketService socketService) {
         super(socketService);
     }
@@ -26,4 +27,15 @@ public class SocketRedisServiceImpl extends SocketDecorator {
     public void disconnect(SocketIOClient socketIOClient) {
         super.disconnect(socketIOClient);
     }
-}
+
+    @Override
+    public Boolean pushMesList(List<PushMesRequest> list) {
+
+        return null;
+    }
+
+    @Override
+    public Boolean pushMesOne(PushMesRequest mesRequest) {
+        return null;
+    }
+}*/
