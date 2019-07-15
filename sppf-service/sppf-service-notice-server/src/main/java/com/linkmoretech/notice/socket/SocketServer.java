@@ -6,6 +6,7 @@ import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.OnConnect;
 import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
+import com.linkmoretech.common.util.JsonUtil;
 import com.linkmoretech.notice.service.SocketService;
 import com.linkmoretech.notice.vo.request.PushMessageRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -50,9 +51,9 @@ public class SocketServer {
         socketService.disconnect(socketIOClient);
     }
 
-    @OnEvent(value = "message")
+    @OnEvent(value = "sendMes")
     public void onEnvent(SocketIOClient client, AckRequest request, PushMessageRequest data){
-
+    	System.out.println(JsonUtil.toJson(data));
     }
 
 

@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class NettyProperties {
 
-    private int port = 9000;
+    private int port = 9001;
 
     private String hort = "127.0.0.1";
 
