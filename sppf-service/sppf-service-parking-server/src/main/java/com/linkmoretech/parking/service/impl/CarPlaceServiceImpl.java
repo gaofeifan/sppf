@@ -31,6 +31,7 @@ import com.linkmoretech.parking.vo.request.CarPlaceListRequest;
 import com.linkmoretech.parking.vo.response.*;
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.criterion.Example;
@@ -299,7 +300,7 @@ public class CarPlaceServiceImpl implements CarPlaceService {
 				if(org.apache.commons.lang3.StringUtils.isNotBlank(carPlaceListRequest.getCarPlaceName())) {
 					list.add(cb.like(root.get("placeNo"), carPlaceListRequest.getCarPlaceName()));
 				}
-				log.info("query param = {}",JSON.toJSON(list));
+				log.info("query param = {}",list.size());
 				  Predicate[] p = new Predicate[list.size()];
                   query.where(cb.and(list.toArray(p)));
                   return query.getRestriction();
