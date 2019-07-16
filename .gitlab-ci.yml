@@ -8,7 +8,7 @@ before_script:
 #效验docker镜像库
   - docker info
   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-######api-gateway##############################################################
+############################sppf-service-versatile-server#######################
   - cd sppf-service/sppf-service-versatile-server
   - mvn clean package -Dmaven.test.skip=true
   - mv Dockerfile target/
