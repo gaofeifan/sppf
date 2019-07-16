@@ -50,25 +50,26 @@ public class StartUp {
 //			List<CityParkListResponse> list = carParkService.carParkList(null);
 //			System.out.println(JsonUtil.toJson(list));
 				LockOperateService operateService = SpringUtil.getBean(LockOperateService.class);
-				LineStatusRquest lineStatusRquest = new LineStatusRquest();
-				lineStatusRquest.setCarPlaceId(1217L);
-				lineStatusRquest.setState(1);
-				try {
-					operateService.editLineStatus(lineStatusRquest );
-				} catch (CommonException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			
-			LockOperateRequest lockOperate = new LockOperateRequest();
-			lockOperate.setLockSn("d674101962ea");
-			lockOperate.setState(1);
-			try {
-				Boolean operate = operateService.operate(null, lockOperate);
-				System.out.println("thread1"+operate);
-			} catch (CommonException e) {
-				e.printStackTrace();
-			}
+				operateService.getGatewayDetails("0001fd65086f327e",null);
+//				LineStatusRquest lineStatusRquest = new LineStatusRquest();
+//				lineStatusRquest.setCarPlaceId(1217L);
+//				lineStatusRquest.setState(1);
+//				try {
+//					operateService.editLineStatus(lineStatusRquest );
+//				} catch (CommonException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			
+//			LockOperateRequest lockOperate = new LockOperateRequest();
+//			lockOperate.setLockSn("d674101962ea");
+//			lockOperate.setState(1);
+//			try {
+//				Boolean operate = operateService.operate(null, lockOperate);
+//				System.out.println("thread1"+operate);
+//			} catch (CommonException e) {
+//				e.printStackTrace();
+//			}
 			
 //				operateService.getGatewayDetails("0001f46ec0f58a3c",null);
 //				operateService.findGatewayGroup(1026L,null);

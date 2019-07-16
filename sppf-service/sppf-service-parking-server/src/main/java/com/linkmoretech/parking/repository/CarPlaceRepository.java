@@ -95,4 +95,6 @@ public interface CarPlaceRepository extends JpaRepository<CarPlace, Long>, JpaSp
     void updateLockStatusAndPlaceStatus(String lockCode, Integer lockStatus, Integer placeStatus);
     
 	CarPlace findByLockCode(String lockCode);
+	@Query(value = "update p_car_place set park_name=?1 where park_id=(?2)", nativeQuery = true)
+	void editParkNameByIds(String parkName, Long id);
 }
