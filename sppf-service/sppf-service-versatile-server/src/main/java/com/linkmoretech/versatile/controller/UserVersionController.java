@@ -31,7 +31,7 @@ public class UserVersionController {
     @Autowired
     UserVersionService userVersionService;
 	
-	@ApiOperation(value = "获取列表", notes = "用于分页显示已添加的数据")
+	@ApiOperation(value = "获取列表-大后台", notes = "用于分页显示已添加的数据")
     @PostMapping(value = "list")
     public PageDataResponse<UserVersionPageResponse> list(@RequestBody @Valid PageSearchRequest searchRequest,
                                                                     BindingResult bindingResult) throws CommonException {

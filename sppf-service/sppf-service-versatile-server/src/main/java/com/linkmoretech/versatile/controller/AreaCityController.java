@@ -35,7 +35,7 @@ public class AreaCityController {
     AreaCityService areaCityService;
 
 
-    @ApiOperation(value = "添加城市", notes = "添加城市")
+    @ApiOperation(value = "添加城市-大后台", notes = "添加城市")
     @PostMapping(value = "create")
     public void create(@RequestBody @Valid AreaCityCreateRequest areaCityCreateRequest, BindingResult bindingResult)
             throws CommonException {
@@ -45,7 +45,7 @@ public class AreaCityController {
         areaCityService.create(areaCityCreateRequest);
     }
 
-    @ApiOperation(value = "城市列表", notes = "城市列表")
+    @ApiOperation(value = "城市列表-大后台", notes = "城市列表")
     @GetMapping(value = "list")
    // @PreAuthorize(value = "hasAuthority('query-demo')")
     public List<AreaCityListResponse> list(/*Authentication authentication,*/
@@ -58,14 +58,14 @@ public class AreaCityController {
         return areaCityService.list(parentId);
     }
 
-    @ApiOperation(value = "删除城市", notes = "城市列表")
+    @ApiOperation(value = "删除城市-大后台", notes = "城市列表")
     @DeleteMapping(value = "delete/{id}/data")
     public void delete(@PathVariable(value = "id") Long id) {
         areaCityService.delete(id);
     }
 
 
-    @ApiOperation(value = "获取城市树形列表", notes = "获取城市树形列表")
+    @ApiOperation(value = "获取城市树形列表-大后台", notes = "获取城市树形列表")
     @GetMapping(value = "tree")
     public List<AreaCityTreeResponse> tree() {
         return areaCityService.tree();
