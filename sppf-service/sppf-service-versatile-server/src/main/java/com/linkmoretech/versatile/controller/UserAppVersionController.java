@@ -54,13 +54,16 @@ public class UserAppVersionController {
 	@ApiOperation(value = "查询当前版本-APP", notes = "来源必填 1 android 2 ios")
 	public UserAppVersionResponse current(@ApiParam(value="来源" ,required=true) @Length(min=1,max=2,message="来源在1-2之间") @NotNull(message="来源不能为空") @RequestParam("source")Integer source,HttpServletRequest request){
 		UserAppVersion userAppVersion = this.userAppVersionService.currentAppVersion(source);
-		UserAppVersionResponse userAppVersionResponse = new UserAppVersionResponse();
-		userAppVersionResponse.setVersion(userAppVersion.getVersion());
-		userAppVersionResponse.setVersionCode(userAppVersion.getCode());
-		userAppVersionResponse.setDescription(userAppVersion.getDescription());
-		userAppVersionResponse.setDownloadUrl(userAppVersion.getUrl());
-		userAppVersionResponse.setMustUpdate(userAppVersion.getUpdateStatus());
-		userAppVersionResponse.setVersionName(userAppVersion.getName());
+		UserAppVersionResponse userAppVersionResponse = null;
+		if(userAppVersion != null) {
+			userAppVersionResponse = new UserAppVersionResponse();
+			userAppVersionResponse.setVersion(userAppVersion.getVersion());
+			userAppVersionResponse.setVersionCode(userAppVersion.getCode());
+			userAppVersionResponse.setDescription(userAppVersion.getDescription());
+			userAppVersionResponse.setDownloadUrl(userAppVersion.getUrl());
+			userAppVersionResponse.setMustUpdate(userAppVersion.getUpdateStatus());
+			userAppVersionResponse.setVersionName(userAppVersion.getName());
+		}
 		return userAppVersionResponse;
 	}
 	
