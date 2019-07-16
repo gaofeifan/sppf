@@ -1,5 +1,6 @@
 package com.linkmoretech.parking.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.linkmoretech.account.client.AccountDataClient;
 import com.linkmoretech.auth.common.util.AuthenticationTokenAnalysis;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
@@ -279,6 +280,7 @@ public class CarPlaceServiceImpl implements CarPlaceService {
     public List<CarPalceListResponse> findCarPlaceListByParkId(HttpServletRequest request, CarPlaceListRequest carPlaceListRequest, Authentication authentication) {
         AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
         List<Long> placeIds = accountDataClient.getPlaceDataAccount(authenticationTokenAnalysis.getUserId(), carPlaceListRequest.getCarParkId());
+        log.info("placeIds = {}",JSON.toJSON(placeIds));
         List<CarPlace> carPlaceList = this.carPlaceRepository.findAll(new Specification<CarPlace>() {
 			@Override
 			public Predicate toPredicate(Root<CarPlace> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -295,8 +297,9 @@ public class CarPlaceServiceImpl implements CarPlaceService {
 					list.add(cb.and(in));
 				}
 				if(org.apache.commons.lang3.StringUtils.isNotBlank(carPlaceListRequest.getCarPlaceName())) {
-					cb.like(root.get("placeNo"), carPlaceListRequest.getCarPlaceName());
+					list.add(cb.like(root.get("placeNo"), carPlaceListRequest.getCarPlaceName()));
 				}
+				log.info("query param = {}",JSON.toJSON(list));
 				  Predicate[] p = new Predicate[list.size()];
                   query.where(cb.and(list.toArray(p)));
                   return query.getRestriction();

@@ -52,9 +52,8 @@ public class StaffAppVersionServiceImpl implements StaffAppVersionService {
 
     @Override
     public void edit(StaffAppVersionEditRequest staffAppVersionEditRequest) throws CommonException {
-        StaffAppVersion staffAppVersion = new StaffAppVersion();
+        StaffAppVersion staffAppVersion = staffAppVersionRepository.getOne(staffAppVersionEditRequest.getId());
         BeanUtils.copyProperties(staffAppVersionEditRequest, staffAppVersion);
-        staffAppVersion.setCreateTime(new Date());
         staffAppVersion.setUpdateTime(new Date());
         staffAppVersionRepository.saveAndFlush(staffAppVersion);
     }
