@@ -55,6 +55,7 @@ push_image:
   - docker rmi "$CI_REGISTRY/$CI_PROJECT3:$CI_COMMIT_REF_SLUG"
   - cd ../../
 #######################config-server##########################################
+<<<<<<< HEAD
   - cd config-server/
   - mvn clean package -Dmaven.test.skip=true
   - mv Dockerfile target/
@@ -69,6 +70,22 @@ push_image:
     - docker push "$CI_REGISTRY/$CI_PROJECT4:$CI_COMMIT_REF_SLUG"
     - docker rmi "$CI_REGISTRY/$CI_PROJECT4:$CI_COMMIT_REF_SLUG"
     - cd ../
+=======
+#  - cd config-server/
+#  - mvn clean package -Dmaven.test.skip=true
+#  - mv Dockerfile target/
+#  - cd target/
+#build_image:
+#  stage: build_image
+#  script:
+#  - docker build -t "$CI_REGISTRY/$CI_PROJECT4:$CI_COMMIT_REF_SLUG" .
+#push_image:
+#  stage: push_image
+#  script:
+#    - docker push "$CI_REGISTRY/$CI_PROJECT4:$CI_COMMIT_REF_SLUG"
+#    - docker rmi "$CI_REGISTRY/$CI_PROJECT4:$CI_COMMIT_REF_SLUG"
+#    - cd ../
+>>>>>>> b610d8d5a0428b94d630740f17048beec5ab04da
 #######################eureka-server#########################################
   - cd eureka-server/
   - mvn clean package -Dmaven.test.skip=true
