@@ -16,10 +16,10 @@ before_script:
 build_image:
   stage: build_image
   script:
-    - docker build -t "$CI_REGISTRY/versatile:$CI_COMMIT_REF_SLUG" .
+    - docker build -t "$CI_REGISTRY/$CI_PROJECT1:$CI_COMMIT_REF_SLUG" .
  
 push_image:
   stage: push_image
   script:
-    - docker push "$CI_REGISTRY/versatile:$CI_COMMIT_REF_SLUG"
-    #- docker rmi "$CI_REGISTRY/api-gateway:$CI_COMMIT_REF_SLUG"
+    - docker push "$CI_REGISTRY/$CI_PROJECT1:$CI_COMMIT_REF_SLUG"
+    - docker rmi "$CI_REGISTRY/$CI_PROJECT1:$CI_COMMIT_REF_SLUG"
