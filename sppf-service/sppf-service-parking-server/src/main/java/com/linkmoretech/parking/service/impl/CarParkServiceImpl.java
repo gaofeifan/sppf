@@ -207,6 +207,10 @@ public class CarParkServiceImpl implements CarParkService {
         List<FloorPlanRequest> floorPlanRequests = carParkEditRequest.getFloorPlanRequests();
         saveOrUpdateFloorPlan(floorPlanRequests, carPark.getId(), currentDate);
         saveOrUpdateMap(carPark.getId(), carParkEditRequest.getBaiduMap(), carParkEditRequest.getGaodeMap());
+        // 如果车场名称发生改变 修改车位中车场名称
+        if(carPark.getParkName().equals(carParkEditRequest.getParkName())) {
+        	carPlaceService.editParkNameByIds(carParkEditRequest.getParkName(),carParkEditRequest.getId());
+        }
     }
     @Override
     public void upDownLine(CarParkLineRequest carParkLineRequest) throws CommonException {

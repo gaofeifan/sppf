@@ -2,6 +2,7 @@ package com.linkmoretech.auth.resource.configuration;
 
 import com.linkmoretech.auth.common.configuration.OauthResourceConfig;
 
+import com.linkmoretech.auth.common.exception.SecurityAuthenticationEntryPoint;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,17 +37,21 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         oauthResourceConfig.getIgnores().add(OAUTH_URL);
         String[] matchers = new String[oauthResourceConfig.getIgnores().size()];
         matchers = oauthResourceConfig.getIgnores().toArray(matchers);
+
         log.info("过滤URL {}", matchers);
         try {
             http
-                    .authorizeRequests()
-                    .antMatchers(matchers)
-                    .permitAll()
-                    .anyRequest() // 所有请求
-                    .authenticated() //需要身份认证
-                    .and()
-                    .csrf().disable()//关闭csrf
-                    .headers().frameOptions().disable();
+                .authorizeRequests()
+                .antMatchers(matchers)
+                .permitAll()
+                .anyRequest() // 所有请求
+                .authenticated() //需要身份认证
+                .and()
+                .csrf().disable()//关闭csrf
+                .exceptionHandling()
+                .authenticationEntryPoint(new SecurityAuthenticationEntryPoint())
+                .and()
+                .headers().frameOptions().disable();
         } catch (Exception e) {
             e.printStackTrace();
         }

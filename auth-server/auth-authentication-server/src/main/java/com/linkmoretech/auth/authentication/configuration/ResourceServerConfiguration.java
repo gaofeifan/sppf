@@ -12,6 +12,7 @@ import com.linkmoretech.auth.authentication.authentication.sms.manager.SmsAuthen
 import com.linkmoretech.auth.authentication.component.ValidateCodeManage;
 import com.linkmoretech.auth.common.configuration.OauthResourceConfig;
 
+import com.linkmoretech.auth.common.exception.SecurityAuthenticationEntryPoint;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -86,7 +87,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
         http
             .authorizeRequests() // 授权设定
-            .antMatchers(matchers).permitAll()    //对此链接不拦截
+            .antMatchers(matchers).permitAll()//对此链接不拦截
             .anyRequest() // 所有请求
             .authenticated() //需要身份认证
                 .and()
@@ -100,6 +101,8 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .and()
                 .apply(appRegisterAuthenticationConfig)
                 .and()
-                .csrf().disable();//关闭csrf
+                .csrf().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(new SecurityAuthenticationEntryPoint());//关闭csrf
     }
 }

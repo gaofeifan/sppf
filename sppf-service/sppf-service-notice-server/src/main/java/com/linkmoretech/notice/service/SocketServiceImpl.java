@@ -9,6 +9,8 @@ import com.linkmoretech.notice.enums.AgingTypeEnum;
 import com.linkmoretech.notice.resposity.NoticeResposity;
 import com.linkmoretech.notice.vo.request.PushMesRequest;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,10 +41,6 @@ public class SocketServiceImpl implements SocketService{
 //    @Autowired
 //    private AmqpTemplate amqpTemplate;
 
-    @PostConstruct
-    public void initRabbitTemplate(){
-        rabbitTemplate.setConfirmCallback(new RabbitConfirmCallback());
-    }
     private String sendMessage = "acceptMes";
 
     private static final int taskCount = 2;
