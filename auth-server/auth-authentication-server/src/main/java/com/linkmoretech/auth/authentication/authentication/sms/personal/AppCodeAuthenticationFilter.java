@@ -38,7 +38,7 @@ public class AppCodeAuthenticationFilter extends ValidateAuthenticationFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException, ServletException {
         String code = attemptCode(request);
-        AppCodeAuthenticationToken authRequest = new AppCodeAuthenticationToken(code);
+        AppCodeAuthenticationToken authRequest = new AppCodeAuthenticationToken(code, 2);
         this.setDetails(request, authRequest);
         return this.getAuthenticationManager().authenticate(authRequest);
     }

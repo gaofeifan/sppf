@@ -2,6 +2,7 @@ package com.linkmoretech.auth.common.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.linkmoretech.auth.common.bean.AccountUserDetail;
+import com.linkmoretech.auth.common.bean.AppUserDetail;
 import com.linkmoretech.auth.common.token.AppAuthenticationToken;
 import com.linkmoretech.auth.common.token.SmsAuthenticationToken;
 import lombok.Getter;
@@ -42,8 +43,9 @@ public class AuthenticationTokenAnalysis {
         } else if (oauthAuthentication instanceof AppAuthenticationToken) {
             AppAuthenticationToken authenticationToken = (AppAuthenticationToken) oauthAuthentication;
             this.userId = authenticationToken.getUserId();
-            this.username = (String) authenticationToken.getPrincipal();
-            this.registerUser = authenticationToken.getRegister();
+            AppUserDetail userDetail =  (AppUserDetail) authenticationToken.getPrincipal();
+            this.username = userDetail.getUsername();
+            this.registerUser = userDetail.getRegister();
         } else {
             token = (SmsAuthenticationToken) oAuth2Authentication.getUserAuthentication();
             if (token != null) {
