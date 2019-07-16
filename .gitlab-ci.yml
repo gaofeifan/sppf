@@ -9,10 +9,12 @@ before_script:
   - mvn clean package -Dmaven.test.skip=true
   - mv Dockerfile target/
   - cd target/
+  
 build_image:
   stage: build_image
   script:
   - docker build -t "$CI_REGISTRY/$CI_PROJECT3:$CI_COMMIT_REF_SLUG" .
+  
 push_image:
   stage: push_image
   script:
