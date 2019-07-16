@@ -82,7 +82,7 @@ public class UserAppVersionServiceImpl implements UserAppVersionService {
 
 	@Override
 	public void updateApp(UserAppVersionRequest versionRequest) {
-		UserAppVersion userAppVersion = new UserAppVersion();
+		UserAppVersion userAppVersion = userAppVersionRepository.getOne(versionRequest.getId());
 		BeanUtils.copyProperties(versionRequest, userAppVersion);
 		userAppVersion.setUpdateTime(new Date());
 		userAppVersionRepository.saveAndFlush(userAppVersion);
