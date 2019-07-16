@@ -351,7 +351,7 @@ public class CarParkServiceImpl implements CarParkService {
                     faultAmount++;
                 }
                 switch (car.getPlaceType() != null ? car.getPlaceType() : 1) {
-                    case 1:
+                    case 2:
                         carAmount++;
                         ownerAmount++;
                         if (car.getPlaceStatus().intValue() == 1) {
@@ -361,7 +361,7 @@ public class CarParkServiceImpl implements CarParkService {
                             leisureAmount++;
                         }
                         break;
-                    case 2:
+                    case 1:
                         carAmount++;
                         tempAmount++;
                         if (car.getPlaceStatus().intValue() == 1) {
@@ -378,8 +378,8 @@ public class CarParkServiceImpl implements CarParkService {
         carPark.setParkLeisureAmount(leisureAmount);
         carPark.setParkFaultAmount(faultAmount);
         carPark.setParkUseNumber(carUseAmount);
-        carPark.getCarPlaceType().put("固定",new CarParkListResponse.ParkCarPlaceTypeBuilder().type((short)1).typeName("固定").parkAmount(ownerAmount).parkUseAmount(ownerUseAmount).builder());
-        carPark.getCarPlaceType().put("临停",new CarParkListResponse.ParkCarPlaceTypeBuilder().type((short)2).typeName("临停").parkAmount(tempAmount).parkUseAmount(tempUseAmount).builder());
+        carPark.getCarPlaceType().put("固定",new CarParkListResponse.ParkCarPlaceTypeBuilder().type((short)2).typeName("固定").parkAmount(ownerAmount).parkUseAmount(ownerUseAmount).builder());
+        carPark.getCarPlaceType().put("临停",new CarParkListResponse.ParkCarPlaceTypeBuilder().type((short)1).typeName("临停").parkAmount(tempAmount).parkUseAmount(tempUseAmount).builder());
         carPark.getCarPlaceType().put("VIP",new CarParkListResponse.ParkCarPlaceTypeBuilder().type((short)3).typeName("VIP").parkAmount(0).parkUseAmount(0).builder());
         return carPark;
     }

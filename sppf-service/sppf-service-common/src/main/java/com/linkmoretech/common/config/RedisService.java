@@ -315,6 +315,5 @@ public class RedisService {
 		}else{
 			return false;
 		}
-
 	}
 }

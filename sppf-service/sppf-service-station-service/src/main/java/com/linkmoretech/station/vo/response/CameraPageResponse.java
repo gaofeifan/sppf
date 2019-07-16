@@ -1,4 +1,4 @@
-package com.linkmoretech.cbd.vo.response;
+package com.linkmoretech.station.vo.response;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

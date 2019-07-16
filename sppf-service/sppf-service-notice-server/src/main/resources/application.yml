@@ -1,4 +1,29 @@
-socket:
+server:
+  port: 8081
+spring:
+  rabbitmq:
+    username: guest
+    password: guest
+    addresses: 192.168.1.80:5672,192.168.1.80:5673,192.168.1.80:5674
+  datasource:
+    url: jdbc:mysql://192.168.1.218:3306/tech_map?useUnicode=true&characterEncoding=UTF8&useSSL=false
+    username: root
+    password: Linkmore@2018
+    driver-class-name: com.mysql.jdbc.Driver
+    tomcat:
+      max-active: 4
+      min-idle: 2
+      initial-size: 2
+      
+    jpa:
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+      show-sql: true
+      
+socket: 
   io:
     host: 127.0.0.1
     port: 9001

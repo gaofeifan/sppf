@@ -1,4 +1,4 @@
-package com.linkmoretech.cbd.controller;
+package com.linkmoretech.station.controller;
 
 import javax.validation.Valid;
 
@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.linkmoretech.cbd.enums.CameraStatusEnum;
-import com.linkmoretech.cbd.service.CameraService;
-import com.linkmoretech.cbd.vo.request.CameraRequest;
-import com.linkmoretech.cbd.vo.response.CameraPageResponse;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
 import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
+import com.linkmoretech.station.enums.CameraStatusEnum;
+import com.linkmoretech.station.service.CameraService;
+import com.linkmoretech.station.vo.request.CameraRequest;
+import com.linkmoretech.station.vo.response.CameraPageResponse;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,7 +28,7 @@ import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 投诉建议
+ * 设备管理
  * @author jhb
  * @Date 2019年6月27日 下午1:54:27
  * @Version 1.0

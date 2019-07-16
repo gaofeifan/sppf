@@ -370,7 +370,6 @@ public class CarPlaceServiceImpl implements CarPlaceService {
             details.setLockSn(carPlace.getLockCode());
             details.setCarPlaceName(carPlace.getPlaceNo());
             details.setLockStatus(carPlace.getLockStatus());
-            details.setCarStatus(carPlace.getPlaceStatus());
             details.setLineStatus(carPlace.getLineStatus());
             ResLockInfo lockInfo = this.lockFactory.getLockService().lockInfo(carPlace.getLockCode());
             details = setDetailsLockInfo(lockInfo , details);
@@ -415,6 +414,9 @@ public class CarPlaceServiceImpl implements CarPlaceService {
         LockService lockService = this.lockFactory.getLockService();
         ResLockInfo lockInfo = lockService.lockInfo(sn);
         if(carPlace != null){
+        	carPlaceRes.setBindStata(2);
+            carPlaceRes.setBindStatus(true);
+            carPlaceRes.setInstallStatus((short)1);
             carPlaceRes.setCarPlaceId(carPlace.getId());
             carPlaceRes.setParkId(carPlace.getParkId());
             carPlaceRes.setCarPlaceName(carPlace.getPlaceNo());
@@ -426,13 +428,13 @@ public class CarPlaceServiceImpl implements CarPlaceService {
             carPlaceRes.setLineStatus(carPlace.getLineStatus());
             carPlaceRes.setCarPlaceLockSn(sn);
         }
-        if(carPlace != null && carPlace.getParkId() != null) {
+        if(parkId != null) {
         	try {
-        		CarPark park = this.carParkRepository.findById(carPlace.getParkId()).get();
+        		CarPark park = this.carParkRepository.findById(parkId).get();
 				if(park != null) {
 					carPlaceRes.setCityCode(park.getCityCode());
 					carPlaceRes.setCityName(park.getCityName());
-					List<com.linkmoretech.parking.entity.ResLockGatewayList> gatewayList = lockService.getLockGatewayList(carPlace.getLockCode(), park.getLockGroupCode());
+					List<com.linkmoretech.parking.entity.ResLockGatewayList> gatewayList = lockService.getLockGatewayList(sn, park.getLockGroupCode());
 	                com.linkmoretech.parking.vo.response.ResLockGatewayList rgl = null;
 	                if(gatewayList != null) {
 	                    for (com.linkmoretech.parking.entity.ResLockGatewayList resLockGatewayList : gatewayList) {
@@ -449,15 +451,26 @@ public class CarPlaceServiceImpl implements CarPlaceService {
 			}
         }
         if(lockInfo != null){
-            carPlaceRes.setBindStata(2);
-            carPlaceRes.setBindStatus(true);
-            carPlaceRes.setInstallStatus((short)1);
             carPlaceRes.setLockOffLine(lockInfo.getOnlineState());
             carPlaceRes.setBattery(lockInfo.getElectricity());
             carPlaceRes.setUltrasonic(lockInfo.getParkingState());
             carPlaceRes.setInductionState(lockInfo.getInductionState());
             carPlaceRes.setModel(lockInfo.getModel());
             carPlaceRes.setVersion(lockInfo.getVersion());
+            switch (lockInfo.getLockState()) {
+            case 0:
+            	carPlaceRes.setLockStatus(2);
+                break;
+            case 2:
+            	carPlaceRes.setLockStatus(1);
+                break;
+            case 3:
+            	carPlaceRes.setLockStatus(2);
+                break;
+            case 1:
+            	carPlaceRes.setLockStatus(1);
+                break;
+        }
         }
         return carPlaceRes;
     }

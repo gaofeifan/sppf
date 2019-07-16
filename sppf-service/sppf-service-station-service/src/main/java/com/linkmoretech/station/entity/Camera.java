@@ -1,4 +1,4 @@
-package com.linkmoretech.cbd.entity;
+package com.linkmoretech.station.entity;
 
 import java.util.Date;
 import javax.persistence.Entity;
@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "c_camera")
+@Table(name = "s_camera")
 public class Camera {
 	@Id
     @GeneratedValue

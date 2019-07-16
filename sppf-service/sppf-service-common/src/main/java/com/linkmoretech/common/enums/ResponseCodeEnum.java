@@ -24,6 +24,7 @@ public enum  ResponseCodeEnum {
     CARPLACEOCCUPIED(100000,"车位正在被使用"),
     CAR_PLACE_NOT_DOWN(100000,"车位不在下线状态"),
     STALL_LOCK_CODE_EXIST(8005076,"请将原有车位锁删除后 再安装"),
+    STALL_LOCK_UP_ERROR(8005076,"车位锁上线失败"),
     STALL_NOT_EXIST(8005076,"车位锁编号不存在") ,
     CAR_PLACE_NOT_EXIST(8005076,"车位不存在") ,
     OPEATE_ERROR_RETRY(8005076,"操作失败,请重试"),

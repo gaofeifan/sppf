@@ -1,4 +1,4 @@
-package com.linkmoretech.cbd.enums;
+package com.linkmoretech.station.enums;
 
 import lombok.Getter;
 

@@ -1,4 +1,4 @@
-package com.linkmoretech.cbd.vo.request;
+package com.linkmoretech.station.vo.request;
 
 import javax.validation.constraints.NotNull;
 import io.swagger.annotations.ApiModel;
