@@ -1,7 +1,6 @@
 stages:
   - build_image
   - push_image
- 
 before_script:
 #  - cd sppf-service/sppf-service-versatile-server/
 #  - mvn install -Dmaven.test.skip=true
