@@ -34,24 +34,24 @@ public class TimingScheduleController {
     TimingScheduleService timingScheduleService;
     
 	@PostMapping(value="save")
-	@ApiOperation(value = "新增定时任务", notes = "新增定时任务")
+	@ApiOperation(value = "新增定时任务-大后台", notes = "新增定时任务")
 	public void save(@RequestBody TimingSchedule timingSchedule) {
 		this.timingScheduleService.save(timingSchedule);
 	}
 	
 	@PutMapping(value="update")
-	@ApiOperation(value = "更新定时任务", notes = "更新定时任务")
+	@ApiOperation(value = "更新定时任务-大后台", notes = "更新定时任务")
 	public void update(@RequestBody TimingSchedule timingSchedule) {
 		this.timingScheduleService.update(timingSchedule);
 	}
 	
 	@DeleteMapping(value="delete")
-	@ApiOperation(value = "删除定时任务", notes = "删除定时任务")
+	@ApiOperation(value = "删除定时任务-大后台", notes = "删除定时任务")
 	public void deleteById(@RequestBody List<Long> ids) {
 		this.timingScheduleService.deleteById(ids);
 	}
 	
-	@ApiOperation(value = "获取列表", notes = "用于分页显示已添加的数据")
+	@ApiOperation(value = "获取列表-大后台", notes = "用于分页显示已添加的数据")
     @PostMapping(value = "list")
     public PageDataResponse<TimingSchedule> list(@RequestBody @Valid PageSearchRequest searchRequest,
                                                                     BindingResult bindingResult) throws CommonException {

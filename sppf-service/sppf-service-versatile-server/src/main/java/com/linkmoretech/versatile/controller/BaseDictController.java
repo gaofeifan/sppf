@@ -42,7 +42,7 @@ public class BaseDictController {
     @Autowired
     BaseDictService baseDictService;
 
-    @ApiOperation(value = "添加数据字典", notes = "添加数据字典")
+    @ApiOperation(value = "添加数据字典-大后台", notes = "添加数据字典")
     @PostMapping(value = "create")
     public void create(@RequestBody @Valid BaseDictCreateRequest baseDictCreateRequest, BindingResult bindingResult)
             throws CommonException {
@@ -52,7 +52,7 @@ public class BaseDictController {
         baseDictService.create(baseDictCreateRequest);
     }
 
-    @ApiOperation(value = "编辑数据字典", notes = "编辑数据字典")
+    @ApiOperation(value = "编辑数据字典-大后台", notes = "编辑数据字典")
     @PostMapping(value = "edit")
     public void edit(@RequestBody @Valid BaseDictEditRequest baseDictEditRequest, BindingResult bindingResult)
             throws CommonException {
@@ -62,13 +62,13 @@ public class BaseDictController {
         baseDictService.edit(baseDictEditRequest);
     }
 
-    @ApiOperation(value = "删除数据字典", notes = "删除数据字典")
+    @ApiOperation(value = "删除数据字典-大后台", notes = "删除数据字典")
     @DeleteMapping(value = "delete/{id}")
     public void delete(@PathVariable(value = "id") Long id) {
         baseDictService.delete(id);
     }
 
-    @ApiOperation(value = "获取字典列表", notes = "用于分页显示已添加字典的数据")
+    @ApiOperation(value = "获取字典列表-大后台", notes = "用于分页显示已添加字典的数据")
     @PostMapping(value = "list")
     public PageDataResponse<BaseDictPageResponse> list(@RequestBody @Valid PageSearchRequest searchRequest,
                                                                     BindingResult bindingResult) throws CommonException {

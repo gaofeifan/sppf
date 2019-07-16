@@ -35,12 +35,12 @@ public class UnusualLogController {
 
     @PostMapping(value = "upload")
 	@ResponseBody
-	@ApiOperation(value="新增异常日志上报",notes="新增异常日志上报")
+	@ApiOperation(value="新增异常日志上报-APP",notes="新增异常日志上报")
 	public void upload(@RequestBody @Validated UnusualLogRequest unusualLogRequest) {
 		this.unusualLogService.save(unusualLogRequest);
 	}
     
-    @ApiOperation(value = "获取异常日志列表", notes = "用于分页显示已添加的数据")
+    @ApiOperation(value = "获取异常日志列表-大后台", notes = "用于分页显示已添加的数据")
     @PostMapping(value = "list")
     public PageDataResponse<UnusualLogPageResponse> list(@RequestBody @Valid PageSearchRequest searchRequest,
                                                                     BindingResult bindingResult) throws CommonException {
