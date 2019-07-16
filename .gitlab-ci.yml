@@ -4,21 +4,22 @@ stages:
  
 before_script:
 #  - cd sppf-service/sppf-service-versatile-server/
-  - mvn install -Dmaven.test.skip=true
+#  - mvn install -Dmaven.test.skip=true
 #效验docker镜像库
   - docker info
   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
-######api-gateway##############################################################
-  - cd api-gateway
+############################sppf-service-versatile-server#######################
+  - cd sppf-service/sppf-service-versatile-server
   - mvn clean package -Dmaven.test.skip=true
   - mv Dockerfile target/
+  - cd target/
 build_image:
   stage: build_image
   script:
-    - docker build -t "$CI_REGISTRY/api-gateway:$CI_COMMIT_REF_SLUG" .
+    - docker build -t "$CI_REGISTRY/$CI_PROJECT1:$CI_COMMIT_REF_SLUG" .
  
 push_image:
   stage: push_image
   script:
-#    - docker push "$CI_REGISTRY/api-gateway:$CI_COMMIT_REF_SLUG"
-    #- docker rmi "$CI_REGISTRY/api-gateway:$CI_COMMIT_REF_SLUG"
+    - docker push "$CI_REGISTRY/$CI_PROJECT1:$CI_COMMIT_REF_SLUG"
+    - docker rmi "$CI_REGISTRY/$CI_PROJECT1:$CI_COMMIT_REF_SLUG"
