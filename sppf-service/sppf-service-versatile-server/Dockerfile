@@ -1,9 +1,4 @@
-FROM hub.c.163.com/library/java:8-alpine
-
-MAINTAINER alec alec@linkmoretech.com
-
-ADD target/*.jar app.jar
-
-EXPOSE 10088
-
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+FROM java:8
+VOLUME /tmp
+ADD *.jar *.jar
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/*.jar"]
