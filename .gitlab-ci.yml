@@ -10,11 +10,12 @@ before_script:
   - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
 ############################sppf-service-versatile-server#######################
   - cd sppf-service/sppf-service-versatile-server
-  - cd 
-  - pwd
+
 build_image:
   stage: build_image
   script:
     - docker images
+    - cd ../../
+    - pwd
 
 
