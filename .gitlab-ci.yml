@@ -17,13 +17,13 @@ build_image:
   stage: build_image
   script:
   - docker build -t "$CI_REGISTRY/$CI_PROJECT1:$CI_COMMIT_REF_SLUG" .
+  - cd ../../
  
 push_image:
   stage: push_image
   script:
   - docker push "$CI_REGISTRY/$CI_PROJECT1:$CI_COMMIT_REF_SLUG"
   - docker rmi "$CI_REGISTRY/$CI_PROJECT1:$CI_COMMIT_REF_SLUG"
-  - cd ../../
 ############################api-gateway########################################
   - cd api-gateway
   - mvn clean package -Dmaven.test.skip=true
@@ -68,7 +68,7 @@ push_image:
   script:
     - docker push "$CI_REGISTRY/$CI_PROJECT4:$CI_COMMIT_REF_SLUG"
     - docker rmi "$CI_REGISTRY/$CI_PROJECT4:$CI_COMMIT_REF_SLUG"
-  - cd ../
+    - cd ../
 #######################eureka-server#########################################
   - cd eureka-server/
   - mvn clean package -Dmaven.test.skip=true
