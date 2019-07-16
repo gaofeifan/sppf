@@ -5,6 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
@@ -50,7 +52,7 @@ public class UserAppVersionController {
     @GetMapping(value="current")
 	@ResponseBody
 	@ApiOperation(value = "查询当前版本-APP", notes = "来源必填 1 android 2 ios", consumes = "application/json")
-	public UserAppVersionResponse current(@ApiParam(value="来源" ,required=true) @NotNull(message="来源不能为空") @RequestParam("source")Integer source,HttpServletRequest request){
+	public UserAppVersionResponse current(@ApiParam(value="来源" ,required=true) @Length(min=1,max=2,message="来源在1-2之间") @NotNull(message="来源不能为空") @RequestParam("source")Integer source,HttpServletRequest request){
 		UserAppVersion userAppVersion = this.userAppVersionService.currentAppVersion(source);
 		UserAppVersionResponse userAppVersionResponse = new UserAppVersionResponse();
 		userAppVersionResponse.setVersion(userAppVersion.getVersion());
