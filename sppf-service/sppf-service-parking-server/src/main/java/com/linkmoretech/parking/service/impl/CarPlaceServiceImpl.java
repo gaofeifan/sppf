@@ -414,8 +414,6 @@ public class CarPlaceServiceImpl implements CarPlaceService {
         LockService lockService = this.lockFactory.getLockService();
         ResLockInfo lockInfo = lockService.lockInfo(sn);
         if(carPlace != null){
-        	carPlaceRes.setBindStata(2);
-            carPlaceRes.setBindStatus(true);
             carPlaceRes.setInstallStatus((short)1);
             carPlaceRes.setCarPlaceId(carPlace.getId());
             carPlaceRes.setParkId(carPlace.getParkId());
@@ -451,6 +449,8 @@ public class CarPlaceServiceImpl implements CarPlaceService {
 			}
         }
         if(lockInfo != null){
+        	carPlaceRes.setBindStata(2);
+            carPlaceRes.setBindStatus(true);
             carPlaceRes.setLockOffLine(lockInfo.getOnlineState());
             carPlaceRes.setBattery(lockInfo.getElectricity());
             carPlaceRes.setUltrasonic(lockInfo.getParkingState());
@@ -540,6 +540,11 @@ public class CarPlaceServiceImpl implements CarPlaceService {
 		}
 		carPlace.setLineStatus(state);
 		this.carPlaceRepository.save(carPlace);
+	}
+
+	@Override
+	public void editParkNameByIds(String parkName, Long id) {
+		this.carPlaceRepository.editParkNameByIds(parkName,id);
 	}
 	
 	

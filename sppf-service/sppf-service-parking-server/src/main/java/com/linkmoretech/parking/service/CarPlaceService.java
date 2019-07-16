@@ -110,6 +110,9 @@ public interface CarPlaceService {
 
 	void updateLineStatus(Integer state, Long carPlaceId) throws CommonException;
 
+	void editParkNameByIds(String parkName, Long id);
+	
+
 
 
 }
