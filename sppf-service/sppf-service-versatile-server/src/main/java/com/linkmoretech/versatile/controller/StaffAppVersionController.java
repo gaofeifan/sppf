@@ -46,7 +46,7 @@ public class StaffAppVersionController {
     StaffAppVersionService staffAppVersionService;
 
 
-    @ApiOperation(value = "添加版本管理", notes = "添加版本管理")
+    @ApiOperation(value = "添加版本管理-大后台", notes = "添加版本管理")
     @PostMapping(value = "create")
     public void create(@RequestBody @Valid StaffAppVersionCreateRequest staffAppVersionCreateRequest, BindingResult bindingResult)
             throws CommonException {
@@ -56,7 +56,7 @@ public class StaffAppVersionController {
         staffAppVersionService.create(staffAppVersionCreateRequest);
     }
 
-    @ApiOperation(value = "编辑版本管理", notes = "编辑版本管理")
+    @ApiOperation(value = "编辑版本管理-大后台", notes = "编辑版本管理")
     @PostMapping(value = "edit")
     public void edit(@RequestBody @Valid StaffAppVersionEditRequest staffAppVersionEditRequest, BindingResult bindingResult)
             throws CommonException {
@@ -66,13 +66,13 @@ public class StaffAppVersionController {
         staffAppVersionService.edit(staffAppVersionEditRequest);
     }
 
-    @ApiOperation(value = "删除版本管理", notes = "删除版本管理")
+    @ApiOperation(value = "删除版本管理-大后台", notes = "删除版本管理")
     @DeleteMapping(value = "delete/{id}")
     public void delete(@PathVariable(value = "id") Long id) {
         staffAppVersionService.delete(id);
     }
 
-    @ApiOperation(value = "获取列表", notes = "用于分页显示已添加的数据")
+    @ApiOperation(value = "获取列表-大后台", notes = "用于分页显示已添加的数据")
     @PostMapping(value = "list")
     public PageDataResponse<StaffAppVersionPageResponse> list(@RequestBody @Valid PageSearchRequest searchRequest,
                                                                     BindingResult bindingResult) throws CommonException {
@@ -84,7 +84,7 @@ public class StaffAppVersionController {
     
 	@GetMapping(value="/current")
 	@ResponseBody
-	@ApiOperation(value = "查询当前版本-APP", notes = "来源必填 1 android 2 ios", consumes = "application/json")
+	@ApiOperation(value = "查询当前版本-APP", notes = "来源必填 1 android 2 ios")
 	public StaffAppVersionResponse current(@RequestParam("source")@ApiParam(value="来源 1 android 2 ios",required=true) @NotNull(message="参数不能为空") Integer source){
 		int appType = 0;
 		if(1 == source){
@@ -97,7 +97,7 @@ public class StaffAppVersionController {
 	}
     
 	@PostMapping(value="/report")
-	@ApiOperation(value = "上报用户版本-APP", notes = "上报用户版本", consumes = "application/json")
+	@ApiOperation(value = "上报用户版本-APP", notes = "上报用户版本")
 	public void report(Authentication authentication, @RequestBody @Validated StaffAppVersionRequest staffAppVersionRequest){
 		AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
 		Long userId = authenticationTokenAnalysis.getUserId();
