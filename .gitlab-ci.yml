@@ -6,8 +6,8 @@ before_script:
 #  - cd sppf-service/sppf-service-versatile-server/
 #  - mvn install -Dmaven.test.skip=true
 #效验docker镜像库
-#  - docker info
-#  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  - docker info
+  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
 ############################sppf-service-versatile-server#######################
   - cd sppf-service/sppf-service-versatile-server
   - cd 
