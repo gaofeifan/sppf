@@ -35,7 +35,7 @@ public class AccAuthenticationManagerConfig extends SecurityConfigurerAdapter<De
     PasswordEncoder passwordEncoder;
 
     @Override
-    public void configure(HttpSecurity http) throws Exception {
+    public void configure(HttpSecurity http) {
 
         AccAuthenticationManagerFilter smsAuthenticationFilter = new AccAuthenticationManagerFilter();
         smsAuthenticationFilter.setAuthenticationSuccessHandler(validateSuccessHandler);
