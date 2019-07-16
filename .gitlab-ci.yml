@@ -12,6 +12,7 @@ before_script:
   - cd sppf-service/sppf-service-versatile-server
   - mvn clean package -Dmaven.test.skip=true
   - mv Dockerfile target/
+  - cd target/
 build_image:
   stage: build_image
   script:
