@@ -31,25 +31,24 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     private final String OAUTH_URL = "/oauth/**";
 
     @Override
-    public void configure(HttpSecurity http) throws Exception {
+    public void configure(HttpSecurity http)  {
 
         oauthResourceConfig.getIgnores().add(OAUTH_URL);
         String[] matchers = new String[oauthResourceConfig.getIgnores().size()];
         matchers = oauthResourceConfig.getIgnores().toArray(matchers);
-       /* String[] matchers = (String[])oauthResourceConfig.getIgnores().toArray();*//*
-        String[] matchers = new String[oauthResourceConfig.getIgnores().size()];
-        for (int i = 0; i < matchers.length; i ++) {
-            matchers[i] = String.valueOf(oauthResourceConfig.getIgnores().get(i));
-        }*/
         log.info("过滤URL {}", matchers);
-        http
-              .authorizeRequests()
-              .antMatchers(matchers)
-              .permitAll()
-              .anyRequest() // 所有请求
-              .authenticated() //需要身份认证
-              .and()
-              .csrf().disable()//关闭csrf
-              .headers().frameOptions().disable();
+        try {
+            http
+                    .authorizeRequests()
+                    .antMatchers(matchers)
+                    .permitAll()
+                    .anyRequest() // 所有请求
+                    .authenticated() //需要身份认证
+                    .and()
+                    .csrf().disable()//关闭csrf
+                    .headers().frameOptions().disable();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
