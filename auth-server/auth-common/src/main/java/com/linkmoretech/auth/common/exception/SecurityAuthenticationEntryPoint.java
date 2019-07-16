@@ -23,7 +23,10 @@ public class SecurityAuthenticationEntryPoint implements AuthenticationEntryPoin
         httpServletResponse.setCharacterEncoding("utf-8");
         httpServletResponse.setContentType("application/json; character=utf-8");
         PrintWriter printWriter = httpServletResponse.getWriter();
-        printWriter.print(JSONObject.toJSONString(new RegisterException(401, "授权认证失败")));
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("code", 401);
+        jsonObject.put("message", "授权认证失败");
+        printWriter.print(jsonObject);
     }
 
 }
