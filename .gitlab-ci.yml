@@ -12,4 +12,9 @@ before_script:
   - cd sppf-service/sppf-service-versatile-server
   - cd 
   - pwd
+build_image:
+  stage: build_image
+  script:
+    - docker images
+
 
