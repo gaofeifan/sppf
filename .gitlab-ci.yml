@@ -1,7 +1,6 @@
 stages:
   - build_image
   - push_image
- 
 before_script:
 #效验docker镜像库
   - docker info
