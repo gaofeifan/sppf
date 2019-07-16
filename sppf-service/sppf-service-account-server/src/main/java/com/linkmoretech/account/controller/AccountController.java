@@ -102,9 +102,8 @@ public class AccountController {
             throw new CommonException(ResponseCodeEnum.PARAMS_ERROR);
         }
         AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
-        authenticationTokenAnalysis.getUserId();
-
-
+        Long userId = authenticationTokenAnalysis.getUserId();
+        accountService.registerMobile(userId, appUserRegisterRequest.getMobile());
     }
 
     /**
