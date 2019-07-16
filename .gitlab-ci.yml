@@ -17,13 +17,13 @@ build_image:
   stage: build_image
   script:
   - docker build -t "$CI_REGISTRY/$CI_PROJECT1:$CI_COMMIT_REF_SLUG" .
-  - cd ../../
  
 push_image:
   stage: push_image
   script:
   - docker push "$CI_REGISTRY/$CI_PROJECT1:$CI_COMMIT_REF_SLUG"
   - docker rmi "$CI_REGISTRY/$CI_PROJECT1:$CI_COMMIT_REF_SLUG"
+  - cd ../../
 ############################api-gateway########################################
   - cd api-gateway
   - mvn clean package -Dmaven.test.skip=true
@@ -33,12 +33,12 @@ build_image:
   stage: build_image
   script:
   - docker build -t "$CI_REGISTRY/$CI_PROJECT2:$CI_COMMIT_REF_SLUG" .
-  - cd ../
 push_image:
   stage: push_image
   script:
   - docker push "$CI_REGISTRY/$CI_PROJECT2:$CI_COMMIT_REF_SLUG"
   - docker rmi "$CI_REGISTRY/$CI_PROJECT2:$CI_COMMIT_REF_SLUG"
+  - cd ../
 ###########################sppf-service-account-server#########################
   - cd sppf-service/sppf-service-account-server
   - mvn clean package -Dmaven.test.skip=true
@@ -48,12 +48,12 @@ build_image:
   stage: build_image
   script:
   - docker build -t "$CI_REGISTRY/$CI_PROJECT3:$CI_COMMIT_REF_SLUG" .
-  - cd ../../
 push_image:
   stage: push_image
   script:
   - docker push "$CI_REGISTRY/$CI_PROJECT3:$CI_COMMIT_REF_SLUG"
   - docker rmi "$CI_REGISTRY/$CI_PROJECT3:$CI_COMMIT_REF_SLUG"
+  - cd ../../
 #######################config-server##########################################
   - cd config-server/
   - mvn clean package -Dmaven.test.skip=true
@@ -63,12 +63,12 @@ build_image:
   stage: build_image
   script:
   - docker build -t "$CI_REGISTRY/$CI_PROJECT4:$CI_COMMIT_REF_SLUG" .
-  - cd ../
 push_image:
   stage: push_image
   script:
     - docker push "$CI_REGISTRY/$CI_PROJECT4:$CI_COMMIT_REF_SLUG"
     - docker rmi "$CI_REGISTRY/$CI_PROJECT4:$CI_COMMIT_REF_SLUG"
+  - cd ../
 #######################eureka-server#########################################
   - cd eureka-server/
   - mvn clean package -Dmaven.test.skip=true
@@ -78,12 +78,12 @@ build_image:
   stage: build_image
   script:
   - docker build -t "$CI_REGISTRY/$CI_PROJECT5:$CI_COMMIT_REF_SLUG" .
-  - cd ../
 push_image:
   stage: push_image
   script:
   - docker push "$CI_REGISTRY/$CI_PROJECT5:$CI_COMMIT_REF_SLUG"
   - docker rmi "$CI_REGISTRY/$CI_PROJECT5:$CI_COMMIT_REF_SLUG"
+  - cd ../
 ################################sppf-service-parking-server##################
   - cd sppf-service/sppf-service-parking-server/
   - mvn clean package -Dmaven.test.skip=true
@@ -93,12 +93,12 @@ build_image:
   stage: build_image
   script:
   - docker build -t "$CI_REGISTRY/$CI_PROJECT6:$CI_COMMIT_REF_SLUG" .
-  - cd ../../
 push_image:
   stage: push_image
   script:
   - docker push "$CI_REGISTRY/$CI_PROJECT6:$CI_COMMIT_REF_SLUG"
   - docker rmi "$CI_REGISTRY/$CI_PROJECT6:$CI_COMMIT_REF_SLUG"
+  - cd ../../
 #################################sppf-service-user-server###################
   - cd sppf-service/sppf-service-user-server/
   - mvn clean package -Dmaven.test.skip=true
@@ -108,12 +108,12 @@ build_image:
   stage: build_image
   script:
   - docker build -t "$CI_REGISTRY/$CI_PROJECT7:$CI_COMMIT_REF_SLUG" .
-  - cd ../../
 push_image:
   stage: push_image
   script:
   - docker push "$CI_REGISTRY/$CI_PROJECT7:$CI_COMMIT_REF_SLUG"
   - docker rmi "$CI_REGISTRY/$CI_PROJECT7:$CI_COMMIT_REF_SLUG"
+  - cd ../../
 ###################################sppf-service-station-service############
   - cd sppf-service/sppf-service-station-service/
   - mvn clean package -Dmaven.test.skip=true
@@ -123,12 +123,12 @@ build_image:
   stage: build_image
   script:
   - docker build -t "$CI_REGISTRY/$CI_PROJECT8:$CI_COMMIT_REF_SLUG" .
-  - cd ../../
 push_image:
   stage: push_image
   script:
   - docker push "$CI_REGISTRY/$CI_PROJECT8:$CI_COMMIT_REF_SLUG"
   - docker rmi "$CI_REGISTRY/$CI_PROJECT8:$CI_COMMIT_REF_SLUG"
+  - cd ../../
 ##################################sppf-service-order-server##############
 #  - cd sppf-service/sppf-service-order-server/
 #  - mvn clean package -Dmaven.test.skip=true
