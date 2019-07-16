@@ -286,17 +286,23 @@ public class CarPlaceServiceImpl implements CarPlaceService {
 			@Override
 			public Predicate toPredicate(Root<CarPlace> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
 				List<Predicate> list = new ArrayList<>();
+				if(placeIds != null && placeIds.isEmpty()) {
+					log.info("no stall auth");
+					list.add(cb.isNull(root.get("id")));
+				}
 				list.add(cb.equal(root.get("parkId"), carPlaceListRequest.getCarParkId()));
 				if(carPlaceListRequest.getType() != null) {
 					list.add(cb.equal(root.get("placeType"), carPlaceListRequest.getType()));
 				}
-				if(placeIds != null) {
+				
+				if(placeIds != null && !placeIds.isEmpty()) {
 					In<Object> in = cb.in(root.get("id"));
 					for (Long long1 : placeIds) {
 						in.value(long1);
 					}
 					list.add(cb.and(in));
 				}
+				
 				if(org.apache.commons.lang3.StringUtils.isNotBlank(carPlaceListRequest.getCarPlaceName())) {
 					list.add(cb.like(root.get("placeNo"), carPlaceListRequest.getCarPlaceName()));
 				}
