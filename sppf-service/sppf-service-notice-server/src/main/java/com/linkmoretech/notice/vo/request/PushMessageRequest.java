@@ -15,6 +15,15 @@ public class PushMessageRequest {
 
     private String client;
 
+    // 消息内容
     private String content;
+    
+    //	消息id  
+    private String uuid;
+    
+    // 0 心跳消息  1收到消息的回调  2客户端发给服务端的消息
+    private int type;
+    
+    
 
 }

@@ -29,13 +29,13 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public Boolean pushMesOne(PushMesRequest mesRequest,boolean isMqMes) {
         Boolean falg = socketService.pushMesOne(mesRequest,isMqMes);
-        return null;
+        return falg;
     }
 
     @Override
     public Boolean pushMesList(List<PushMesRequest> list,boolean isMqMes) {
         Boolean falg = socketService.pushMesList(list,isMqMes);
-        return null;
+        return falg;
     }
     
     
