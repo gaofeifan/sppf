@@ -8,6 +8,7 @@ import com.linkmoretech.notice.config.RabbitConfig;
 import com.linkmoretech.notice.entity.Notice;
 import com.linkmoretech.notice.entity.RedisPushMessageVo;
 import com.linkmoretech.notice.enums.AgingTypeEnum;
+import com.linkmoretech.notice.enums.MqMesEnum;
 import com.linkmoretech.notice.resposity.NoticeResposity;
 import com.linkmoretech.notice.vo.request.PushMesRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 /**
  * @Author: GFF
@@ -60,6 +62,10 @@ public class SocketServiceImpl implements SocketService{
         String userId = getSocketParam(socketIOClient);
         log.info("有连接进入"+userId);
         clientMap.put(userId,socketIOClient);
+        TaskPool.getInstance().task(()->{
+        	List<PushMesRequest> list = getRedisPushMes(Long.decode(userId));
+        	pushMesList(list, MqMesEnum.NO.isFlag());
+        }); 
     }
 
     @Override
@@ -246,5 +252,16 @@ public class SocketServiceImpl implements SocketService{
     @Override
     public Long getLineUserCount() {
         return null;
+    }
+    
+    private List<PushMesRequest> getRedisPushMes(Long userId){
+    	if(userId == null) {
+    		return null;
+    	}
+    	 Set<RedisPushMessageVo> members = this.redisTemplate.opsForSet().members(PUSH_REDIS_KEY);
+    	 if(members == null || members.size() == 0) {
+    		 return null;
+    	 }
+    	 return members.stream().filter(m -> m.getPushMesRequest().getUserId().longValue() == userId.longValue()).map(m -> m.getPushMesRequest()).collect(Collectors.toList());
     }
 }
