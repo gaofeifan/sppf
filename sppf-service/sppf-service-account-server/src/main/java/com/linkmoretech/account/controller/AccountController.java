@@ -103,6 +103,7 @@ public class AccountController {
         }
         AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
         Long userId = authenticationTokenAnalysis.getUserId();
+        log.info("当前用户ID {}", userId);
         accountService.registerMobile(userId, appUserRegisterRequest.getMobile());
     }
 

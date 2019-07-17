@@ -21,12 +21,24 @@ public class ParkingData {
     @GeneratedValue
     private Long id;
 
+    /**
+     * 车场名称
+     * */
     private String parkName;
 
+    /**
+     * 车场编号
+     * */
     private String parkCode;
 
+    /**
+     * 临停车位数
+     * */
     private Integer tempNum;
 
+    /**
+     * 固定车位数
+     * */
     private Integer fixedNum;
 
     private Integer sort;
