@@ -39,11 +39,12 @@ public class NoticeController {
 		}
        return noticeService.pushMesList(list,MqMesEnum.NO.isFlag());
     }
+    
     private String getUUid(String str){
 		if (str == null) {
-			return UUID.randomUUID().toString();
+			return UUID.randomUUID().toString().replaceAll("-", "");
 		} else {
-			return UUID.nameUUIDFromBytes(str.getBytes()).toString();
+			return UUID.nameUUIDFromBytes(str.getBytes()).toString().replaceAll("-", "");
 		}
     }
 }

@@ -203,7 +203,6 @@ public class PayServiceImpl implements PayService {
 
 	@Override
 	public ResPayConfirm confirm(ReqPayConfirm roc, HttpServletRequest request) throws CommonException {
-		
 		ResOrderConfirm confirm = null;
 		//1、优惠券信息暂不考虑
 		

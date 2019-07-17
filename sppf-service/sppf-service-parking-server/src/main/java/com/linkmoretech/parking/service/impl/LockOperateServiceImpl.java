@@ -293,7 +293,6 @@ public class LockOperateServiceImpl implements LockOperateService {
 
 	@Override
 	public Boolean editLineStatus(LineStatusRquest lineStatusRquest) throws CommonException {
-		this.carPlaceService.updateLineStatus(lineStatusRquest.getState(),lineStatusRquest.getCarPlaceId());
 		// TODO 缺少将下线原因保存
 		if(lineStatusRquest.getState().intValue() == LineStatusEnum.ONLINE.getCode().intValue()) {
 			CarPlaceInfoResponse detail = this.carPlaceService.findDetail(lineStatusRquest.getCarPlaceId());
@@ -304,6 +303,9 @@ public class LockOperateServiceImpl implements LockOperateService {
 			if(lockInfo == null || StringUtils.isBlank(lockInfo.getLockCode())) {
 				throw new CommonException(ResponseCodeEnum.STALL_LOCK_UP_ERROR);
 			}
+			this.carPlaceService.updateLineStatus(lineStatusRquest.getState(),lineStatusRquest.getCarPlaceId());
+		}else {
+			this.carPlaceService.updateLineStatus(lineStatusRquest.getState(),lineStatusRquest.getCarPlaceId());
 		}
 		return true;
 	}

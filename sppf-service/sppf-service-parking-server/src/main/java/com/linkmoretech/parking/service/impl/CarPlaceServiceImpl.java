@@ -5,6 +5,7 @@ import com.linkmoretech.account.client.AccountDataClient;
 import com.linkmoretech.auth.common.util.AuthenticationTokenAnalysis;
 import com.linkmoretech.common.enums.ResponseCodeEnum;
 import com.linkmoretech.common.exception.CommonException;
+import com.linkmoretech.common.util.JsonUtil;
 import com.linkmoretech.common.vo.PageDataResponse;
 import com.linkmoretech.common.vo.PageSearchRequest;
 import com.linkmoretech.parking.common.PlaceParkIdAndRangeInput;
@@ -281,7 +282,13 @@ public class CarPlaceServiceImpl implements CarPlaceService {
     public List<CarPalceListResponse> findCarPlaceListByParkId(HttpServletRequest request, CarPlaceListRequest carPlaceListRequest, Authentication authentication) {
         AuthenticationTokenAnalysis authenticationTokenAnalysis = new AuthenticationTokenAnalysis(authentication);
         List<Long> placeIds = accountDataClient.getPlaceDataAccount(authenticationTokenAnalysis.getUserId(), carPlaceListRequest.getCarParkId());
-        log.info("placeIds = {}",JSON.toJSON(placeIds));
+        log.info(JsonUtil.toJson(placeIds));
+        List<CarPalceListResponse> carPalceListResponses = new ArrayList<>();
+        
+        if(placeIds != null &&placeIds.size() == 0) {
+        	log.info("当前用户没有权限车位");
+        	return carPalceListResponses;
+        }
         List<CarPlace> carPlaceList = this.carPlaceRepository.findAll(new Specification<CarPlace>() {
 			@Override
 			public Predicate toPredicate(Root<CarPlace> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
@@ -313,7 +320,7 @@ public class CarPlaceServiceImpl implements CarPlaceService {
 			}
 		});
 //        this.carPlaceRepository.findByIdInAndParkIdAndPlaceNoLikeAndType(,carPlaceListRequest.getCarParkId(),)
-        List<CarPalceListResponse> carPalceListResponses = new ArrayList<>();
+     
         CarPalceListResponse carPalceListResponse;
         CarPark carPark = this.carParkRepository.findById(carPlaceListRequest.getCarParkId()).get();
         List<ResLockInfo> lockInfos = this.lockFactory.getLockService().lockListByGroupCode(carPark.getLockGroupCode());

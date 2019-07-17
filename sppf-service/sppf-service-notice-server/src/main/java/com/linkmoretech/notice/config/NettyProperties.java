@@ -14,7 +14,7 @@ public class NettyProperties {
 
     private int port = 9000;
 
-    private String hort = "127.0.0.1";
+    private String hort = "192.168.1.241";
 
     private int bossCount;
 

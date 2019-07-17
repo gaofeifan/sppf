@@ -52,9 +52,10 @@ public class SocketServer {
     }
 
     @OnEvent(value = "sendMes")
-    public void onEnvent(SocketIOClient client, AckRequest request, PushMessageRequest data){
+    public void onEnvent(SocketIOClient client, AckRequest request, Object data){
     	System.out.println(JsonUtil.toJson(data));
     }
+    
 
 
 }
