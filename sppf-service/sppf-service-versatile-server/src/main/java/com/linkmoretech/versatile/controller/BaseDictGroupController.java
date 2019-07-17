@@ -42,7 +42,7 @@ public class BaseDictGroupController {
     @Autowired
     BaseDictGroupService baseDictGroupService;
 
-    @ApiOperation(value = "添加数据字典分类", notes = "添加数据字典分类")
+    @ApiOperation(value = "添加数据字典分类-大后台", notes = "添加数据字典分类")
     @PostMapping(value = "create")
     public void create(@RequestBody @Valid BaseDictGroupCreateRequest baseDictGroupCreateRequest, BindingResult bindingResult)
             throws CommonException {
@@ -52,7 +52,7 @@ public class BaseDictGroupController {
         baseDictGroupService.create(baseDictGroupCreateRequest);
     }
 
-    @ApiOperation(value = "编辑数据字典分类", notes = "编辑数据字典分类")
+    @ApiOperation(value = "编辑数据字典分类-大后台", notes = "编辑数据字典分类")
     @PostMapping(value = "edit")
     public void edit(@RequestBody @Valid BaseDictGroupEditRequest baseDictGroupEditRequest, BindingResult bindingResult)
             throws CommonException {
@@ -62,13 +62,13 @@ public class BaseDictGroupController {
         baseDictGroupService.edit(baseDictGroupEditRequest);
     }
 
-    @ApiOperation(value = "删除数据字典分类", notes = "删除数据字典分类")
+    @ApiOperation(value = "删除数据字典分类-大后台", notes = "删除数据字典分类")
     @DeleteMapping(value = "delete/{id}")
     public void delete(@PathVariable(value = "id") Long id) {
         baseDictGroupService.delete(id);
     }
 
-    @ApiOperation(value = "获取字典分类列表", notes = "用于分页显示已添加字典分类的数据")
+    @ApiOperation(value = "获取字典分类列表-大后台", notes = "用于分页显示已添加字典分类的数据")
     @PostMapping(value = "list")
     public PageDataResponse<BaseDictGroupPageResponse> list(@RequestBody @Valid PageSearchRequest searchRequest,
                                                             BindingResult bindingResult) throws CommonException {
@@ -78,7 +78,7 @@ public class BaseDictGroupController {
         return baseDictGroupService.searchPage(searchRequest);
     }
 
-    @ApiOperation(value = "获取字典分类列表", notes = "获取城市树形列表")
+    @ApiOperation(value = "获取字典分类列表-大后台", notes = "获取城市树形列表")
     @GetMapping(value = "tree")
     public List<BaseDictGroupTreeResponse> tree() {
         return baseDictGroupService.tree();

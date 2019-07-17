@@ -45,10 +45,13 @@ public interface ParamsConstruct {
     * */
    String CLIENT_MANAGE = "manage";
 
+   String CLIENT_APP = "personal";
 
    String CLIENT_ID = "clientId";
 
    String MOBILE_PARAMS = "mobile";
+
+
 
    String SOURCE = "type";
 

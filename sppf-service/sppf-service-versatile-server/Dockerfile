@@ -4,6 +4,5 @@ MAINTAINER alec alec@linkmoretech.com
 
 ADD target/*.jar app.jar
 
-EXPOSE 10088
 
 ENTRYPOINT ["java", "-jar", "/app.jar"]

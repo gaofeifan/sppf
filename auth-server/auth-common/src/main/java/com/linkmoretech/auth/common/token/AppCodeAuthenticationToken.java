@@ -8,7 +8,7 @@ package com.linkmoretech.auth.common.token;
 public class AppCodeAuthenticationToken extends AppAuthenticationToken {
 
 
-    public AppCodeAuthenticationToken(Object principal) {
-        super(principal, null);
+    public AppCodeAuthenticationToken(Object principal, Object source) {
+        super(principal, source);
     }
 }

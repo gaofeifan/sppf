@@ -3,6 +3,8 @@ package com.linkmoretech.versatile.service.impl;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,7 +44,10 @@ public class UserAppVersionServiceImpl implements UserAppVersionService {
 	@Override
 	public UserAppVersion currentAppVersion(Integer source) {
 		List<UserAppVersion> userAppVersions = this.userAppVersionRepository.findByTypeAndStatus(source);
-		return userAppVersions.get(0);
+		if(CollectionUtils.isNotEmpty(userAppVersions)) {
+			return userAppVersions.get(0);
+		}
+		return null;
 	}
 
 	@Override
@@ -77,7 +82,7 @@ public class UserAppVersionServiceImpl implements UserAppVersionService {
 
 	@Override
 	public void updateApp(UserAppVersionRequest versionRequest) {
-		UserAppVersion userAppVersion = new UserAppVersion();
+		UserAppVersion userAppVersion = userAppVersionRepository.getOne(versionRequest.getId());
 		BeanUtils.copyProperties(versionRequest, userAppVersion);
 		userAppVersion.setUpdateTime(new Date());
 		userAppVersionRepository.saveAndFlush(userAppVersion);

@@ -51,7 +51,7 @@ public class ProviderCommon {
     }
 
     private AppAuthenticationToken build (AppUserDetail userDetails) {
-        AppAuthenticationToken appAuthenticationToken = new AppAuthenticationToken(userDetails.getUsername(),
+        AppAuthenticationToken appAuthenticationToken = new AppAuthenticationToken(userDetails,
                 userDetails.getUserId(), userDetails.getRegister());
         appAuthenticationToken.setDetails(token.getDetails());
         return appAuthenticationToken;

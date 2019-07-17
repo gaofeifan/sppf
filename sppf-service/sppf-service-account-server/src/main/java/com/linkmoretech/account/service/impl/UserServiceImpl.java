@@ -199,7 +199,10 @@ public class UserServiceImpl implements UserService {
                 throw new CommonException(ResponseCodeEnum.ERROR, "手机号已存在");
             }
             user.setMobile(userEditRequest.getMobile());
+        }else {
+        	user.setMobile(userEditRequest.getMobile());
         }
+        
         if (!StringUtils.isEmpty(userEditRequest.getPassword())) {
             String password = passwordEncoder.encode(userEditRequest.getPassword());
             user.setPassword(password);
